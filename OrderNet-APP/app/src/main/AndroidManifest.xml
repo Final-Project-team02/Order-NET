@@ -17,6 +17,12 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
+            android:name=".Warehouse.WarehouseMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Branch.BranchMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Client.ClientMainActivity"
             android:exported="false" />
         <activity
