@@ -6,7 +6,11 @@ import HQPaymentCheck from "./HQPaymentCheck.jsx";
 
 
 function HQMain() {
-    const menuItems = ["주문 확정", "대리점 관리", "재고현황"];
+    const menuItems = [
+        { text: "주문 확정", link: "/" },
+        { text: "대리점 관리", link: "/" },
+        { text: "재고현황", link: "/" }
+    ];
 
     return (
         <div className="d-flex vh-100">
