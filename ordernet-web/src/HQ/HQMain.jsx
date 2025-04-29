@@ -19,8 +19,8 @@ function HQMain() {
                     {/*<HQSelectPanel/>*/}
                     {/*<HQMainPanel/>*/}
                     {/*<HQPaymentCheck/>*/}
-                    <HQClientList/>
-                    {/*<HQStockStatus/>*/}
+                    {/*<HQClientList/>*/}
+                    <HQStockStatus/>
                 </div>
             </div>
         </div>

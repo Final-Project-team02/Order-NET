@@ -32,19 +32,6 @@ function HQStockStatus() {
                     <button className={'btn mx-3'}  style={{backgroundColor: "#CFE2FF"}} type={"button"}>입고</button>
                     <button className={'btn'}  style={{backgroundColor: "#CFE2FF"}} type={"button"}>부품 등록</button>
                 </div>
-                {/*<div className={'row'}>*/}
-                {/*    <div className={'col-8 text-center'}>*/}
-                {/*        <label htmlFor="">카테고리</label>*/}
-                {/*        <input type="text"/>*/}
-                {/*        <label className={'px-3'} htmlFor="">카테고리</label>*/}
-                {/*        <input type="text"/>*/}
-                {/*        <button className={'btn'} style={{backgroundColor: "#CFE2FF"}} type={"button"}>조회</button>*/}
-                {/*    </div>*/}
-                {/*    <div className={'col-4 text-center'}>*/}
-                {/*        <button className={'btn'} style={{backgroundColor: "#CFE2FF"}}>입고</button>*/}
-                {/*        <button className={'btn mx-3'} style={{backgroundColor: "#CFE2FF"}}>부품 등록</button>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
             <div style={{ height: '50vh', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                 <table className={'table table-bordered text-center'}>
@@ -54,7 +41,7 @@ function HQStockStatus() {
                         <th style={{border:"none"}}>물류 센터</th>
                         <th style={{border:"none"}}>부품명</th>
                         <th style={{border:"none"}}>부품 코드번호</th>
-                        <th style={{border:"none"}}>부품 카데고리</th>
+                        <th style={{border:"none"}}>부품 카테고리</th>
                         <th style={{border:"none"}}>수량</th>
                     </tr>
                     </thead>

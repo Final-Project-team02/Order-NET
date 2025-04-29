@@ -28,7 +28,7 @@ function HQClientList() {
                     <thead>
                     <tr style={{ border: "none"}}>
                         <th style={{ border: "none"}}>선택</th>
-                        <th style={{ border: "none"}}>대리저명</th>
+                        <th style={{ border: "none"}}>대리점명</th>
                         <th style={{ border: "none"}}>대표자명</th>
                         <th style={{ border: "none"}}>대리점고유ID</th>
                         <th style={{ border: "none"}}>대리점 전화번호< /th>
