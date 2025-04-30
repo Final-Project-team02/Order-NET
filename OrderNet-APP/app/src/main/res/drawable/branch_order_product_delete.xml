@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 배경색  -->
-    <solid android:color="#3F82EA" />
+    <!-- 배경색 (흰색) -->
+<!--    <solid android:color="#3F82EA" />-->
+
+
+    <stroke
+        android:width="2dp"
+        android:color="#FF0000" />
     <!-- 테두리의 모서리 둥글게 -->
     <corners android:radius="8dp" />
 </shape>
