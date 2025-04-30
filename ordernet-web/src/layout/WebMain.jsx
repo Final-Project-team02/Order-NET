@@ -5,6 +5,8 @@ import HQInsertPopUp from "../HQ/HQInsertPopUp.jsx";
 import HQPartInsertPopUp from "../HQ/HQPartInsertPopUp.jsx";
 import HQRequestPopup from "../HQ/HQRequestPopup.jsx";
 import HQUpdatePopUp from "../HQ/HQUpdatePopUp.jsx";
+import HQStockStatus from "../HQ/HQStockStatus.jsx";
+import HQClientList from "../HQ/HQClientList.jsx";
 
 function WebMain() {
   return (
@@ -20,6 +22,8 @@ function WebMain() {
             <Route path="/HqPopup2" element={<HQPartInsertPopUp/>} />
             <Route path="/HqPopup3" element={<HQRequestPopup />} />
             <Route path="/HqPopup4" element={<HQUpdatePopUp />} />
+            <Route path="/HQStockStatus" element={<HQStockStatus />} />
+            <Route path="/HQCLientList" element={<HQClientList />} />
         </Routes>
       </BrowserRouter>
   );

@@ -17,28 +17,31 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".Warehouse.WarehouseMainActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:name=".Register_Login.Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".Branch.BranchMainActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".Client.ClientMainActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".HQ.HQMainActivity"-->
-<!--            android:exported="false" />-->
-        <activity
-            android:name=".MainActivity"
+            android:name=".WH.WHOrderHistory"
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".Client.BranchOrderHistory"
+            android:exported="false" />
+        <activity
+            android:name=".Client.ClientMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HQ.HQMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
