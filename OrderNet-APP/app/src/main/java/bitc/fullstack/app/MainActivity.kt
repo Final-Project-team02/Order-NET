@@ -1,5 +1,6 @@
 package bitc.fullstack.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityMainBinding
+import bitc.fullstack.app.min.orderdetail.OrderDetailActivity
+import bitc.fullstack.app.min.productselect.ProjectSelect
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +33,18 @@ class MainActivity : AppCompatActivity() {
       insets
     }
     selectTest()
+
+      binding.selectbutton.setOnClickListener {
+    val intent = Intent(this@MainActivity, ProjectSelect::class.java)
+    startActivity(intent)
+    finish()
+  }
+
+  binding.detailbutton.setOnClickListener {
+    val intent = Intent(this@MainActivity, OrderDetailActivity::class.java)
+    startActivity(intent)
+    finish()
+  }
   }
 
   private fun selectTest() {
