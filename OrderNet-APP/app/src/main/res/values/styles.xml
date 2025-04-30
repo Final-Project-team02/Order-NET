@@ -5,4 +5,6 @@
         <item name="android:textColor">@color/mainBlue</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+
 </resources>
