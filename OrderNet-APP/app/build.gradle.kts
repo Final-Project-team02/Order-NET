@@ -37,6 +37,10 @@ android {
 
 dependencies {
 
+
+
+
+
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.material)
@@ -54,4 +58,7 @@ dependencies {
 
   // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
   implementation(libs.converter.gson)
+
+  implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

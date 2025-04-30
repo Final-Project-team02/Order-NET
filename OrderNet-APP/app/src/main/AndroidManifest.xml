@@ -17,9 +17,8 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".Client.BranchOrderHistory"
+            android:name=".Register_Login.Login"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,15 +26,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Client.ClientMainActivity"
+            android:name=".WH.WHOrderHistory"
             android:exported="false">
+
         </activity>
+        <activity
+            android:name=".Client.BranchOrderHistory"
+            android:exported="false" />
+        <activity
+            android:name=".Client.ClientMainActivity"
+            android:exported="false" />
         <activity
             android:name=".HQ.HQMainActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>
