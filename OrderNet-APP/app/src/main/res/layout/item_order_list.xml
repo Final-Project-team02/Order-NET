@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="6dp"
+    card_view:cardElevation="1dp"
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- 왼쪽: 체크박스 + 코드 + 이미지 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- 체크박스 + 상품 코드 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start">
+
+                    <!-- 둥근 체크박스 -->
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/checkbox_select"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:button="@null"
+                        android:background="@drawable/custom_checkbox_selector"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="6dp"
+                        android:drawableTop="@drawable/ic_check_white" />
+
+                    <!-- 상품 코드 -->
+                    <TextView
+                        android:id="@+id/txt_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="b1011"
+                        android:background="@drawable/code_background"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="2dp"
+                        android:textColor="@color/blue2"
+                        android:textSize="11sp"/>
+                </LinearLayout>
+
+                <!-- 상품 이미지 -->
+                <ImageView
+                    android:id="@+id/img_product"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/bolt"
+                    android:scaleType="centerInside"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- 상품 정보 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <!-- 이름 -->
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="볼트"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- 규격 -->
+                <TextView
+                    android:id="@+id/txt_spec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="규격 120c"
+                    android:textSize="13sp"
+                    android:layout_marginTop="2dp" />
+
+                <!-- 총 수량 조절 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="총 수량"
+                        android:textSize="13sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_minus"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="-"
+                        android:textSize="16sp"
+                        android:layout_marginStart="25dp"
+                        android:background="@drawable/count_button_bg" />
+
+                    <TextView
+                        android:id="@+id/txt_count"
+                        android:layout_marginStart="6dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="15sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_plus"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:text="+"
+                        android:layout_marginStart="6dp"
+                        android:textSize="16sp"
+                        android:background="@drawable/count_button_bg"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 가격 -->
+        <TextView
+            android:id="@+id/txt_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20,000원"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:layout_marginTop="6dp" />
+
+        <!-- 담기 버튼 -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add"
+            android:layout_width="64dp"
+            android:layout_height="36dp"
+            android:textColor="#3F82EA"
+            android:text="담기"
+            android:layout_gravity="end"
+            android:layout_marginTop="6dp"
+            android:textSize="11sp"
+            android:background="@drawable/button_add_bg" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

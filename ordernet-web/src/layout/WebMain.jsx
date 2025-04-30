@@ -24,6 +24,7 @@ function WebMain() {
             <Route path="/HqPopup4" element={<HQUpdatePopUp />} />
             <Route path="/HQStockStatus" element={<HQStockStatus />} />
             <Route path="/HQCLientList" element={<HQClientList />} />
+
         </Routes>
       </BrowserRouter>
   );

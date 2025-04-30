@@ -6,6 +6,7 @@
     <color name="textColor">#2C5087</color>
     <color name="blue">#3F82EA</color>
     <color name="lightBlue">#EBF2FC</color>
-
-
+    <color name="blue">#3F82EA</color>
+    <color name="gray200">#EEEEEE</color>
+    <color name="blue2">#5574A4</color>
 </resources>

@@ -1,45 +1,41 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<!-- header.xml -->
+<androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:orientation="horizontal"
+    android:id="@+id/header"
     android:background="@color/mainBlue"
-    android:gravity="center_vertical">
+    android:elevation="4dp"
+    android:theme="@style/Widget.AppCompat.ActionBar"
+    app:titleTextColor="#ffffff">
 
+    <!-- 홈 버튼 -->
     <ImageButton
         android:id="@+id/home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginLeft="10dp"
+        android:contentDescription="홈"
         android:src="@drawable/home" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/mainBlue"
-        android:elevation="4dp"
-        android:theme="@style/Widget.AppCompat.ActionBar"
-        app:titleTextColor="#ffffff">
-
-        <ImageView
-            android:id="@+id/logo_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ordernet"
-            android:contentDescription="로고" />
-
-    </androidx.appcompat.widget.Toolbar>
-
+    <!-- 메뉴 버튼 -->
     <ImageButton
         android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginRight="10dp"
+        android:layout_gravity="end"
         android:src="@drawable/menu" />
-</LinearLayout>
+
+    <!-- 중앙 아이콘 -->
+    <ImageView
+        android:id="@+id/order_net"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="로고 아이콘"
+        android:src="@drawable/ordernet" />
+
+</androidx.appcompat.widget.Toolbar>

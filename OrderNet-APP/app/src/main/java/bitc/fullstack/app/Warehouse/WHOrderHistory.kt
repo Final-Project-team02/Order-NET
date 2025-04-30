@@ -1,4 +1,4 @@
-package bitc.fullstack.app.WH
+package bitc.fullstack.app.Warehouse
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

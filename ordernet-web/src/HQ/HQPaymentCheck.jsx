@@ -9,7 +9,8 @@ function HQPaymentCheck() {
 
   return (
       <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-        <table className="table table-bordered mt-5">
+        <h2 className="h5 fw-bold mb-3">가맹점 주문 내역</h2>
+        <table className="table table-bordered">
           <thead className="table-info">
           <tr>
             <th className="text-center align-middle">주문 번호</th>

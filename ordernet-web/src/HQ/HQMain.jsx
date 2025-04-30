@@ -8,7 +8,11 @@ import HQStockStatus from "./HQStockStatus.jsx";
 
 
 function HQMain() {
-    const menuItems = ["주문 확정", "대리점 관리", "재고현황"];
+    const menuItems = [
+        { text: "주문 확정", link: "/" },
+        { text: "대리점 관리", link: "/" },
+        { text: "재고현황", link: "/" }
+    ];
 
     return (
         <div className="d-flex vh-100">
@@ -16,10 +20,10 @@ function HQMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <HQTopbar title="대리점 리스트"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-                    {/*<HQSelectPanel/>*/}
-                    {/*<HQMainPanel/>*/}
-                    {/*<HQPaymentCheck/>*/}
-                    {/*<HQClientList/>*/}
+                    <HQSelectPanel/>
+                    <HQMainPanel/>
+                    <HQPaymentCheck/>
+                    <HQClientList/>
                     <HQStockStatus/>
                 </div>
             </div>
