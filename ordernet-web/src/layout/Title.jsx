@@ -10,9 +10,8 @@ function Title({ panelTitle, breadcrumb }) {
             </div>
 
             <div
-                className="p-3 bg-info bg-opacity-10 border d-flex align-items-center gap-3"
-                style={{ flexWrap: 'nowrap', overflowX: 'auto' }}
-            >
+                className="p-3  bg-opacity-10 border d-flex align-items-center gap-3"
+                style={{ flexWrap: 'nowrap', overflowX: 'auto' , backgroundColor: '#CFE2FF' }}>
                 <label className="d-flex align-items-center flex-nowrap">
           <span className="fw-bold me-2" style={{ whiteSpace: 'nowrap' }}>
             {panelTitle}

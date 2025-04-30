@@ -1,8 +1,8 @@
 import {LogIn, LogOut, BarChart2 } from "lucide-react";
 import {useState} from "react";
-import GraphImage from "../../assets/Graph.png";
+import GraphImage from "../assets/Graph.png";
 
-function Table() {
+function WHMainPanel() {
 
     const [isGraphChecked, setIsGraphChecked] = useState(false);
 
@@ -136,5 +136,5 @@ function Table() {
     );
 }
 
-export default Table
+export default WHMainPanel
 

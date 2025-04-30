@@ -1,4 +1,4 @@
-function LogisSelect() {
+function WHSelectPanel() {
     return (
         <div>
 
@@ -41,4 +41,4 @@ function LogisSelect() {
     );
 }
 
-export default LogisSelect
+export default WHSelectPanel

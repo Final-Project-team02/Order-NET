@@ -1,13 +1,13 @@
 
-// Inventory.jsx
+// WHManage.jsx
 
-import Title from "../Title.jsx";
-import LogisSelect from "./LogisSelect.jsx";
+import Title from "../layout/Title.jsx";
+import WHSelectPanel from "./WHSelectPanel.jsx";
 import DeliveryTable from "./DeliveryTable.jsx";
-import HQSidebarMenu from "../../HQ/HQSidebarMenu.jsx";
-import HQTopbar from "../../HQ/HQTopbar.jsx";
+import HQSidebarMenu from "../HQ/HQSidebarMenu.jsx";
+import HQTopbar from "../HQ/HQTopbar.jsx";
 
-function Inventory() {
+function WHManage() {
     const menuItems = [
         { text: "물류 현황", link: "/logis" },
         { text: "물류 재고관리", link: "/inv" }
@@ -23,7 +23,7 @@ function Inventory() {
                 <HQTopbar title="물류 재고관리" />
                 <div className="p-3 overflow-auto" style={{ height: "calc(100vh - 120px)" }}>
                     <Title breadcrumb={breadcrumb} panelTitle={panelTitle} />
-                    <LogisSelect/>
+                    <WHSelectPanel/>
                    <DeliveryTable/>
                 </div>
             </div>
@@ -31,7 +31,7 @@ function Inventory() {
     );
 }
 
-export default Inventory;
+export default WHManage;
 
 
 //     const menuItems = ["물류 현황", "물류 재고관리"];

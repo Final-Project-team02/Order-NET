@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import BranchTopbar from "./BranchTopbar.jsx";
 import BranchSidebarMenu from "./BranchSidebarMenu.jsx";
+import Title from "../layout/Title.jsx";
 
 function BranchMain() {
-    const menuItems = ["주문 처리", "물류재고관리"];
+    const menuItems = ["주문 내역", "물류재고관리"];
 
     const [orders, setOrders] = useState([
         {
@@ -59,6 +60,8 @@ function BranchMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <BranchTopbar title="주문 내역"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
+                    <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="● 주문내역"/>
+                    <br/>
 
                     {/* 상단 제목 두 개 */}
                     <div className="d-flex mb-4" style={{gap: "20px"}}>

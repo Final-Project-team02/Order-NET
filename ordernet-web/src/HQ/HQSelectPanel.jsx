@@ -1,11 +1,7 @@
 function HQSelectPanel() {
   return (
       <div>
-
-        <div className="bg-white mb-3 ms-2">
-          <div className="text-dark small">☆ 주문 관리 &gt; 주문 확정</div>
-        </div>
-
+        
         <div
             className="p-3 bg-info bg-opacity-10 border d-flex align-items-center gap-3"
             style={{flexWrap: 'nowrap', overflowX: 'auto'}}
