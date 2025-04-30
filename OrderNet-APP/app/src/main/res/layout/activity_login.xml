@@ -9,11 +9,61 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="350dp"
         android:orientation="vertical"
-        android:background="#FFFFFF"/>
+        android:background="#FFFFFF">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ordernet"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="35dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:id="@+id/btn_id"
+            android:hint="ID 입력해주세요"
+            android:gravity="center"
+            android:background="@drawable/login_border"
+            android:inputType="text"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:id="@+id/btn_password"
+            android:layout_marginTop="30dp"
+            android:hint="PW 입력해주세요"
+            android:gravity="center"
+            android:background="@drawable/login_border"
+            android:inputType="numberPassword"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:id="@+id/btn_login"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/login_button_border"
+            android:gravity="center"
+            android:text="로그인"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"/>
 
 
 
+    </LinearLayout>
 
+
+
+</LinearLayout>
 </LinearLayout>
