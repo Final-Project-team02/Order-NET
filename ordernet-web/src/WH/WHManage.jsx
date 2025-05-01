@@ -9,8 +9,8 @@ import HQTopbar from "../HQ/HQTopbar.jsx";
 
 function WHManage() {
     const menuItems = [
-        { text: "물류 현황", link: "/logis" },
-        { text: "물류 재고관리", link: "/inv" }
+        { text: "물류 현황", link: "/WHMain" },
+        { text: "물류 재고관리", link: "/WHManage" }
     ];
 
     const breadcrumb = "☆ 물류 관리 > 물류 재고관리"; // Change this as needed

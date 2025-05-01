@@ -19,9 +19,9 @@ function HQMain() {
         <div className="d-flex vh-100">
             <HQSidebarMenu menuItems={menuItems}/>
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
-                <HQTopbar title="대리점 리스트"/>
+                <HQTopbar title="주문 확정"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-                    <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="주문내역"/>
+                    <Title breadcrumb= "☆ 주문 확정 > 주문 내역" panelTitle="주문내역"/>
                     <br/>
                     <HQSelectPanel/>
                     <HQMainPanel/>

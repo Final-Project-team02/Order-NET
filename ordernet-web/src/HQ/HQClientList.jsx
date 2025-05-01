@@ -31,10 +31,10 @@ function HQClientList() {
         <div className="d-flex vh-100">
             <HQSidebarMenu menuItems={menuItems} />
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
-                <HQTopbar title="대리점 리스트" />
+                <HQTopbar title="대리점 관리" />
                 <div className="p-3 overflow-auto" style={{ height: "calc(100vh - 120px)" }}>
                     <div>
-                        <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="● 대리점 리스트"/>
+                        <Title breadcrumb= "☆ 대리점 관리 > 대리점 리스트" panelTitle="대리점 리스트"/>
                         <div
                             style={{
                                 height: '80vh',
@@ -80,19 +80,19 @@ function HQClientList() {
                             <div className={'mt-5'}>
                                 <hr/>
                                 <div className={'text-end'}>
-                                    <button className="btn" style={{backgroundColor: "#CFE2FF"}}
+                                    <button className={"btn me-2"} style={{backgroundColor: "#CFE2FF"}}
                                             onClick={() => setIsInsertPopupOpen(true)}>
                                         추가
                                     </button>
                                     <HQInsertPopUp isOpen={isInsertPopupOpen} onClose={() => setIsInsertPopupOpen(false)}/>
 
-                                    <button className="btn" style={{backgroundColor: "#CFE2FF"}}
+                                    <button className={"btn me-2"} style={{backgroundColor: "#CFE2FF"}}
                                             onClick={() => setIsUpdatePopupOpen(true)}>
                                         수정
                                     </button>
                                     <HQUpdatePopUp isOpen={isUpdatePopupOpen} onClose={() => setIsUpdatePopupOpen(false)}/>
 
-                                    <button className={'btn'} style={{backgroundColor: "#FFB6B3"}} type={"button"}>
+                                    <button className={'btn me-2'} style={{backgroundColor: "#FFB6B3"}} type={"button"}>
                                         삭제
                                     </button>
                                 </div>

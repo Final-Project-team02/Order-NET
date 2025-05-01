@@ -30,10 +30,10 @@ function HQStockStatus() {
         <div className="d-flex vh-100">
             <HQSidebarMenu menuItems={menuItems}/>
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
-                <HQTopbar title="대리점 리스트"/>
+                <HQTopbar title="재고 현황"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
 
-                    <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="● 재고 현황"/>
+                    <Title breadcrumb= "☆ 물류 관리 > 재고 현황" panelTitle="재고 현황"/>
 
                     <div className={'mt-4 p-3 bg-light d-flex'}>
                         <div className={'d-flex'}>
@@ -51,13 +51,13 @@ function HQStockStatus() {
                             </button>
                         </div>
                         <div className={'ms-auto me-5'}>
-                            <button className="btn" style={{backgroundColor: "#CFE2FF"}}
+                            <button className={"btn me-2"} style={{backgroundColor: "#CFE2FF"}}
                                     onClick={() => setIsRequestPopupOpen(true)}>
                                 입고
                             </button>
                             <HQRequestPopup isOpen={isRequestPopupOpen} onClose={() => setIsRequestPopupOpen(false)}/>
 
-                            <button className="btn" style={{backgroundColor: "#CFE2FF"}}
+                            <button className={"btn me-2"} style={{backgroundColor: "#CFE2FF"}}
                                     onClick={() => setIsPartInsertPopupOpen(true)}>
                                 부품 등록
                             </button>

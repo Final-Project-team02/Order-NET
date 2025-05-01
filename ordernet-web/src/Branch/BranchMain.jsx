@@ -4,9 +4,9 @@ import BranchSidebarMenu from "./BranchSidebarMenu.jsx";
 import Title from "../layout/Title.jsx";
 
 function BranchMain() {
-    const menuItems = ["주문 내역", "물류재고관리"];
+    const menuItems = ["주문 내역"];
 
-    const [orders, setOrders] = useState([
+    const [orders] = useState([
         {
             orderNumber: "123456",
             orderDate: "2025-04-25",
@@ -60,7 +60,7 @@ function BranchMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <BranchTopbar title="주문 내역"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-                    <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="● 주문내역"/>
+                    <Title breadcrumb= "☆ 대리점 관리 > 주문 내역" panelTitle="주문내역"/>
                     <br/>
 
                     {/* 상단 제목 두 개 */}
