@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.WHMapper">
+
+    <!--  물류센터 재고 조회  -->
+    <select id="selectWHStock"  resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        select parts.part_id, parts.part_name, parts.part_cate, warehouse_stock.stock_quantity, parts.part_price
+        from warehouse_stock
+        join parts
+        on warehouse_stock.part_id=parts.part_id
+        where warehouse_stock.warehouse_id = "WH_ENG/PT"
+    </select>
+
+    <!--  물류센터 입고 조회  -->
+    <select id="selectWHComeIn" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        select parts.part_id, parts.part_name , parts.part_price,parts.part_cate, warehouse_inbound.inbound_quantity,warehouse_inbound.inbound_date
+        from warehouse_inbound
+        join parts
+        on warehouse_inbound.part_id=parts.part_id
+        where warehouse_inbound.warehouse_id='WH_ENG/PT'
+    </select>
+
+
+
+
+
+</mapper>
