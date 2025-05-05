@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import bitc.fullstack.app.databinding.ItemOrderListBinding
 import bitc.fullstack.app.databinding.ItemProductBinding
 
 // 상품추가 어뎁터
@@ -11,7 +12,7 @@ import bitc.fullstack.app.databinding.ItemProductBinding
 class ProductAdapter(private val items: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    inner class ProductViewHolder(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ProductViewHolder(val binding: ItemOrderListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
             binding.checkboxSelect.isChecked = item.isChecked
             binding.imgProduct.setImageResource(item.imageResId)
@@ -48,7 +49,7 @@ class ProductAdapter(private val items: List<Product>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemOrderListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
     }
 

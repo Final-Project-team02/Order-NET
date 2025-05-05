@@ -20,13 +20,12 @@
             android:name=".Branch.BranchOrderLIst"
             android:exported="false" />
         <activity
-            android:name=".Client.ClientMainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HQ.HQMainActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".Branch.BranchMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
