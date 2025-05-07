@@ -10,7 +10,12 @@ public interface WHMapper {
 
     //    물류센터 재고조회
     List<WHDTO> selectWHStock();
+
     // 물류센터 입고조회
     List<WHDTO> selectWHComeIn();
+
+    //    재고관리 조회
+    List<WHDTO> selectWHManage();
+
 
 }

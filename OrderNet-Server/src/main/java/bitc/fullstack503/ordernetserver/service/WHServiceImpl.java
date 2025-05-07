@@ -25,4 +25,10 @@ public class WHServiceImpl implements WHService {
         return whMapper.selectWHComeIn();
     }
 
+//    재고관리 조회
+    @Override
+    public List<WHDTO> selectWHManage() {
+        return whMapper.selectWHManage();
+    }
+
 }

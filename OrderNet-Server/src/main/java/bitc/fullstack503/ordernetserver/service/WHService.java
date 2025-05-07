@@ -10,4 +10,6 @@ public interface WHService {
 
     //    물류센터 입고 조회
     List<WHDTO> selectWHComeIn();
+
+    List<WHDTO> selectWHManage();
 }

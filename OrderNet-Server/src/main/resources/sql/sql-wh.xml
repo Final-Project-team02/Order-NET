@@ -14,13 +14,43 @@
 
     <!--  물류센터 입고 조회  -->
     <select id="selectWHComeIn" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
-        select parts.part_id, parts.part_name , parts.part_price,parts.part_cate, warehouse_inbound.inbound_quantity,warehouse_inbound.inbound_date
+        select parts.part_id, parts.part_name, parts.part_price,parts.part_cate, warehouse_inbound.inbound_quantity,warehouse_inbound.inbound_date
         from warehouse_inbound
         join parts
         on warehouse_inbound.part_id=parts.part_id
         where warehouse_inbound.warehouse_id='WH_ENG/PT'
     </select>
 
+    <!--  물류센터 출고 관리 - 주문 정보 가져오기  -->
+    <select id="selectWHManage" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        SELECT
+            oi.order_id,
+            oi.part_id,
+            p.part_name,
+            p.part_cate,
+            oi.order_item_quantity,
+            b.branch_name,
+            oi.order_item_status,
+            o.order_due_date
+        FROM
+            order_item oi
+        LEFT JOIN
+            parts p ON oi.part_id = p.part_id
+        LEFT JOIN
+            orders o ON oi.order_id = o.order_id
+        LEFT JOIN
+            branch b ON o.branch_id = b.branch_id
+        LEFT JOIN
+            warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = 'WH_BRK'
+        WHERE
+            ws.warehouse_id IS NOT NULL
+        ORDER BY
+            CASE oi.order_item_status
+            WHEN '출고대기' THEN 0
+            ELSE 1
+            END,
+                o.order_due_date ASC
+    </select>
 
 
 

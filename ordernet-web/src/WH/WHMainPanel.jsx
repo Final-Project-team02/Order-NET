@@ -79,7 +79,7 @@ function WHMainPanel() {
                             <tr key={row.partId + '-' + i}>
                                 <td className="text-center align-middle">{row.partId}</td>
                                 <td className="text-center align-middle">{row.partName}</td>
-                                <td className="text-center align-middle">{row.partPrice}</td>
+                                <td className="text-center align-middle">  {Number(row.partPrice).toLocaleString()} (원)</td>
                                 <td className="text-center align-middle">{row.partCate}</td>
                                 <td className="text-center align-middle">{row.inboundQuantity}</td>
                                 <td className="text-center align-middle">{row.inboundDate}</td>
@@ -131,7 +131,7 @@ function WHMainPanel() {
                             <td className="text-center align-middle">{row.partName}</td>
                             <td className="text-center align-middle">{row.partCate}</td>
                             <td className="text-center align-middle">{row.stockQuantity}</td>
-                            <td className="text-center align-middle">{row.partPrice}</td>
+                            <td className="text-center align-middle">{Number(row.partPrice).toLocaleString()} (원)</td>
                         </tr>
                     ))}
 
