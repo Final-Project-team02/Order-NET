@@ -17,12 +17,8 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".min.orderdetail.OrderDetailActivity"
+            android:name=".Branch.BranchOrderLIst"
             android:exported="false" />
-        <activity
-            android:name=".min.productselect.ProjectSelect"
-            android:exported="false" />
-
         <activity
             android:name=".Client.ClientMainActivity"
             android:exported="false" />

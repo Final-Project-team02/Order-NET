@@ -1,349 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="6dp"
-    card_view:cardElevation="1dp"
-    android:layout_marginVertical="4dp"
-    android:layout_marginHorizontal="8dp">
+    android:layout_marginBottom="12dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="2dp"
+    android:background="@android:color/white">
+
+  <LinearLayout
+      android:layout_width="352dp"
+      android:layout_height="160dp"
+      android:layout_gravity="center"
+      android:layout_marginTop="18dp"
+      android:background="@drawable/branch_order_product_info"
+      android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+      <TextView
+          android:id="@+id/item_number"
+          android:layout_width="19dp"
+          android:layout_height="19dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/circle_blue"
+          android:text="1"
+          android:textColor="#3F82EA"
+          android:gravity="center"/>
 
-            <!-- 왼쪽: 체크박스 + 코드 + 이미지 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+      <TextView
+          android:id="@+id/product_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="10dp"
+          android:text="볼트"
+          android:textSize="14sp"
+          android:textStyle="bold" />
 
-                <!-- 체크박스 + 상품 코드 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="start">
+      <TextView
+          android:id="@+id/category"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="28dp"
+          android:layout_marginTop="10dp"
+          android:text="카테고리"
+          android:textSize="14sp"
+          android:textStyle="bold" />
 
-                    <!-- 둥근 체크박스 -->
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/checkbox_select"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:button="@null"
-                        android:background="@drawable/custom_checkbox_selector"
-                        android:padding="2dp"
-                        android:gravity="center"
-                        android:layout_marginEnd="6dp"
-                        android:drawableTop="@drawable/ic_check_white" />
+      <TextView
+          android:id="@+id/category_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:text="엔진"
+          android:background="@drawable/category_item"
+          android:textSize="14sp"
+          android:textStyle="bold" />
 
-                    <!-- 상품 코드 -->
-                    <TextView
-                        android:id="@+id/txt_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="b1011"
-                        android:background="@drawable/code_background"
-                        android:paddingHorizontal="6dp"
-                        android:paddingVertical="2dp"
-                        android:textColor="@color/blue2"
-                        android:textSize="11sp"/>
-                </LinearLayout>
 
-                <!-- 상품 이미지 -->
-                <ImageView
-                    android:id="@+id/img_product"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/bolt"
-                    android:scaleType="centerInside"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <!-- 상품 정보 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <!-- 이름 -->
-                <TextView
-                    android:id="@+id/txt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="볼트"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <!-- 규격 -->
-                <TextView
-                    android:id="@+id/txt_spec"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="규격 120c"
-                    android:textSize="13sp"
-                    android:layout_marginTop="2dp" />
-
-                <!-- 총 수량 조절 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="4dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="총 수량"
-                        android:textSize="13sp" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_minus"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:text="-"
-                        android:textSize="16sp"
-                        android:layout_marginStart="25dp"
-                        android:background="@drawable/count_button_bg" />
-
-                    <TextView
-                        android:id="@+id/txt_count"
-                        android:layout_marginStart="6dp"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textSize="15sp" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_plus"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:text="+"
-                        android:layout_marginStart="6dp"
-                        android:textSize="16sp"
-                        android:background="@drawable/count_button_bg"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- 가격 -->
-        <TextView
-            android:id="@+id/txt_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20,000원"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="end"
-            android:layout_marginTop="6dp" />
-
-        <!-- 담기 버튼 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_add"
-            android:layout_width="64dp"
-            android:layout_height="36dp"
-            android:textColor="#3F82EA"
-            android:text="담기"
-            android:layout_gravity="end"
-            android:layout_marginTop="6dp"
-            android:textSize="11sp"
-            android:background="@drawable/button_add_bg" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/product_code"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="부품코드"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/product_code_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="a1011" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/product_company"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:text="제조사"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/product_company_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="16dp"
+          android:layout_weight="1"
+          android:text="현대" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/product_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="개 당 가격"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/product_price_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="10,000" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="5dp"
+        android:background="#D9D9D9" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/product_total"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="총 수량"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/product_total_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginRight="100dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="1" />
+
+
+      <TextView
+          android:id="@+id/product_total_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="60dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="금액" />
+
+      <TextView
+          android:id="@+id/product_total_price_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="10,000" />
+
+    </LinearLayout>
+  </LinearLayout>
+
 </androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.cardview.widget.CardView-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    card_view:cardCornerRadius="8dp"-->
-<!--    card_view:cardElevation="2dp"-->
-<!--    android:layout_marginVertical="8dp"-->
-<!--    android:layout_marginHorizontal="8dp">-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        android:padding="12dp">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            &lt;!&ndash; 왼쪽: 체크박스 + 코드 + 이미지 &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                android:gravity="center_horizontal">-->
-
-<!--                &lt;!&ndash; 체크박스 + 상품 코드 &ndash;&gt;-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:layout_gravity="start">-->
-
-<!--                    &lt;!&ndash; 둥근 체크박스 &ndash;&gt;-->
-<!--                    <androidx.appcompat.widget.AppCompatCheckBox-->
-<!--                        android:id="@+id/checkbox_select"-->
-<!--                        android:layout_width="24dp"-->
-<!--                        android:layout_height="24dp"-->
-<!--                        android:button="@null"-->
-<!--                        android:background="@drawable/custom_checkbox_selector"-->
-<!--                        android:padding="2dp"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_marginEnd="6dp"-->
-<!--                        android:checked="true"-->
-<!--                        android:drawableTop="@drawable/ic_check_white" />-->
-
-<!--                    &lt;!&ndash; 상품 코드 &ndash;&gt;-->
-<!--                    <TextView-->
-<!--                        android:id="@+id/txt_code"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="b1011"-->
-<!--                        android:background="@drawable/code_background"-->
-<!--                        android:paddingHorizontal="8dp"-->
-<!--                        android:paddingVertical="3dp"-->
-<!--                        android:textColor="@color/blue2"-->
-<!--                        android:textSize="12sp"/>-->
-<!--                </LinearLayout>-->
-
-
-<!--                &lt;!&ndash; 상품 이미지 &ndash;&gt;-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/img_product"-->
-<!--                    android:layout_width="60dp"-->
-<!--                    android:layout_height="60dp"-->
-<!--                    android:src="@drawable/bolt"-->
-<!--                    android:scaleType="centerInside" />-->
-<!--            </LinearLayout>-->
-
-<!--            &lt;!&ndash; 상품 정보 &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:orientation="vertical"-->
-<!--                android:layout_marginStart="8dp">-->
-
-<!--                &lt;!&ndash; 이름 &ndash;&gt;-->
-<!--                <TextView-->
-<!--                    android:id="@+id/txt_name"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="볼트"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:textStyle="bold" />-->
-
-<!--                &lt;!&ndash; 규격 &ndash;&gt;-->
-<!--                <TextView-->
-<!--                    android:id="@+id/txt_spec"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="규격 120c"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:layout_marginTop="4dp" />-->
-
-<!--                &lt;!&ndash; 총 수량 조절 &ndash;&gt;-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:layout_marginTop="4dp">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="총 수량"-->
-<!--                        android:textSize="14sp" />-->
-
-<!--                    <androidx.appcompat.widget.AppCompatButton-->
-<!--                        android:id="@+id/btn_minus"-->
-<!--                        android:layout_width="32dp"-->
-<!--                        android:layout_height="32dp"-->
-<!--                        android:text="-"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:background="@drawable/count_button_bg" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/txt_count"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:layout_width="32dp"-->
-<!--                        android:layout_height="32dp"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="1"-->
-<!--                        android:textSize="16sp" />-->
-
-<!--                    <androidx.appcompat.widget.AppCompatButton-->
-<!--                        android:id="@+id/btn_plus"-->
-<!--                        android:layout_width="32dp"-->
-<!--                        android:layout_height="32dp"-->
-<!--                        android:text="+"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:background="@drawable/count_button_bg"/>-->
-
-<!--                </LinearLayout>-->
-<!--            </LinearLayout>-->
-
-<!--        </LinearLayout>-->
-
-
-<!--        &lt;!&ndash; 가격 (담기 버튼 위로 이동됨) &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/txt_price"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="20,000원"-->
-<!--            android:textSize="22sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:layout_marginTop="8dp" />-->
-
-<!--        &lt;!&ndash; 담기 버튼 &ndash;&gt;-->
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:id="@+id/btn_add"-->
-<!--            android:layout_width="70dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:textColor="#3F82EA"-->
-<!--            android:text="담기"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:textSize="11sp"-->
-<!--            android:background="@drawable/button_add_bg" />-->
-<!--    </LinearLayout>-->
-
-<!--</androidx.cardview.widget.CardView>-->
 
 

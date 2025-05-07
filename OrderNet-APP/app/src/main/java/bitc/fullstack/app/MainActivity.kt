@@ -7,12 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityMainBinding
-import bitc.fullstack.app.min.orderdetail.OrderDetailActivity
-import bitc.fullstack.app.min.productselect.ProjectSelect
+import bitc.fullstack.app.Warehouse.OrderDetailActivity
+import bitc.fullstack.app.Branch.ProjectSelect
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

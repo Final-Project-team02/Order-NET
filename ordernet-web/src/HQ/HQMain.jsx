@@ -3,13 +3,16 @@ import HQTopbar from "./HQTopbar.jsx";
 import HQSelectPanel from "./HQSelectPanel.jsx";
 import HQMainPanel from "./HQMainPanel.jsx";
 import HQPaymentCheck from "./HQPaymentCheck.jsx";
+import Title from "../layout/Title.jsx";
+import React from "react";
+
 
 
 function HQMain() {
     const menuItems = [
-        { text: "주문 확정", link: "/" },
-        { text: "대리점 관리", link: "/" },
-        { text: "재고현황", link: "/" }
+        { text: "주문 확정", link: "/HQMain" },
+        { text: "대리점 관리", link: "/HQClientList" },
+        { text: "재고현황", link: "/HQStockStatus" }
     ];
 
     return (
@@ -18,6 +21,8 @@ function HQMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <HQTopbar title="주문 확정"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
+                    <Title breadcrumb= "☆ 주문 확정 > 주문 내역" panelTitle="주문내역"/>
+                    <br/>
                     <HQSelectPanel/>
                     <HQMainPanel/>
                     <HQPaymentCheck/>
