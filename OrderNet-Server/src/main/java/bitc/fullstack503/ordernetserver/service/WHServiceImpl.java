@@ -27,8 +27,14 @@ public class WHServiceImpl implements WHService {
 
 //    재고관리 조회
     @Override
-    public List<WHDTO> selectWHManage() {
-        return whMapper.selectWHManage();
+    public List<WHDTO> selectWHManage(String userId) {
+        return whMapper.selectWHManage(userId);
     }
+
+    @Override
+    public void updateOrderStatus(int orderItemId, String orderItemStatus) {
+        whMapper.updateOrderStatus(orderItemId, orderItemStatus);
+    }
+
 
 }

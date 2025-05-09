@@ -15,7 +15,8 @@ public interface WHMapper {
     List<WHDTO> selectWHComeIn();
 
     //    재고관리 조회
-    List<WHDTO> selectWHManage();
+    List<WHDTO> selectWHManage(String userId);
 
 
+    void updateOrderStatus(int orderItemId, String orderItemStatus);
 }

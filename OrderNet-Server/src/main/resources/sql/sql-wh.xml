@@ -24,14 +24,8 @@
     <!--  물류센터 출고 관리 - 주문 정보 가져오기  -->
     <select id="selectWHManage" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
         SELECT
-            oi.order_id,
-            oi.part_id,
-            p.part_name,
-            p.part_cate,
-            oi.order_item_quantity,
-            b.branch_name,
-            oi.order_item_status,
-            o.order_due_date
+            oi.order_item_id, oi.order_id, oi.part_id, p.part_name, p.part_cate, oi.order_item_quantity,
+            b.branch_name, oi.order_item_status, o.order_due_date
         FROM
             order_item oi
         LEFT JOIN
@@ -41,7 +35,7 @@
         LEFT JOIN
             branch b ON o.branch_id = b.branch_id
         LEFT JOIN
-            warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = 'WH_BRK'
+            warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{userId}
         WHERE
             ws.warehouse_id IS NOT NULL
         ORDER BY
@@ -51,6 +45,13 @@
             END,
                 o.order_due_date ASC
     </select>
+
+
+    <update id="updateOrderStatus" parameterType="map">
+        UPDATE order_item
+        SET order_item_status = #{orderItemStatus}
+        WHERE order_item_id =#{orderItemId}
+    </update>
 
 
 
