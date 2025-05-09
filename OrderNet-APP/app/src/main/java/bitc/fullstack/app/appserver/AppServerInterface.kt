@@ -15,7 +15,7 @@ interface AppServerInterface {
   @GET("server")
   fun serverTest(): Call<String>
 
-  @GET("app/warehouse/{warehouseId}")
+  @GET("warehouse/{warehouseId}")
   fun getOrdersByWarehouse(@Path("warehouseId") warehouseId: String): Call<List<OrderAppDTO>>
 
 }
