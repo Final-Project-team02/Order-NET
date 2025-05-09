@@ -17,7 +17,7 @@ function WebMain() {
                 </Route>
                 <Route path={"/HQClientList"} element={<HQClientList/>}></Route>
                 <Route path={"/HQStockStatus"} element={<HQStockStatus/>}></Route>
-                <Route path={"/BranchMain"} element={<BranchMain/>}/>
+                <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
                 <Route path={"/WHMain"} element={<WHMain/>}/>
                 <Route path={"/WHManage"} element={<WHManage/>}/>
             </Routes>

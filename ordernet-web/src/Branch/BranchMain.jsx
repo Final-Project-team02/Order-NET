@@ -1,58 +1,70 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import BranchTopbar from "./BranchTopbar.jsx";
 import BranchSidebarMenu from "./BranchSidebarMenu.jsx";
 import Title from "../layout/Title.jsx";
+import Axios from "axios";
 
 function BranchMain() {
     const menuItems = ["주문 내역"];
+    const [orders, setOrders] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [partsData, setPartsData] = useState([]);
+    const [orderNumber, setOrderNumber] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [noResults, setNoResults] = useState(false);
+    const [hoveredOrderId, setHoveredOrderId] = useState(null);
+    // 총 금액 계산
+    const calculateTotalPrice = () => {
+        return partsData.reduce((total, part) => {
+            const price = parseFloat(part.partPrice) || 0;
+            const quantity = parseInt(part.quantity) || 0;
+            return total + price * quantity;
+        }, 0).toLocaleString(); // 천 단위 쉼표 추가
+    };
+    // 나중에 변경해야하는
+    const branchId = "Busan-1";
 
-    const [orders] = useState([
-        {
-            orderNumber: "123456",
-            orderDate: "2025-04-25",
-            deliveryDate: "2025-04-30",
-            orderAmount: "₩50,000",
-            orderStatus: "출고 대기"
-        },
-        {
-            orderNumber: "123457",
-            orderDate: "2025-04-26",
-            deliveryDate: "2025-05-01",
-            orderAmount: "₩30,000",
-            orderStatus: "승인 대기"
-        },
-        {
-            orderNumber: "123458",
-            orderDate: "2025-04-26",
-            deliveryDate: "2025-05-01",
-            orderAmount: "₩30,000",
-            orderStatus: "출고"
-        },
-        {
-            orderNumber: "123459",
-            orderDate: "2025-04-26",
-            deliveryDate: "2025-05-01",
-            orderAmount: "₩30,000",
-            orderStatus: "승인"
+    const fetchOrders = async () => {
+        if (startDate && endDate && startDate > endDate) {
+            alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
+            return;
         }
-    ]);
 
-    const partsData = [
-        {
-            partNumber: "asvv101",
-            category: "엔진",
-            partName: "엔진-피스톨",
-            quantity: 500,
-            totalPrice: "₩30,000"
-        },
-        {
-            partNumber: "asvv102",
-            category: "엔진",
-            partName: "엔진-밸브",
-            quantity: 300,
-            totalPrice: "₩15,000"
+        try {
+            const params = {};
+
+            if (orderNumber) params.orderId = orderNumber;
+            if (startDate) params.startDate = startDate;
+            if (endDate) params.endDate = endDate;
+            console.log(params); // 확인용 로그
+            const response = await Axios.get(`http://localhost:8080/branch/${branchId}/orders`, {
+                params
+            });
+
+            const fetchedOrders = response.data;
+            setOrders(fetchedOrders);
+            setNoResults(fetchedOrders.length === 0);
+            setSelectedOrder(null);
+            setPartsData([]);
+        } catch (error) {
+            console.error("주문 목록을 불러오는 데 실패했습니다.", error);
         }
-    ];
+    };
+
+
+    const handleOrderClick = async (orderId) => {
+        setSelectedOrder(orderId);
+        try {
+            const response = await Axios.get(`http://localhost:8080/branch/order/${orderId}/parts`);
+            setPartsData(response.data);
+        } catch (error) {
+            console.error("부품 데이터를 불러오는 데 실패했습니다.", error);
+        }
+    };
+
+    const selectedOrderInfo = orders.find(o => o.orderId === selectedOrder);
+
 
     return (
         <div className="d-flex vh-100">
@@ -60,130 +72,162 @@ function BranchMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <BranchTopbar title="주문 내역"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-                    <Title breadcrumb= "☆ 대리점 관리 > 주문 내역" panelTitle="주문내역"/>
+                    <Title breadcrumb="☆ 대리점 관리 > 주문 내역" panelTitle="주문내역"/>
                     <br/>
-
-                    {/* 상단 제목 두 개 */}
                     <div className="d-flex mb-4" style={{gap: "20px"}}>
                         <div style={titleBoxStyle}>주문 내역</div>
                         <div style={titleBoxStyle}>주문상세 내역</div>
                     </div>
-
-                    {/* 주문 내역과 주문 상세 내역을 2분할 */}
                     <div className="d-flex" style={{gap: "20px", height: "calc(100vh - 250px)"}}>
-
-                        {/* 왼쪽: 주문 내역 */}
+                        {/* 주문 내역 */}
                         <div style={{...contentBoxStyle, display: "flex", flexDirection: "column"}}>
-                            <div className="d-flex align-items-center mb-3" style={{justifyContent: "space-between"}}>
-                                <div className="d-flex align-items-center">
-                                    <label htmlFor="orderNumber" className="form-label" style={{fontWeight: "bold", marginRight: "10px", marginTop: "5px"}}>주문번호</label>
-                                    <input id="orderNumber" type="text" className="form-control" placeholder="주문번호 입력" style={{width: "200px"}}/>
-                                    <button style={searchButtonStyle}>검색</button>
+                            <div className="d-flex align-items-center mb-3 justify-content-between">
+                                {/* 일자 관련 입력 */}
+                                <div className="d-flex align-items-center" style={{gap: "10px", whiteSpace: "nowrap"}}>
+                                    <span className="fw-bold"
+                                          style={{marginRight: "15px", display: "inline"}}>일자</span>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        style={{minWidth: '100px'}}
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
+                                    <span style={{marginLeft: '5px', marginRight: '5px'}}>~</span>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        style={{minWidth: '120px'}}
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                    />
                                 </div>
-                                <div>
-                                    <button style={dateButtonStyle}>날짜순</button>
+
+                                {/* 주문번호 입력 */}
+                                <div className="d-flex align-items-center">
+                                    <label htmlFor="orderNumber" className="form-label fw-bold me-2 mt-1">주문번호</label>
+                                    <input
+                                        id="orderNumber"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="주문번호 입력"
+                                        style={{width: "200px"}}
+                                        value={orderNumber}
+                                        onChange={(e) => setOrderNumber(e.target.value)}
+                                    />
+                                    <button style={searchButtonStyle} onClick={fetchOrders}>검색</button>
                                 </div>
                             </div>
 
-                            {/* 주문 테이블 */}
                             <div style={{overflowY: "auto", flex: 1}}>
                                 <table className="table">
                                     <thead>
                                     <tr>
                                         <th style={headerCellStyle}>주문번호</th>
+                                        <th style={headerCellStyle}>지점</th>
                                         <th style={headerCellStyle}>주문날짜</th>
-                                        <th style={headerCellStyle}>납품일자</th>
                                         <th style={headerCellStyle}>주문금액(원)</th>
                                         <th style={headerCellStyle}>주문상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {orders.map((order, index) => (
-                                        <tr key={index}>
-                                            <td>{order.orderNumber}</td>
-                                            <td>{order.orderDate}</td>
-                                            <td>{order.deliveryDate}</td>
-                                            <td>{order.orderAmount}</td>
-                                            <td>{order.orderStatus}</td>
+                                        <tr
+                                            key={index}
+                                            onClick={() => handleOrderClick(order.orderId)}
+                                            onMouseEnter={() => setHoveredOrderId(order.orderId)}
+                                            onMouseLeave={() => setHoveredOrderId(null)}
+                                            style={{
+                                                cursor: "pointer",
+                                                backgroundColor:
+                                                    selectedOrder === order.orderId
+                                                        ? "#E0F7FA"
+                                                        : hoveredOrderId === order.orderId
+                                                            ? "#f1faff"
+                                                            : "white",
+                                            }}
+                                        >
+                                            <td style={tdStyle}>{order.orderId}</td>
+                                            <td style={tdStyle}>{order.branchId}</td>
+                                            <td style={tdStyle}>{order.orderDate}</td>
+                                            <td style={tdStyle}>{order.orderPrice.toLocaleString()} 원</td>
+                                            <td style={tdStyle}>{order.orderStatus}</td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
                             </div>
+                            {noResults && <div className="text-center">검색된 주문이 없습니다.</div>}
                         </div>
 
-                        {/* 오른쪽: 주문 상세 내역 */}
+
+                        {/* 주문 상세 내역 */}
                         <div style={{...contentBoxStyle, display: "flex", flexDirection: "column"}}>
+                            {selectedOrderInfo ? (
+                                <>
+                                    <div style={{marginBottom: "20px"}}>
+                                        <div style={{
+                                            ...orderInfoStyle,
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                            alignItems: "center"
+                                        }}>
+                                            <div>
+                                                <h6 className="fw-bold m-0">주문 번호 : {selectedOrderInfo.orderId}</h6>
+                                                <h6 className="fw-bold m-0">주문 날짜 : {selectedOrderInfo.orderDate}</h6>
+                                            </div>
+                                            <div style={{display: "flex", alignItems: "center"}}>
+                                                <h6 className="fw-bold m-0 me-2">상태</h6>
+                                                {selectedOrderInfo.orderStatus === "반려" ? (
+                                                    <span style={statusBadgeStyle}>
+    반려&nbsp;
+                                                        <span style={{color: "red"}}>
+      ({selectedOrderInfo.orderDeny ? selectedOrderInfo.orderDeny : "사유 미입력"})
+    </span>
+  </span>
+                                                ) : (
+                                                    <span
+                                                        style={statusBadgeStyle}>{selectedOrderInfo.orderStatus}</span>
+                                                )}
 
-                            {/* 상단 주문 정보 */}
-                            <div style={{marginBottom: "20px"}}>
-                                <div style={{
-                                    ...orderInfoStyle,
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
-                                }}>
-                                    {/* 왼쪽: 주문번호 & 주문날짜 */}
-                                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                                        <div style={{marginBottom: "8px"}}>
-                                            <h6 style={{fontWeight: "bold", margin: 0}}>주문 번호 : 123456</h6>
-                                        </div>
-                                        <div>
-                                            <h6 style={{fontWeight: "bold", margin: 0}}>주문 날짜 : 2025-04-25</h6>
-                                        </div>
-                                    </div>
-
-                                    {/* 오른쪽: 상태 & 납품날짜 */}
-                                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                                        <div style={{marginBottom: "8px", display: "flex", alignItems: "center"}}>
-                                            <h6 style={{fontWeight: "bold", margin: 0, marginRight: "5px"}}>상태</h6>
-                                            <span style={statusBadgeStyle}>반려</span>
-                                            <span style={{color: "red", marginLeft: "10px"}}>물류센터 재고 부족</span>
-                                        </div>
-                                        <div>
-                                            <h6 style={{fontWeight: "bold", margin: 0}}>
-                                                납품 날짜 : 2025-04-30
-                                            </h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            {/* 상품 목록 테이블 */}
-                            <div style={{flex: 1, overflowY: "auto", width: "100%"}}>
-                                <table className="table">
-                                    <thead>
-                                    <tr>
-                                        <th style={headerCellStyle}>부품 번호</th>
-                                        <th style={headerCellStyle}>부품 카테고리</th>
-                                        <th style={headerCellStyle}>부품 명</th>
-                                        <th style={headerCellStyle}>주문 수량(개)</th>
-                                        <th style={headerCellStyle}>부품 총 가격</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {partsData.map((part, index) => (
-                                        <tr key={index}>
-                                            <td>{part.partNumber}</td>
-                                            <td>{part.category}</td>
-                                            <td>{part.partName}</td>
-                                            <td>{part.quantity}</td>
-                                            <td>{part.totalPrice}</td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <div style={{flex: 1, overflowY: "auto", width: "100%"}}>
+                                        <table className="table">
+                                            <thead>
+                                            <tr>
+                                                <th style={headerCellStyle}>부품 번호</th>
+                                                <th style={headerCellStyle}>부품 카테고리</th>
+                                                <th style={headerCellStyle}>부품 명</th>
+                                                <th style={headerCellStyle}>주문 수량(개)</th>
+                                                <th style={headerCellStyle}>부품 총 가격</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {partsData.map((part, index) => (
+                                                <tr key={index}>
+                                                    <td>{part.partsId}</td>
+                                                    <td>{part.partCate}</td>
+                                                    <td>{part.partName}</td>
+                                                    <td>{part.quantity}</td>
+                                                    <td>{(parseFloat(part.partPrice) * parseInt(part.quantity)).toLocaleString()} 원</td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-
-                            {/* 총 주문 금액 (항상 맨 밑에) */}
-                            <div style={totalPriceBoxStyle}>
-                                <span>총 주문 금액</span>
-                                <span>₩45,000</span>
-                            </div>
-
+                                    <div style={totalPriceBoxStyle}>
+                                        <span>총 주문 금액</span>
+                                        <span>{calculateTotalPrice()} 원</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="text-center my-auto">주문을 선택하세요.</div>
+                            )}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -191,7 +235,7 @@ function BranchMain() {
     );
 }
 
-// 공통 스타일 객체
+// 스타일
 const titleBoxStyle = {
     flex: 1,
     backgroundColor: "#CFE2FF",
@@ -223,25 +267,14 @@ const searchButtonStyle = {
     border: "none"
 };
 
-const dateButtonStyle = {
-    padding: "5px 10px",
-    borderRadius: "5px",
-    fontWeight: "bold",
-    backgroundColor: "#D9D9D9",
-    border: "none"
-};
-
 const headerCellStyle = {
     backgroundColor: "#E3F0FF"
 };
 
 const orderInfoStyle = {
-    flex: 1,
     padding: "10px",
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
+    flexDirection: "column"
 };
 
 const statusBadgeStyle = {
@@ -254,12 +287,17 @@ const statusBadgeStyle = {
 };
 
 const totalPriceBoxStyle = {
-    marginTop: "20px",
-    fontWeight: "bold",
-    fontSize: "18px",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    padding: "10px 15px",
+    backgroundColor: "#F0F8FF",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    fontSize: "16px",
+    marginTop: "10px"
 };
+
+const tdStyle = {backgroundColor: "inherit"};
 
 export default BranchMain;

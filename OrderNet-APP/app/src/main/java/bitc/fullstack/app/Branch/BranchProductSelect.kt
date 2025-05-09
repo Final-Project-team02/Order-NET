@@ -8,10 +8,10 @@ import bitc.fullstack.app.R
 import bitc.fullstack.app.databinding.ActivityProjectSelectBinding
 
 // 상품 추가
-class ProjectSelect : AppCompatActivity() {
+class BranchProductSelect : AppCompatActivity() {
 
     private lateinit var binding: ActivityProjectSelectBinding
-    private lateinit var adapter: ProductAdapter
+//    private lateinit var adapter: ProductAdapter
     private val productList = mutableListOf<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +30,9 @@ class ProjectSelect : AppCompatActivity() {
             Product("c222", "볼트", "규격 120c", 20000, R.drawable.bolt, 1, true)
         )
 
-        adapter = ProductAdapter(productList)
+//        adapter = ProductAdapter(productList)
         binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
-        binding.recyclerProducts.adapter = adapter
+//        binding.recyclerProducts.adapter = adapter
     }
 }
 

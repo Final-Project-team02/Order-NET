@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityMainBinding
 import bitc.fullstack.app.Warehouse.OrderDetailActivity
-import bitc.fullstack.app.Branch.ProjectSelect
+import bitc.fullstack.app.Branch.BranchProductSelect
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     selectTest()
 
       binding.selectbutton.setOnClickListener {
-    val intent = Intent(this@MainActivity, ProjectSelect::class.java)
+    val intent = Intent(this@MainActivity, BranchProductSelect::class.java)
     startActivity(intent)
     finish()
   }

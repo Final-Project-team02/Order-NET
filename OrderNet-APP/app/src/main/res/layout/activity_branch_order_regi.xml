@@ -292,7 +292,7 @@
                         android:layout_height="19dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/circle"
+                        android:background="@drawable/small_circle"
                         android:text="1"
                         android:textColor="#3F82EA"
                         android:gravity="center"/>

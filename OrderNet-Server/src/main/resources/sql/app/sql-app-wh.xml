@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.app.OrderAppMapper">
+
+    <!-- 주문 전체 조회 -->
+    <select id="getAllOrders" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO">
+        SELECT
+            o.order_id,
+            o.branch_id,
+            o.order_date,
+            o.order_status,
+            o.order_price,
+            o.order_deny,
+            b.branch_name
+        FROM orders o
+                 JOIN branch b ON o.branch_id = b.branch_id
+    </select>
+
+    <!-- 주문 상세 조회 (order_id 기준) -->
+    <select id="getOrderById" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO" parameterType="String">
+        SELECT
+            o.order_id,
+            o.branch_id,
+            o.order_date,
+            o.order_status,
+            o.order_price,
+            o.order_deny,
+            b.branch_name
+        FROM orders o
+                 JOIN branch b ON o.branch_id = b.branch_id
+        WHERE o.order_id = #{orderId}
+    </select>
+
+    <!-- 특정 물류센터의 주문 조회 -->
+    <select id="getOrdersByWarehouse" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO" parameterType="String">
+        SELECT
+            oi.order_id,
+            oi.part_id,
+            p.part_name,
+            p.part_cate,
+            oi.order_item_quantity,
+            b.branch_name,
+            oi.order_item_status,
+            o.order_due_date
+        FROM
+            order_item oi
+                LEFT JOIN
+            parts p ON oi.part_id = p.part_id
+                LEFT JOIN
+            orders o ON oi.order_id = o.order_id
+                LEFT JOIN
+            branch b ON o.branch_id = b.branch_id
+                LEFT JOIN
+            warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{warehouseId}
+        WHERE
+            ws.warehouse_id IS NOT NULL
+        ORDER BY
+            CASE oi.order_item_status
+                WHEN '출고대기' THEN 0
+                ELSE 1
+                END,
+            o.order_due_date ASC
+    </select>
+
+</mapper>
