@@ -172,7 +172,7 @@
                         android:background="@drawable/light_blue"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="19dp">
 
                         <!-- 이미지 -->
                         <ImageView
@@ -252,7 +252,7 @@
                         android:background="@drawable/light_blue"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="19dp">
 
                         <!-- 이미지 -->
                         <ImageView

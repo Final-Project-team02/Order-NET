@@ -2,33 +2,36 @@ package bitc.fullstack.app.Branch
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import bitc.fullstack.app.databinding.ItemOrderListBinding
-import bitc.fullstack.app.databinding.ItemProductBinding
+import bitc.fullstack.app.R
+import bitc.fullstack.app.databinding.ItemProductListBinding
+import bitc.fullstack.app.dto.PartsDTO
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 // 상품추가 어뎁터
-
-class ProductAdapter(private val items: List<Product>) :
+class ProductAdapter(private val items: List<PartsDTO>) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    inner class ProductViewHolder(val binding: ItemOrderListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Product) {
-            binding.checkboxSelect.isChecked = item.isChecked
-            binding.imgProduct.setImageResource(item.imageResId)
-            binding.txtCode.text = item.code
-            binding.txtName.text = item.name
-            binding.txtSpec.text = item.spec
-            binding.txtCount.text = item.count.toString()
-            binding.txtPrice.text = String.format("%,d원", item.price)
+    inner class ProductViewHolder(val binding: ItemProductListBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            // 수량 증가
+        fun bind(item: PartsDTO) {
+            // 이미지 로드 함수 호출
+            loadImage(binding.partImg, item.partImg)
+            binding.checkboxSelect.isChecked = item.isChecked
+            binding.partId.text = item.partId
+            binding.partName.text = item.partName
+            binding.partCate.text = item.partCate
+            binding.txtCount.text = item.count.toString()
+            binding.partPrice.text = String.format("%,d원", item.partPrice)
+
             binding.btnPlus.setOnClickListener {
                 item.count++
-                binding.txtCount.text = item.count.toString()
+                binding.txtCount.text =  item.count.toString()
             }
 
-//            수량 감소
             binding.btnMinus.setOnClickListener {
                 if (item.count > 1) {
                     item.count--
@@ -36,20 +39,37 @@ class ProductAdapter(private val items: List<Product>) :
                 }
             }
 
-            // 체크박스 상태 갱신
-            binding.checkboxSelect.setOnCheckedChangeListener { _, isChecked ->
-                item.isChecked = isChecked
+            // 버튼 뷰 사용 x - _, 생략
+            binding.checkboxSelect.setOnCheckedChangeListener { _, checked ->
+                // 체크한 상태 저장
+                item.isChecked = checked
             }
 
-            // 담기 버튼 클릭 시
-            binding.btnAdd.setOnClickListener {
-                Toast.makeText(binding.root.context, "${item.name} 담김", Toast.LENGTH_SHORT).show()
-            }
         }
+
+        // 이미지 로드
+        private fun loadImage(imageView: ImageView, url: String?) {
+            // 글라이드 이미지 로딩 라이브러리 사용 - 이미지 URL 비동기적 로드
+            Glide.with(imageView.context)
+                // 이미지 url 로드
+                .load(url)
+                .apply(
+                    RequestOptions()
+                        // 로딩 중 출력 이미지
+                        .placeholder(R.drawable.noimg)
+                        // 실패 시 출력 이미지
+                        .error(R.drawable.noimg)
+                )
+                // 이미지 imageView에 삽입
+                .into(imageView)
+        }
+
     }
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val binding = ItemOrderListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemProductListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
     }
 
@@ -59,5 +79,6 @@ class ProductAdapter(private val items: List<Product>) :
 
     override fun getItemCount(): Int = items.size
 }
+
 
 

@@ -6,9 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import bitc.fullstack.app.R
 import bitc.fullstack.app.databinding.ActivityBranchMainBinding
-import bitc.fullstack.app.databinding.ActivityMainBinding
 
 class BranchMainActivity : AppCompatActivity() {
 
@@ -26,7 +24,7 @@ class BranchMainActivity : AppCompatActivity() {
             insets
         }
         binding.orderButton.setOnClickListener {
-            val intent = Intent(this, OrderResiActivity::class.java)
+            val intent = Intent(this, BranchOrderResiActivity::class.java)
             startActivity(intent)
         }
     }

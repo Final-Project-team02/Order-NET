@@ -24,6 +24,7 @@
             android:exported="false">
         </activity>
 
+        <!-- 대리점 메인 화면 -->
         <activity
             android:name=".Branch.BranchMainActivity"
             android:exported="true">
@@ -33,6 +34,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 대리점 주문 화면 -->
+        <activity android:name=".Branch.BranchOrderResiActivity"
+            android:exported="false"/>
+
+        <!-- 대리점 주문 - 상품 추가 화면 -->
+        <activity android:name=".Branch.ProjectSelectActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

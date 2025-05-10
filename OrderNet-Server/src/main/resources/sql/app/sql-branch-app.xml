@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.app.BranchAppMapper">
+
+    <!--  앱 주문하기 페이지 접속 - 해당 대리점 정보 출력  -->
+    <select id="selectBranchInfo" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchAppDTO">
+        SELECT branch_name, branch_phone, branch_zip_code, branch_road_addr
+        FROM branch
+        WHERE branch_id = #{userId}
+    </select>
+
+    <!--  상품 선택 - 부품 정보 가져오기  -->
+    <select id="productChoose" resultType="bitc.fullstack503.ordernetserver.dto.app.PartsAppDTO">
+        SELECT part_id, part_name, part_cate, part_price, part_Img
+        FROM parts
+    </select>
+
+    <!--  주문 수 조회  -->
+    <select id="countTodayOrders" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM orders
+        WHERE DATE(order_date) = CURDATE()
+        AND branch_id = #{branchId}
+    </select>
+
+    <!--  대리점 주문 요청 - 주문 테이블  -->
+    <insert id="insertOrder" parameterType="bitc.fullstack503.ordernetserver.dto.app.OrderRequestDTO">
+        INSERT INTO orders (
+            order_id, branch_id, order_date, order_due_date, order_price
+        ) VALUES (
+            #{orderId}, #{branchId}, #{orderDate}, #{orderDueDate}, #{orderPrice}
+        )
+    </insert>
+
+    <!-- 주문 상세 항목 삽입 -->
+    <insert id="insertOrderItems" parameterType="bitc.fullstack503.ordernetserver.dto.app.OrderRequestDTO">
+            INSERT INTO order_item (
+                order_id, part_id, order_item_quantity, order_item_price
+            ) VALUES
+                <foreach collection="items" item="item" separator=",">
+                    (#{item.orderId}, #{item.partId}, #{item.orderItemQuantity}, #{item.orderItemPrice})
+                </foreach>
+
+    </insert>
+</mapper>

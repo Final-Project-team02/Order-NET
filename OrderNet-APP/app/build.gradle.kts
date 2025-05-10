@@ -62,4 +62,7 @@ dependencies {
 //파이 그래플 출력
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // 사진 출력 글라이드 라이브러리
+    implementation (libs.glide)
+
 }

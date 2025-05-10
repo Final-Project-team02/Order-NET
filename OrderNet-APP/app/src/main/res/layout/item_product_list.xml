@@ -50,7 +50,7 @@
 
                     <!-- 상품 코드 -->
                     <TextView
-                        android:id="@+id/txt_code"
+                        android:id="@+id/part_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="b1011"
@@ -63,7 +63,7 @@
 
                 <!-- 상품 이미지 -->
                 <ImageView
-                    android:id="@+id/img_product"
+                    android:id="@+id/part_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/bolt"
@@ -81,21 +81,25 @@
 
                 <!-- 이름 -->
                 <TextView
-                    android:id="@+id/txt_name"
+                    android:id="@+id/part_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="볼트"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <!-- 규격 -->
+                <!-- 카테고리 -->
                 <TextView
-                    android:id="@+id/txt_spec"
+                    android:id="@+id/part_cate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="규격 120c"
-                    android:textSize="13sp"
-                    android:layout_marginTop="2dp" />
+                    android:background="@drawable/branch_order_engine"
+                    android:text="엔진"
+                    android:textSize="8sp"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:padding="3dp"
+                    android:textStyle="bold" />
 
                 <!-- 총 수량 조절 -->
                 <LinearLayout
@@ -103,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginTop="2dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -137,31 +141,24 @@
                         android:layout_marginStart="6dp"
                         android:textSize="16sp"
                         android:background="@drawable/count_button_bg"/>
+                    <!-- 빈 공간을 이용해 오른쪽으로 밀기 -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+                    <!-- 가격 -->
+                    <TextView
+                        android:id="@+id/part_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20,000원"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 가격 -->
-        <TextView
-            android:id="@+id/txt_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20,000원"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="end"
-            android:layout_marginTop="6dp" />
-
-        <!-- 담기 버튼 -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_add"
-            android:layout_width="64dp"
-            android:layout_height="36dp"
-            android:textColor="#3F82EA"
-            android:text="담기"
-            android:layout_gravity="end"
-            android:layout_marginTop="6dp"
-            android:textSize="11sp"
-            android:background="@drawable/button_add_bg" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
