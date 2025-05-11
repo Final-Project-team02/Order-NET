@@ -4,6 +4,20 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bitc.fullstack503.ordernetserver.mapper.app.BranchAppMapper">
 
+    <!--  주문, 접수, 출고, 반려 수 가져오기 -->
+    <select id="getBranchInfo" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchCountDTO">
+        SELECT
+            COUNT(CASE WHEN order_status = '승인 대기' THEN 1 END) AS orderCount,
+            COUNT(CASE WHEN order_status = '접수' THEN 1 END) AS acceptCount,
+            COUNT(CASE WHEN order_status = '출고' THEN 1 END) AS deliveryCount,
+            COUNT(CASE WHEN order_status = '반려' THEN 1 END) AS holdCount,
+            branch.branch_name AS branchName
+        FROM orders
+        left join branch
+        on orders.branch_id = branch.branch_id
+        WHERE orders.branch_id = #{branchId}
+    </select>
+
     <!--  앱 주문하기 페이지 접속 - 해당 대리점 정보 출력  -->
     <select id="selectBranchInfo" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchAppDTO">
         SELECT branch_name, branch_phone, branch_zip_code, branch_road_addr
@@ -41,6 +55,38 @@
                 <foreach collection="items" item="item" separator=",">
                     (#{item.orderId}, #{item.partId}, #{item.orderItemQuantity}, #{item.orderItemPrice})
                 </foreach>
-
     </insert>
+
+    <!--  대리점 주문 내역  -->
+    <select id="getOrderHistory" parameterType="map" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchOrderDTO">
+        select orders.order_id, orders.order_date, orders.order_due_date, orders.order_price,
+                orders.order_status, COUNT(order_item.order_item_id) AS order_item_count, branch.branch_name
+        from orders
+        left join order_item
+        on orders.order_id = order_item.order_id
+        left join branch
+        on orders.branch_id = branch.branch_id
+        where orders.branch_id = #{branchId}
+        and order_status= #{orderStatus}
+        GROUP BY order_id;
+    </select>
+
+    <!--  대리점 주문 가져오기  -->
+    <select id="getOrderDetail" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchOrderDTO">
+        SELECT
+        order_id, order_date, order_due_date, order_status
+        FROM orders
+        WHERE order_id = #{orderNumber}
+    </select>
+
+    <!--  대리점 주문 상세 내역  -->
+    <select id="getOrderParts" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.PartsDetailAppDTO">
+        SELECT
+        parts.part_id, parts.part_name, parts.part_cate, order_item.order_item_quantity, order_item.order_item_price, order_item.order_item_status
+        FROM order_item
+        left join parts
+        on order_item.part_id = parts.part_id
+        WHERE order_item.order_id =#{orderNumber}
+    </select>
+
 </mapper>

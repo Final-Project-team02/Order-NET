@@ -1,6 +1,8 @@
 package bitc.fullstack.app.appserver
 
+import bitc.fullstack.app.dto.BranchCountDTO
 import bitc.fullstack.app.dto.BranchDTO
+import bitc.fullstack.app.dto.BranchOrderDTO
 import bitc.fullstack.app.dto.OrderRequestDTO
 import bitc.fullstack.app.dto.PartsDTO
 import retrofit2.Call
@@ -17,6 +19,10 @@ interface AppServerInterface {
   @GET("server")
   fun serverTest(): Call<String>
 
+  // 대리점 로그인 첫 화면
+  @GET("branch")
+  fun BranchInfo(@Header("branchId") branchId: String): Call<BranchCountDTO>
+
   // 대리점 주문화면
   @GET("branch/branchOrder")
   fun BranchOrder(@Header("userId") userId: String): Call<List<BranchDTO>>
@@ -28,5 +34,18 @@ interface AppServerInterface {
   // 대리점 주문 요청
   @POST("branch/orderRequest")
   fun placeOrder(@Body orderRequest: OrderRequestDTO): Call<Void>
+
+  // 대리점 주문 내역
+  @GET("branch/orderHistory")
+  fun orderHistory(
+    @Query("branch_id") branchId: String,
+    @Query("order_status") orderStatus: String
+  ): Call<List<BranchOrderDTO>>
+
+  // 대리점 주문 상세 내역
+  @GET("branch/orderDetail")
+  fun selectOrderDetail(
+    @Query("orderNumber") orderNumber: String
+  ): Call<BranchOrderDTO>
 
 }

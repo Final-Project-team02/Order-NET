@@ -1,24 +1,25 @@
 package bitc.fullstack503.ordernetserver.service.app;
 
-import bitc.fullstack503.ordernetserver.dto.app.BranchAppDTO;
-import bitc.fullstack503.ordernetserver.dto.app.OrderItemDTO;
-import bitc.fullstack503.ordernetserver.dto.app.OrderRequestDTO;
-import bitc.fullstack503.ordernetserver.dto.app.PartsAppDTO;
+import bitc.fullstack503.ordernetserver.dto.app.*;
 import bitc.fullstack503.ordernetserver.mapper.app.BranchAppMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BranchAppServiceImpl implements BranchAppService {
 
   @Autowired
   private BranchAppMapper branchAppMapper;
+
+  // 대리점 로그인 첫 화면 - 주문 상태 가져오기
+  @Override
+  public BranchCountDTO getBranchInfo(String branchId) {
+    return branchAppMapper.getBranchInfo(branchId);
+  }
 
   // 앱 주문하기 페이지 접속 - 해당 대리점 정보 출력
   @Override
@@ -57,4 +58,35 @@ public class BranchAppServiceImpl implements BranchAppService {
     // order_id는 LAST_INSERT_ID()를 통해 MyBatis에서 자동으로 처리
     branchAppMapper.insertOrderItems(orderRequestDTO.getItems());
   }
+
+  // 대리점 주문 내역
+  @Override
+  public List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus) {
+    return branchAppMapper.getOrderHistory(branchId, orderStatus);
+  }
+
+  // 대리점 주문 상세 내역
+  @Override
+  public BranchOrderDTO getOrderDetail(String orderNumber) {
+
+    // 주문 정보 가져오기
+    BranchOrderDTO order = branchAppMapper.getOrderDetail(orderNumber);
+
+    // 해당 주문 상세 내역 가져오기
+    List<PartsDetailAppDTO> parts = branchAppMapper.getOrderParts(orderNumber);
+
+    // 부품 정보를 Map 형태로 변환하여 orderDTO에 넣기
+    Map<String, PartsDetailAppDTO> partsMap = new HashMap<>();
+    for (PartsDetailAppDTO part : parts) {
+      partsMap.put(part.getPartId(), part);
+    }
+    order.setPartsList(partsMap);
+
+    return order;
+  }
+
+
+
+
+
 }

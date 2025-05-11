@@ -29,7 +29,14 @@ data class PartsDTO(
     var isChecked: Boolean = false,
 
     // 선택 부품 수량
-    var count: Int = 1
+    var count: Int = 1,
+
+    // 부품 상세 상태
+    var orderItemStatus: String = "",
+
+    var orderItemPrice: Int = 0,
+
+    var orderItemQuantity: Int = 0
 
 ): Serializable
 

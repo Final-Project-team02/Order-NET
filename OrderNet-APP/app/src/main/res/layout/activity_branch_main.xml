@@ -32,13 +32,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/branch_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="24dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="5dp"
-                    android:text="부산 지점"
+                    android:text="지점명"
                     android:textColor="@color/textColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -165,7 +165,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/order_apply"
+                        android:id="@+id/order_apply_btn"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -193,10 +193,11 @@
 
                         <!-- 2건 텍스트 -->
                         <TextView
+                            android:id="@+id/branch_order_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2건"
+                            android:text="0건"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -205,7 +206,7 @@
                     <!--                    접수버튼-->
 
                     <LinearLayout
-                        android:id="@+id/accept"
+                        android:id="@+id/order_accept_btn"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -227,16 +228,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="신청"
+                            android:text="승인"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
 
                         <!-- 2건 텍스트 -->
                         <TextView
+                            android:id="@+id/branch_accept_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2건"
+                            android:text="0건"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -245,7 +247,7 @@
                     <!--                    출고 버튼-->
 
                     <LinearLayout
-                        android:id="@+id/delivery"
+                        android:id="@+id/order_delivery_btn"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -272,10 +274,11 @@
 
 
                         <TextView
+                            android:id="@+id/branch_delivery_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2건"
+                            android:text="0건"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -284,7 +287,7 @@
                     <!--                    반려버튼-->
 
                     <LinearLayout
-                        android:id="@+id/hold"
+                        android:id="@+id/order_hold_btn"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -311,10 +314,11 @@
 
 
                         <TextView
+                            android:id="@+id/branch_hold_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="2건"
+                            android:text="0건"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
                     </LinearLayout>

@@ -1,8 +1,5 @@
 package bitc.fullstack.app.dto
 
-import java.math.BigDecimal
-
-
 data class OrderRequestDTO(
     // 주문일자
     val orderDate: String,

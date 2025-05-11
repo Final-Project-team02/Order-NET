@@ -16,9 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
         tools:targetApi="31">
-        <activity
-            android:name=".Branch.BranchOrderLIst"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false">
@@ -42,6 +40,17 @@
         <!-- 대리점 주문 - 상품 추가 화면 -->
         <activity android:name=".Branch.ProjectSelectActivity"
             android:exported="false"/>
+
+        <!--  대리점 - 주문내역 화면  -->
+        <activity
+            android:name=".Branch.OrderHistoryActivity"
+            android:exported="false"/>
+
+        <!--  대리점 - 주문 상세 내역  -->
+        <activity
+            android:name=".Branch.OrderItemListActivity"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

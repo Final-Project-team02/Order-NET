@@ -105,7 +105,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
                     orderDueDate = dueDate,
                     orderPrice = totalAmount,
                     // 로그인하고 나면 해당 대리점 id로 변경
-                    branchId = "Jeju01",
+                    branchId = "Seoul01",
                     items = orderItems
                 )
                 // 주문 요청 서버로 전송
@@ -128,7 +128,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
     private fun firstConnection(){
         val api = AppServerClass.instance
         // 나중에 로그인하면 로그인한 사용자 user-ref-id 전달
-        val call = api.BranchOrder("Jeju01")
+        val call = api.BranchOrder("Seoul01")
         retrofitResponse(call)
     }
 
