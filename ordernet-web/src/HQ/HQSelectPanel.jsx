@@ -12,22 +12,6 @@ function HQSelectPanel({ onSearch }) {
 
   const handleSearch = () => {
 
-    if (!branchId) {
-      alert('대리점 ID를 선택해주세요.');
-      return;
-    }
-    if (!branchName) {
-      alert('지점명을 선택해주세요.');
-      return;
-    }
-    if (!orderStatus) {
-      alert('주문현황을 선택해주세요.');
-      return;
-    }
-    if (!startDate || !endDate) {
-      alert('주문일자를 모두 선택해주세요.');
-      return;
-    }
 
     axios.post('http://localhost:8080/HQMain/search', {
       branchId,
@@ -50,7 +34,7 @@ function HQSelectPanel({ onSearch }) {
       <div>
 
         <div
-            className="p-3 bg-secondary bg-opacity-10 border d-flex align-items-center gap-3"
+            className="p-3 bg-light d-flex align-items-center gap-3"
             style={{flexWrap: 'nowrap', overflowX: 'auto'}}>
 
           <label className="d-flex align-items-center flex-nowrap">
@@ -104,7 +88,7 @@ function HQSelectPanel({ onSearch }) {
           </label>
 
 
-          <button className="btn btn-secondary flex-shrink-0"  onClick={handleSearch}>조회</button>
+          <button className={'btn'} style={{backgroundColor: "#CFE2FF"}} type={"button"}  onClick={handleSearch}>조회</button>
         </div>
 
       </div>

@@ -113,8 +113,8 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
         {showOrderDetails && (
             <>
-              <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-                <h2 className="h5 fw-bold mt-1 mb-3">발주 내역</h2>
+              <div className="p-4 mt-3 bg-light w-100 overflow-auto" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                <h2 className="h5 fw-bold mt-1 mb-3" >발주 내역</h2>
                 <table className="table table-bordered">
                   <thead className="table-info">
                   <tr>
@@ -169,7 +169,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
                 </table>
                 <div className="mt-3 text-end">
-                  <button className="btn btn-warning" onClick={handleOpenModal}>결제</button>
+                  <button className={'btn'} style={{backgroundColor: "#CFE2FF"}} type={"button"} onClick={handleOpenModal}>결제</button>
                 </div>
 
               </div>
@@ -203,7 +203,8 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
   const orderDate = uniqueByField('orderDate');
 
   const handleApproval = (type) => {
-    const status = type === '결제' ? '승인' : '반려';
+    const status = type === '결제' ? '결제' : '반려';
+    const finalDenyReason = type === '결제' ? '결제되었습니다.' : denyReason;
 
 
     if (rows2.length === 0) {
@@ -224,7 +225,7 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
       requestBody = {
         orderId: rows2[0].orderId,
         orderStatus: status,
-        orderDeny: denyReason,
+        orderDeny: finalDenyReason,
         // orderItemStatus: orderItemStatus
       };
     } else {
@@ -233,7 +234,7 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
       requestBody = {
         orderIdList: orderIdList,
         orderStatus: status,
-        orderDeny: denyReason,
+        orderDeny: finalDenyReason,
       };
     }
 

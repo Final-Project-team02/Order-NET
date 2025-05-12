@@ -16,5 +16,6 @@ public class FindPaymentDTO {
     private String partName;
     private Date orderDate;
     private String orderId;
+    private String orderStatus;
     private String orderDeny;
 }

@@ -31,18 +31,19 @@
         WHERE o.order_status IN ('승인 대기');
     </select>
 
-    <!--    결제나 반려된 것들 조회-->
+    <!--    결제나 반려된 것들 -->
     <select id="findPayment" resultType="bitc.fullstack503.ordernetserver.dto.FindPaymentDTO">
         SELECT
         o.order_id,
         o.order_date,
+        o.order_status,
         p.part_name,
         o.order_deny
         FROM order_item oi
         JOIN parts p ON oi.part_id = p.part_id
         JOIN orders o ON oi.order_id = o.order_id
         WHERE o.order_deny IN ('결제', '반려')
-        OR o.order_status = '반려';
+        OR o.order_status IN ('결제', '반려')
     </select>
 
     <!--    결제 or 반려 상세 -->
@@ -62,7 +63,7 @@
         JOIN parts p ON oi.part_id = p.part_id
         JOIN orders o ON oi.order_id = o.order_id
         JOIN branch b ON o.branch_id = b.branch_id
-        WHERE o.order_deny IN ('결제', '반려');
+        WHERE o.order_status IN ('결제', '반려');
     </select>
 
 <!--    조회 -->
@@ -77,23 +78,42 @@
         <if test="branchId != null and branchId != ''">
             AND o.branch_id = #{branchId}
         </if>
+
         <if test="branchName != null and branchName != ''">
             AND b.branch_name = #{branchName}
         </if>
 
-        <choose>
-            <when test="orderStatus == '승인' or orderStatus == '승인 대기' or orderStatus == '반려'">
-                AND o.order_status = #{orderStatus}
-            </when>
-            <when test="orderStatus == '결제' or orderStatus == '반려'">
-                AND o.order_deny = #{orderStatus}
-            </when>
-        </choose>
+        <if test="orderStatus != null and orderStatus != ''">
+            AND (
+            o.order_status = #{orderStatus}
+            OR o.order_deny = #{orderStatus}
+            )
+        </if>
 
-
-        <if test="startDate != null and endDate != null">
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
             AND o.order_date BETWEEN #{startDate} AND #{endDate}
         </if>
+
+<!--        <if test="branchId != null and branchId != ''">-->
+<!--            AND o.branch_id = #{branchId}-->
+<!--        </if>-->
+<!--        <if test="branchName != null and branchName != ''">-->
+<!--            AND b.branch_name = #{branchName}-->
+<!--        </if>-->
+
+<!--        <choose>-->
+<!--            <when test="orderStatus == '승인' or orderStatus == '승인 대기' or orderStatus == '반려'">-->
+<!--                AND o.order_status = #{orderStatus}-->
+<!--            </when>-->
+<!--            <when test="orderStatus == '결제' or orderStatus == '반려'">-->
+<!--                AND o.order_deny = #{orderStatus}-->
+<!--            </when>-->
+<!--        </choose>-->
+
+
+<!--        <if test="startDate != null and endDate != null">-->
+<!--            AND o.order_date BETWEEN #{startDate} AND #{endDate}-->
+<!--        </if>-->
     </select>
 
 <!--    단일 주문 처리-->
