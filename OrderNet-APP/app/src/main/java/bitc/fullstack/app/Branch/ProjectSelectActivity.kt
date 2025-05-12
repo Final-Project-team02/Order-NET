@@ -36,6 +36,11 @@ class ProjectSelectActivity : AppCompatActivity() {
 
         selectPartsInfo()
 
+        // 상품 변경 - 기본값 : FALSE, 상품변경 버튼으로 들어오면 TRUE
+        val isEditMode = intent.getBooleanExtra("editMode", false)
+        Log.d("ProjectSelectActivity", "Edit Mode: $isEditMode")
+        val selectedProduct = intent.getSerializableExtra("selectedProduct") as? PartsDTO
+
         // 장바구니 버튼
         binding.btnCart.setOnClickListener {
             val selectedItems = productList.filter { it.isChecked }
@@ -45,10 +50,60 @@ class ProjectSelectActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val intent = Intent(this, BranchOrderResiActivity::class.java)
-            intent.putExtra("selectedItems", ArrayList(selectedItems))
-            startActivity(intent)
+            if (isEditMode) {
+                if (selectedItems.size != 1) {
+                    Toast.makeText(this, "하나의 상품만 선택하세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // 하나의 상품만 선택된 상태에서, 그 상품을 반환
+                selectedItems[0]?.let {
+                    val resultIntent = Intent().apply {
+                        putExtra("selectedProduct", it) // 선택된 상품을 반환
+                        putExtra("position", intent.getIntExtra("position", -1)) // 위치 정보 전달
+                    }
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            } else {
+                // EditMode가 false일 경우: 여러 개의 상품을 선택할 수 있음
+                val resultIntent = Intent().apply {
+                    putExtra("selectedItems", ArrayList(selectedItems)) // 선택된 여러 상품을 반환
+                    Log.d("ProjectSelectActivity", "selectedItems: $selectedItems")
+                }
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
         }
+
+//        binding.btnCart.setOnClickListener {
+//            val selectedItems = productList.filter { it.isChecked }
+//
+//            if (selectedItems.isEmpty()) {
+//                Toast.makeText(this, "선택된 항목이 없습니다.", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            if (isEditMode && selectedItems.size != 1) {
+//                Toast.makeText(this, "하나의 상품만 선택하세요.", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            // selectedItems가 제대로 필터링 되었는지 확인
+//            Log.d("ProjectSelectActivity", "Selected Items: $selectedItems")
+//
+//            val resultIntent = Intent().apply {
+//                if (isEditMode) {
+//                    putExtra("selectedProduct", selectedItems[0])
+//                } else {
+//                    putExtra("selectedItems", ArrayList(selectedItems))
+//                }
+//            }
+//
+//            setResult(RESULT_OK, resultIntent)
+//            finish()
+//        }
+
 
 
         // 닫기버튼

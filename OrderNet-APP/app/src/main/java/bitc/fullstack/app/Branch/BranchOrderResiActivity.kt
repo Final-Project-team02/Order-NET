@@ -8,6 +8,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -34,6 +36,12 @@ class BranchOrderResiActivity : AppCompatActivity() {
         ActivityBranchOrderResiBinding.inflate(layoutInflater)
     }
 
+    lateinit var selectedAdapter: SelectedProductAdapter
+    private val selectedItems: MutableList<PartsDTO> = mutableListOf()
+
+    internal  lateinit var selectProductLauncher: ActivityResultLauncher<Intent>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,13 +54,51 @@ class BranchOrderResiActivity : AppCompatActivity() {
 
         firstConnection()
 
-        // 받은 데이터 꺼내기
-        val selectedItems = intent.getSerializableExtra("selectedItems") as? ArrayList<PartsDTO> ?: arrayListOf()
+        // 결과 받아오기 위한 ActivityResultLauncher 등록
+        // selectProductLauncher 등록 부분
+        selectProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                val selectedProduct = data?.getSerializableExtra("selectedProduct") as? PartsDTO
+                val selectedItemsList = data?.getSerializableExtra("selectedItems") as? ArrayList<PartsDTO> // 여러 상품 선택 시
+
+                if (selectedProduct != null) {
+                    // 선택된 상품 하나만 갱신
+                    val position = data.getIntExtra("position", -1)
+                    if (position != -1) {
+                        selectedAdapter.updateItem(position, selectedProduct)
+                        selectedAdapter.updateTotalAmount()
+                    }
+                }
+
+                if (selectedItemsList != null) {
+                    // 여러 상품이 선택된 경우
+//                    selectedItems.clear()  // 기존 아이템들 초기화
+                    selectedItems.addAll(selectedItemsList)  // 새로운 아이템들 추가
+                    selectedAdapter.notifyDataSetChanged()  // RecyclerView 갱신
+
+                    selectedAdapter.updateTotalAmount()
+
+                    // 로그로 확인
+                    Log.d("BranchOrderResiActivity", "selectedItems (multiple): $selectedItems")
+                }
+            }
+        }
+
+
 
         // 어댑터 연결
-        val selectedAdapter = SelectedProductAdapter(selectedItems, this)
+        selectedAdapter = SelectedProductAdapter(selectedItems, this)
         binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerProducts.adapter = selectedAdapter
+
+        // 받은 데이터 꺼내기
+//        val selectedItems = intent.getSerializableExtra("selectedItems") as? ArrayList<PartsDTO> ?: arrayListOf()
+//        Log.d("selectedItems", "Selected Items: $selectedItems")
+//        // 어댑터 연결
+//        val selectedAdapter = SelectedProductAdapter(selectedItems.toMutableList(), this)
+//        binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
+//        binding.recyclerProducts.adapter = selectedAdapter
 
         // Adapter에서 데이터를 다 바인딩한 후 총합 업데이트, 총합을 Activity에 전달
         selectedAdapter.updateTotalAmount()
@@ -70,7 +116,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
         // 상품추가 버튼
         binding.productPlusBtn.setOnClickListener {
             val intent = Intent(this, ProjectSelectActivity::class.java)
-            startActivity(intent)
+            selectProductLauncher.launch(intent)
         }
 
 
@@ -218,4 +264,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
         })
     }
 
+    // selectedAdapter에 있는 아이템 갱신 메소드
+    private fun updateItem(position: Int, newItem: PartsDTO) {
+        selectedItems[position] = newItem
+        selectedAdapter.notifyItemChanged(position)
+    }
 }
