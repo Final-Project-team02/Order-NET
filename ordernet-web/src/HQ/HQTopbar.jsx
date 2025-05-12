@@ -1,6 +1,9 @@
 import { Home, LogOut } from "lucide-react";
 
 function HQTopbar({ title }) {
+
+
+
   return (
       <nav className="navbar navbar-light justify-content-between px-4 border-bottom"
            style={{height: "60px", backgroundColor: '#343a40'}}>
