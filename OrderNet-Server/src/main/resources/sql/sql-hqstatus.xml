@@ -5,7 +5,6 @@
 
     <!-- HQ 물류센터 부품 현황 조회 -->
     <select id="selectHQStatus" resultType="bitc.fullstack503.ordernetserver.dto.HQStatusDTO">
-
         SELECT
             p.part_id,
             w.warehouse_id,
@@ -18,12 +17,19 @@
                  JOIN warehouse w ON ws.warehouse_id = w.warehouse_id
     </select>
 
-
     <!-- 입고 요청 처리 -->
     <insert id="insertHQRequest" parameterType="bitc.fullstack503.ordernetserver.dto.HQRequestDTO">
         INSERT INTO warehouse_inbound (warehouse_id,part_id,inbound_quantity,inbound_date,inbound_price)
         VALUES (#{warehouseId},#{partId},#{inboundQuantity},NOW(),#{inboundPrice})
     </insert>
+
+    <!--  입고 요청건 - 재고 증가  -->
+    <update id="stockUpdate" parameterType="bitc.fullstack503.ordernetserver.dto.HQRequestDTO">
+        UPDATE  warehouse_stock
+        SET stock_quantity = stock_quantity + #{inboundQuantity}
+        WHERE part_id = #{partId}
+        AND warehouse_id = #{warehouseId}
+    </update>
 
     <!-- 물류센터 목록 가져오기 -->
     <select id="selectWarehouses" resultType="bitc.fullstack503.ordernetserver.dto.HQStatusDTO">
@@ -48,18 +54,24 @@
     </select>
 
     <!-- 부품 카테고리 조회 -->
-    <select id="selectPartCate" resultType="String">
-        SELECT DISTINCT pa.part_cate AS partCate, pa.part_id AS partId
+    <select id="selectPartCate" resultType="Map">
+        SELECT pa.part_cate AS partCate,
+               CONCAT(SUBSTRING_INDEX(pa.part_id, '-', 1), '-', LPAD(CAST(SUBSTRING(MAX(pa.part_id), LOCATE('-', pa.part_id) + 1) AS UNSIGNED) + 1, 3, '0')) AS next_part_id
         FROM warehouse_stock AS ws
-                 INNER JOIN parts AS pa ON ws.part_id = pa.part_id
+                 INNER JOIN parts AS pa
+                            ON ws.part_id = pa.part_id
         WHERE ws.warehouse_id = #{warehouseId}
+        GROUP BY pa.part_cate;
     </select>
 
-    <!--    신규 부품 등록 -->
+
+
+    <!--    신규 부품 등록 -parts -->
     <insert id="insertPart" parameterType="bitc.fullstack503.ordernetserver.dto.HQStatusDTO">
         INSERT INTO parts (part_id, part_name, part_cate, part_img, part_price)
         VALUES (#{partId}, #{partName}, #{partCate}, #{partImg}, #{partPrice})
     </insert>
+    <!--    신규 부품 등록 -warehouse_stock -->
     <insert id="insertWarehouseStock" parameterType="bitc.fullstack503.ordernetserver.dto.HQStatusDTO">
         INSERT INTO warehouse_stock (warehouse_id, part_id, stock_quantity)
         VALUES (#{warehouseId}, #{partId}, #{stockQuantity})

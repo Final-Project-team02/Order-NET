@@ -4,6 +4,7 @@ import bitc.fullstack503.ordernetserver.dto.HQRequestDTO;
 import bitc.fullstack503.ordernetserver.dto.HQStatusDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HQStatusService {
 
@@ -24,8 +25,10 @@ public interface HQStatusService {
   List<String> getWarehouseCategories(String warehouseName) throws Exception;
 
   // 부품 카테고리 조회
-  List<String> getPartCategories(String warehouseId) throws Exception;
+  List<Map<String, String>> getPartCategories(String warehouseId) throws Exception;
 
-  // 부품 등록
+
+  // 부품 등록 - parts + WarehouseStock
   void insertPartAndStock(HQStatusDTO hqStatusDTO) throws Exception;
+
 }

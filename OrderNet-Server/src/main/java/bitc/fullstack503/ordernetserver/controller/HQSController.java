@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/HQstatus")
@@ -26,7 +27,7 @@ public class HQSController {
     return hqStatusService.getHQStatus();
   }
 
-// -------------------------------------
+// ------------------------------------- 입고 팝업
   // 입고 요청 처리
   @PostMapping("/request")
   public String createHQRequest(@RequestBody List<HQRequestDTO> requests) throws Exception {
@@ -57,7 +58,7 @@ public class HQSController {
   }
 
 
-// ------------------- 부품 등록 ----------------
+// ------------------- 부품 등록 팝업 ----------------
   // 물류센터 카테고리 조회
   @GetMapping("/warehouse-cate")
   public List<String> getWarehouseCategories(@RequestParam String warehouseName) throws Exception {
@@ -67,15 +68,14 @@ public class HQSController {
 
   // 부품 카테고리 조회
   @GetMapping("/part-cate")
-  public List<String> getPartCategories(@RequestParam String warehouseId) throws Exception {
+  public List<Map<String, String>> getPartCategories(@RequestParam String warehouseId) throws Exception {
     System.out.println("Received warehouseId: " + warehouseId);  // 값 확인용
     return hqStatusService.getPartCategories(warehouseId); // 부품 카테고리 조회
   }
 
-//
 
 
-  // 부품 등록
+  // 부품 등록 - parts + WarehouseStock
   @PostMapping("/insert")
   public ResponseEntity<String> insertPart(@RequestBody HQStatusDTO hqStatusDTO) throws Exception{
     hqStatusService.insertPartAndStock(hqStatusDTO);  // 두 개의 쿼리를 호출하는 서비스 메서드

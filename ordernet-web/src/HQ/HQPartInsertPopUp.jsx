@@ -7,9 +7,10 @@ function PartInsertPopUp({ isOpen, onClose }) {
     warehouseName: '',
     warehouseCate: '',
     partCate: '',
+    partId: '',
     partName: '',
-    quantity: '',
-    partImageUrl: '',
+    stockQuantity: '',
+    partImg: '',
     partPrice: '',
   });
 
@@ -17,7 +18,6 @@ function PartInsertPopUp({ isOpen, onClose }) {
   const [warehouseCates, setWarehouseCates] = useState([]);
   const [partCates, setPartCates] = useState([]);
 
-  // 물류센터 목록 요청
   useEffect(() => {
     if (!isOpen) return;
 
@@ -30,18 +30,16 @@ function PartInsertPopUp({ isOpen, onClose }) {
       });
   }, [isOpen]);
 
-  // 물류센터명 선택 시 warehouseId 설정
   useEffect(() => {
     const selectedWarehouse = warehouses.find(w => w.warehouseName === formData.warehouseName);
     if (selectedWarehouse) {
       setFormData(prev => ({
         ...prev,
-        warehouseId: selectedWarehouse.warehouseId, // warehouseId를 설정
+        warehouseId: selectedWarehouse.warehouseId,
       }));
     }
-  }, [formData.warehouseName, warehouses]);  // warehouseName이나 warehouses가 변경될 때마다 실행
+  }, [formData.warehouseName, warehouses]);
 
-  // 물류센터명 선택 시 카테고리 요청
   useEffect(() => {
     if (formData.warehouseName === '') return;
 
@@ -49,11 +47,10 @@ function PartInsertPopUp({ isOpen, onClose }) {
       .then((response) => {
         setWarehouseCates(response.data);
 
-        // 만약 물류센터 카테고리가 하나라면 자동으로 선택하고 disabled 처리
         if (response.data.length === 1) {
           setFormData(prev => ({
             ...prev,
-            warehouseCate: response.data[0]  // 카테고리 자동 설정
+            warehouseCate: response.data[0]
           }));
         }
       })
@@ -62,21 +59,28 @@ function PartInsertPopUp({ isOpen, onClose }) {
       });
   }, [formData.warehouseName]);
 
-  // 물류센터 카테고리 선택 시 부품 카테고리 요청
   useEffect(() => {
-    if (formData.warehouseCate === '') return;
+    if (!formData.warehouseId) return;
 
     axios.get(`http://localhost:8080/HQstatus/part-cate?warehouseId=${encodeURIComponent(formData.warehouseId)}`)
       .then((response) => {
-        // 중복 제거 처리
-        const uniquePartCates = [...new Set(response.data)];
+        const rawData = response.data;
+        const uniquePartCates = [...new Set(rawData.map(item => item.partCate))];
+        const uniquePartIds = [...new Set(rawData.map(item => item.next_part_id))];
+
         setPartCates(uniquePartCates);
 
-        // 부품 카테고리가 하나일 경우, 자동으로 선택하고 disabled 처리
         if (uniquePartCates.length === 1) {
           setFormData(prev => ({
             ...prev,
-            partCate: uniquePartCates[0]  // 부품 카테고리 자동 설정
+            partCate: uniquePartCates[0]
+          }));
+        }
+
+        if (uniquePartIds.length === 1) {
+          setFormData(prev => ({
+            ...prev,
+            partId: uniquePartIds[0]
           }));
         }
       })
@@ -85,7 +89,27 @@ function PartInsertPopUp({ isOpen, onClose }) {
       });
   }, [formData.warehouseId]);
 
+  useEffect(() => {
+    if (formData.partCate === '') return;
 
+    axios.get(`http://localhost:8080/HQstatus/part-cate?warehouseId=${encodeURIComponent(formData.warehouseId)}`)
+      .then((response) => {
+        const data = response.data;
+
+        const filteredData = data.filter(item => item.partCate === formData.partCate);
+        const uniquePartIds = [...new Set(filteredData.map(item => item.next_part_id))];
+
+        if (uniquePartIds.length === 1) {
+          setFormData(prev => ({
+            ...prev,
+            partId: uniquePartIds[0]
+          }));
+        }
+      })
+      .catch((err) => {
+        console.error('부품 ID 조회 실패:', err);
+      });
+  }, [formData.partCate, formData.warehouseId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,16 +119,35 @@ function PartInsertPopUp({ isOpen, onClose }) {
     }));
   };
 
+  const handleClose = () => {
+    // 상태를 초기화하고 모달을 닫습니다.
+    setFormData({
+      warehouseId: '',
+      warehouseName: '',
+      warehouseCate: '',
+      partCate: '',
+      partId: '',
+      partName: '',
+      stockQuantity: '',
+      partImg: '',
+      partPrice: '',
+    });
+
+    // 부모 컴포넌트의 onClose 함수 호출
+    onClose();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios.post('http://localhost:8080/HQstatus/insert', formData)
       .then((response) => {
-        alert(response.data); // 성공 메시지 표시
-        onClose();  // 팝업 닫기
+        alert(response.data);
+        handleClose();
       })
       .catch((err) => {
         alert('부품 등록에 실패했습니다.' + (err.response ? err.response.data : err.message));
+        handleClose();
       });
   };
 
@@ -112,10 +155,12 @@ function PartInsertPopUp({ isOpen, onClose }) {
 
   return (
     <>
-      <div className="modal-backdrop fade show" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} />
+      <div className="modal-backdrop fade show" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }} />
 
-      <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', position: 'fixed', top: '50%', left: '50%', zIndex: 1050, transform: 'translate(-50%, -50%)' }}>
-        <div className="modal-dialog modal-fullscreen-md-down" role="document">
+      <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', position: 'fixed', top: '60%', left: '50%', zIndex: 1050, transform: 'translate(-50%, -50%)' }}>
+
+
+      <div className="modal-dialog modal-fullscreen-md-down" role="document">
           <div className="modal-content">
             <div className="modal-header d-flex justify-content-center" style={{ backgroundColor: '#cfe2ff' }}>
               <h5 className="modal-title text-center"><b>부품 등록</b></h5>
@@ -130,17 +175,24 @@ function PartInsertPopUp({ isOpen, onClose }) {
                 </div>
 
                 <div className="mb-3">
-                  <select className="form-select" name="warehouseCate" value={formData.warehouseCate} onChange={handleChange}  disabled={warehouseCates.length === 1}>
+                  <select className="form-select" name="warehouseCate" value={formData.warehouseCate} onChange={handleChange} disabled={warehouseCates.length === 1}>
                     <option value="">물류센터 카테고리 선택</option>
                     {warehouseCates.map((cate, idx) => <option key={idx} value={cate}>{cate}</option>)}
                   </select>
                 </div>
 
                 <div className="mb-3">
-                  <select className="form-select" name="partCate" value={formData.partCate} onChange={handleChange} disabled={partCates.length === 1}>
-                    <option value="">부품 카테고리 선택</option>
-                    {partCates.map((cate, idx) => <option key={idx} value={cate}>{cate}</option>)}
-                  </select>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <select className="form-select" name="partCate" value={formData.partCate} onChange={handleChange} disabled={partCates.length === 1}>
+                        <option value="">부품 카테고리 선택</option>
+                        {partCates.map((cate, idx) => <option key={idx} value={cate}>{cate}</option>)}
+                      </select>
+                    </div>
+                    <div className="col-sm-6">
+                      <input type="text" className="form-control" placeholder="부품 ID" name="partId" value={formData.partId} disabled />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="mb-3">
@@ -148,11 +200,11 @@ function PartInsertPopUp({ isOpen, onClose }) {
                 </div>
 
                 <div className="mb-3">
-                  <input type="number" className="form-control" placeholder="수량" name="quantity" value={formData.quantity} onChange={handleChange} />
+                  <input type="number" className="form-control" placeholder="수량" name="stockQuantity" value={formData.stockQuantity} onChange={handleChange} />
                 </div>
 
                 <div className="mb-3">
-                  <input type="text" className="form-control" placeholder="이미지 주소(URL)" name="partImageUrl" value={formData.partImageUrl} onChange={handleChange} />
+                  <input type="text" className="form-control" placeholder="이미지 주소(URL)" name="partImg" value={formData.partImg} onChange={handleChange} />
                 </div>
 
                 <div className="mb-3">
@@ -160,7 +212,7 @@ function PartInsertPopUp({ isOpen, onClose }) {
                 </div>
 
                 <div className="modal-footer d-flex justify-content-center" style={{ borderTop: 'none' }}>
-                  <button type="button" className="btn btn-outline-danger me-2" onClick={onClose}>취소</button>
+                  <button type="button" className="btn btn-outline-danger me-2" onClick={handleClose}>취소</button>
                   <button type="submit" className="btn btn-outline-primary">등록</button>
                 </div>
 

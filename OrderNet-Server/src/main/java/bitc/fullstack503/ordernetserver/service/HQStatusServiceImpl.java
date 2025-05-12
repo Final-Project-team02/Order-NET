@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HQStatusServiceImpl implements HQStatusService {
@@ -24,7 +25,10 @@ public class HQStatusServiceImpl implements HQStatusService {
   // 입고 요청 처리
   @Override
   public void createHQRequest(HQRequestDTO request) throws Exception {
+    // 입고 요청
     hqStatusMapper.insertHQRequest(request);
+    // 입고 요청 - 재고 처리
+    hqStatusMapper.stockUpdate(request);
   }
 
   // 물류센터 목록 조회
@@ -39,22 +43,24 @@ public class HQStatusServiceImpl implements HQStatusService {
     return hqStatusMapper.selectPartsByWarehouse(warehouseId); // 부품 목록 반환
   }
 
-
+  // 물류센터 카테고리 조회
   @Override
   public List<String> getWarehouseCategories(String warehouseName) throws Exception{
     return hqStatusMapper.selectWHCate(warehouseName);
   }
 
+  // 부품 등록 - 부품 카테고리 + 새로운 부품 번호
   @Override
-  public List<String> getPartCategories( String warehouseId) throws Exception{
+  public List<Map<String, String>> getPartCategories(String warehouseId) throws Exception{
     return hqStatusMapper.selectPartCate(warehouseId);
   }
 
 
-
+  // 부품 등록 - parts + WarehouseStock
   @Override
   public void insertPartAndStock(HQStatusDTO hqStatusDTO) throws Exception {
-
+    hqStatusMapper.insertPart(hqStatusDTO);
+    hqStatusMapper.insertWarehouseStock(hqStatusDTO);
   }
 
 
