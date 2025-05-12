@@ -5,6 +5,7 @@ import HQTopbar from "./HQTopbar.jsx";
 import Title from "../layout/Title.jsx";
 import HQRequestPopup from "./HQRequestPopup.jsx";
 import PartInsertPopUp from "./HQPartInsertPopUp.jsx";
+import {SortAscIcon} from "lucide-react";
 
 function HQStockStatus() {
   const menuItems = [
@@ -19,6 +20,7 @@ function HQStockStatus() {
   const [isPartInsertPopupOpen, setIsPartInsertPopupOpen] = useState(false);
   const [partName, setPartName] = useState("");
   const [partCate, setPartCate] = useState("");
+  const [sortOrder, setSortOrder] = useState(null);
 
   // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,6 +83,22 @@ function HQStockStatus() {
     }
     return pageNumbers;
   };
+
+  const SortByQuantity = () =>{
+    let newSortOrder = 'asc';
+    if (sortOrder === 'asc') newSortOrder = 'desc';
+
+    setSortOrder(newSortOrder);
+
+    let sortedItems = [...filteredItems];
+    if (newSortOrder === 'asc') {
+      sortedItems.sort((a, b) => a.stockQuantity - b.stockQuantity);
+    } else if (newSortOrder === 'desc') {
+      sortedItems.sort((a, b) => b.stockQuantity - a.stockQuantity);
+    }
+    setFilteredItems(sortedItems);
+  }
+
 
   // const headerStyle = { backgroundColor: "#CFE2FF" };
 
@@ -184,7 +202,22 @@ function HQStockStatus() {
                 <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FF"}}>물류 센터</th>
                 <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FF"}}>부품 명</th>
                 <th className="text-center" style={{width: "15%", backgroundColor: "#CFE2FF"}}>부품 카테고리</th>
-                <th className="text-center" style={{width: "15%", backgroundColor: "#CFE2FF"}}>수량</th>
+                <th className="text-center" style={{width: "15%",
+                    backgroundColor: "#CFE2FF",cursor: "pointer",  userSelect: 'none' }}
+                  onClick={SortByQuantity}>
+                  <div style={{display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "4px",position: "relative"}}><span>수량</span>
+                    {sortOrder === "asc" && (
+                      <img src="/src/assets/sort_asc.svg" alt="오름차순" />
+                    )}
+                    {sortOrder === "desc" && (
+                      <img src="/src/assets/sort_desc.svg" alt="내림차순" />
+                    )}
+                    {!sortOrder && (
+                      <img src="/src/assets/sort_both.svg" alt="양방향" />
+                    )}
+                  </div>
+                </th>
+
               </tr>
               </thead>
               <tbody>
