@@ -66,15 +66,15 @@ function HQMainPanel( { filteredRows, isFiltered }) {
           <table className="table table-bordered">
             <thead className="table-info">
             <tr>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px'}}>주문번호</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px'}}>대리점 ID</th>
-              <th className="text-center align-middle" colSpan="2">일자</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px'}}>가격</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px'}}>주문현황</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>주문번호</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>대리점 ID</th>
+              <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>일자</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>가격</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문현황</th>
             </tr>
             <tr>
-              <th className="text-center align-middle" style={{width: '130px'}}>주문일자</th>
-              <th className="text-center align-middle" style={{width: '130px'}}>도착일자</th>
+              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자</th>
+              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>도착일자</th>
             </tr>
             </thead>
             <tbody>
@@ -119,17 +119,17 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                   <thead className="table-info">
                   <tr>
                     {/*<th className="text-center align-middle" rowSpan="2" style={{width: '20px', height: '60px'}}></th>*/}
-                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px'}}>대리점 ID
+                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>대리점 ID
                     </th>
-                    <th className="text-center align-middle" colSpan="2">부품</th>
-                    <th className="text-center align-middle" colSpan="2">가격</th>
-                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px'}}>주문일자</th>
+                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>부품</th>
+                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>가격</th>
+                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자</th>
                   </tr>
                   <tr>
-                    <th className="text-center align-middle" style={{width: '130px'}}>부품 Code</th>
-                    <th className="text-center align-middle" style={{width: '130px'}}>부품명</th>
-                    <th className="text-center align-middle" style={{width: '130px'}}>수량</th>
-                    <th className="text-center align-middle" style={{width: '130px'}}>비용</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품 Code</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품명</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>수량</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>비용</th>
                   </tr>
                   </thead>
                   <tbody>

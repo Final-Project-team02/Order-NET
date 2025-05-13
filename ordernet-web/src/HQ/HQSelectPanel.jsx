@@ -41,15 +41,15 @@ function HQSelectPanel({ onSearch }) {
             <span className="fw-bold me-2" style={{whiteSpace: 'nowrap'}}>● 대리점 ID</span>
             <select className="form-select flex-shrink-1" style={{minWidth: '120px'}} onChange={e => setBranchId(e.target.value)}>
               <option value="">Code</option>
-              <option value="Busan-1">Busan01</option>
-              <option value="Daegu-1">Daegu01</option>
-              <option value="Daejeon-1">Daejeon01</option>
-              <option value="Gwangju-1">Gwangju01</option>
-              <option value="Incheon-1">Incheon01</option>
-              <option>Jeju01</option>
-              <option>Sejong01</option>
-              <option>Seoul01</option>
-              <option>Ulsan01</option>
+              <option value="Busan01">Busan01</option>
+              <option value="Daegu01">Daegu01</option>
+              <option value="Daejeon01">Daejeon01</option>
+              <option value="Gwangju01">Gwangju01</option>
+              <option value="Incheon01">Incheon01</option>
+              <option value="Jeju01">Jeju01</option>
+              <option value="Sejong01">Sejong01</option>
+              <option value="Seoul01">Seoul01</option>
+              <option value="Ulsan01">Ulsan01</option>
             </select>
           </label>
 
