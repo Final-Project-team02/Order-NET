@@ -76,7 +76,6 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="주문번호"
-        android:inputType="number"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_round_bg"
         android:paddingHorizontal="16dp"

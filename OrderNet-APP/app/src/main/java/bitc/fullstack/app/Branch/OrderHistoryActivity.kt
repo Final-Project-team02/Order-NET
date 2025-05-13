@@ -73,7 +73,10 @@ class OrderHistoryActivity : AppCompatActivity() {
         }
 
         // 조회 버튼
-        binding.btnOrderSearch.setOnClickListener {  }
+        binding.btnOrderSearch.setOnClickListener {
+            selectBranchOrderList()
+        }
+
 
     }
 
@@ -136,10 +139,22 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         val statusForQuery = statusMap[selectedText] ?: ""
 
+        // 시작 날짜
+        val startDateStr = binding.btnStartDate.text.toString().takeIf { it != "시작 기간 선택" }
+        // 종료 날짜
+        val endDateStr = binding.btnEndDate.text.toString().takeIf { it != "종료 기간 선택" }
+        // 주문 번호
+        val orderId = binding.editTextOrderNumber.text.toString().takeIf { it.isNotEmpty() }
+
+
+
         // 로그인 후에는 로그인한 id로
         val branchId = "Busan01"
 
-        val call = api.orderHistory(branchId, statusForQuery)
+        Log.d("csy", "branchId: $branchId, orderStatus: $statusForQuery, startDate: $startDateStr, endDate: $endDateStr, orderId: $orderId")
+
+        // null 값일 경우 해당 파라미터를 제외하여 요청을 보냄
+        val call = api.orderHistory(branchId, statusForQuery, startDateStr, endDateStr, orderId)
         retrofitResponse(call)
     }
 

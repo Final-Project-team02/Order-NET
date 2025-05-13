@@ -36,11 +36,16 @@ interface AppServerInterface {
   fun placeOrder(@Body orderRequest: OrderRequestDTO): Call<Void>
 
   // 대리점 주문 내역
+  // 대리점 주문 내역
   @GET("branch/orderHistory")
   fun orderHistory(
     @Query("branch_id") branchId: String,
-    @Query("order_status") orderStatus: String
+    @Query("order_status") orderStatus: String?,
+    @Query("start_date") startDate: String?,
+    @Query("end_date") endDate: String?,
+    @Query("order_id") orderId: String?
   ): Call<List<BranchOrderDTO>>
+
 
   // 대리점 주문 상세 내역
   @GET("branch/orderDetail")

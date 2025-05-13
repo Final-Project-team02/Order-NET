@@ -28,7 +28,7 @@ public interface BranchAppMapper {
   void insertOrderItems(List<OrderItemDTO> items);
 
   // 대리점 주문 내역
-  List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus);
+  List<BranchOrderDTO> getOrderHistory(Map<String, Object> paramMap);
 
   // 대리점 주문 가져오기
   BranchOrderDTO getOrderDetail(String orderNumber);

@@ -59,16 +59,24 @@
 
     <!--  대리점 주문 내역  -->
     <select id="getOrderHistory" parameterType="map" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchOrderDTO">
-        select orders.order_id, orders.order_date, orders.order_due_date, orders.order_price,
-                orders.order_status, COUNT(order_item.order_item_id) AS order_item_count, branch.branch_name
-        from orders
-        left join order_item
-        on orders.order_id = order_item.order_id
-        left join branch
-        on orders.branch_id = branch.branch_id
-        where orders.branch_id = #{branchId}
-        and order_status= #{orderStatus}
-        GROUP BY order_id;
+        SELECT orders.order_id, orders.order_date, orders.order_due_date, orders.order_price,
+        orders.order_status, COUNT(order_item.order_item_id) AS order_item_count, branch.branch_name
+        FROM orders
+        LEFT JOIN order_item ON orders.order_id = order_item.order_id
+        LEFT JOIN branch ON orders.branch_id = branch.branch_id
+        WHERE orders.branch_id = #{branchId}
+        AND orders.order_status = #{orderStatus}
+        <if test="startDate != null and endDate != null">
+            AND orders.order_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+        <if test="startDate == null and endDate == null">
+            AND orders.order_date IS NOT NULL
+        </if>
+        <if test="orderId != null">
+            AND orders.order_id LIKE CONCAT('%', #{orderId}, '%')
+        </if>
+        GROUP BY orders.order_id, branch.branch_name;
+
     </select>
 
     <!--  대리점 주문 가져오기  -->

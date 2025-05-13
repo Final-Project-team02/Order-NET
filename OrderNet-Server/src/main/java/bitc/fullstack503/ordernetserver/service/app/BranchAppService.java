@@ -19,8 +19,8 @@ public interface BranchAppService {
   // 대리점 주문 요청
   void insertOrder(OrderRequestDTO orderRequestDTO);
 
-  // 대리점 주문 내역
-  List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus);
+  // 대리점 주문 내역 (필터링된 주문 내역 조회)
+  List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus, String startDate, String endDate, String orderId);
 
   // 대리점 주문 상세 내역
   BranchOrderDTO getOrderDetail(String orderNumber);

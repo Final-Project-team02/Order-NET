@@ -61,8 +61,16 @@ public class BranchAppServiceImpl implements BranchAppService {
 
   // 대리점 주문 내역
   @Override
-  public List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus) {
-    return branchAppMapper.getOrderHistory(branchId, orderStatus);
+  public List<BranchOrderDTO> getOrderHistory(String branchId, String orderStatus, String startDate, String endDate, String orderId) {
+    // Map으로 파라미터를 묶어서 전달
+    Map<String, Object> paramMap = new HashMap<>();
+    paramMap.put("branchId", branchId);
+    paramMap.put("orderStatus", orderStatus);
+    paramMap.put("startDate", startDate);
+    paramMap.put("endDate", endDate);
+    paramMap.put("orderId", orderId);
+
+    return branchAppMapper.getOrderHistory(paramMap);
   }
 
   // 대리점 주문 상세 내역
