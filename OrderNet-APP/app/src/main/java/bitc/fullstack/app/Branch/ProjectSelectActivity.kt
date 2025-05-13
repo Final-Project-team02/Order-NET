@@ -82,15 +82,10 @@ class ProjectSelectActivity : AppCompatActivity() {
             }
         }
 
-
         // 닫기버튼
         binding.btnClose.setOnClickListener {
-            val intent = Intent(this, BranchOrderResiActivity::class.java)
-            startActivity(intent)
+            finish()
         }
-
-
-
 
         // 조회 버튼
         binding.btnSearch.setOnClickListener {

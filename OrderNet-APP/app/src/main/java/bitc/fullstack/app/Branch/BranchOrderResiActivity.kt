@@ -54,8 +54,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
 
         firstConnection()
 
-        // 결과 받아오기 위한 ActivityResultLauncher 등록
-        // selectProductLauncher 등록 부분
+        // 결과 받아오기 위한 selectProductLauncher 등록
         selectProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
@@ -85,20 +84,10 @@ class BranchOrderResiActivity : AppCompatActivity() {
             }
         }
 
-
-
         // 어댑터 연결
         selectedAdapter = SelectedProductAdapter(selectedItems, this)
         binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerProducts.adapter = selectedAdapter
-
-        // 받은 데이터 꺼내기
-//        val selectedItems = intent.getSerializableExtra("selectedItems") as? ArrayList<PartsDTO> ?: arrayListOf()
-//        Log.d("selectedItems", "Selected Items: $selectedItems")
-//        // 어댑터 연결
-//        val selectedAdapter = SelectedProductAdapter(selectedItems.toMutableList(), this)
-//        binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerProducts.adapter = selectedAdapter
 
         // Adapter에서 데이터를 다 바인딩한 후 총합 업데이트, 총합을 Activity에 전달
         selectedAdapter.updateTotalAmount()
@@ -108,7 +97,11 @@ class BranchOrderResiActivity : AppCompatActivity() {
 
         // 납품일자 클릭 시 달력 띄우기
         binding.orderDueDate.setOnClickListener {
-            showDatePicker { selectedDate ->
+            val orderDateText = binding.orderDate.text.toString()
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val orderDate: Date? = sdf.parse(orderDateText)
+
+            showDatePicker(minDate = orderDate?.time) { selectedDate ->
                 binding.orderDueDate.text = selectedDate
             }
         }
@@ -179,7 +172,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
     }
 
     // 주문, 납품 일자 선택
-    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+    private fun showDatePicker(minDate: Long? = null, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -190,6 +183,11 @@ class BranchOrderResiActivity : AppCompatActivity() {
             val selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
             onDateSelected(selectedDate)
         }, year, month, day)
+
+        // 최소 선택 날짜 설정
+        minDate?.let {
+            datePickerDialog.datePicker.minDate = it
+        }
 
         datePickerDialog.show()
     }

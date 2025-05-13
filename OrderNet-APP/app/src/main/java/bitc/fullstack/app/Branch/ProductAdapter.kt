@@ -66,8 +66,6 @@ class ProductAdapter(private val items: List<PartsDTO>) :
 
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ItemProductListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
