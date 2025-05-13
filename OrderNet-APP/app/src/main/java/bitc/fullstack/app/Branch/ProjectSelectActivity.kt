@@ -4,6 +4,9 @@ package bitc.fullstack.app.Branch
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +24,14 @@ class ProjectSelectActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProjectSelectBinding
     private lateinit var adapter: ProductAdapter
+    private lateinit var fullList: List<PartsDTO>
     private val productList = mutableListOf<PartsDTO>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProjectSelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // RecyclerView에 데이터 표시하기 위한 어댑터 클래스
         adapter = ProductAdapter(productList)
@@ -35,6 +40,7 @@ class ProjectSelectActivity : AppCompatActivity() {
         binding.recyclerProducts.adapter = adapter
 
         selectPartsInfo()
+
 
         // 상품 변경 - 기본값 : FALSE, 상품변경 버튼으로 들어오면 TRUE
         val isEditMode = intent.getBooleanExtra("editMode", false)
@@ -76,56 +82,96 @@ class ProjectSelectActivity : AppCompatActivity() {
             }
         }
 
-//        binding.btnCart.setOnClickListener {
-//            val selectedItems = productList.filter { it.isChecked }
-//
-//            if (selectedItems.isEmpty()) {
-//                Toast.makeText(this, "선택된 항목이 없습니다.", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-//            if (isEditMode && selectedItems.size != 1) {
-//                Toast.makeText(this, "하나의 상품만 선택하세요.", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-//            // selectedItems가 제대로 필터링 되었는지 확인
-//            Log.d("ProjectSelectActivity", "Selected Items: $selectedItems")
-//
-//            val resultIntent = Intent().apply {
-//                if (isEditMode) {
-//                    putExtra("selectedProduct", selectedItems[0])
-//                } else {
-//                    putExtra("selectedItems", ArrayList(selectedItems))
-//                }
-//            }
-//
-//            setResult(RESULT_OK, resultIntent)
-//            finish()
-//        }
-
-
 
         // 닫기버튼
         binding.btnClose.setOnClickListener {
             val intent = Intent(this, BranchOrderResiActivity::class.java)
             startActivity(intent)
         }
+
+
+
+
+        // 조회 버튼
+        binding.btnSearch.setOnClickListener {
+            val searchQuery = binding.editSearch.text.toString().trim()
+            applySearchQuery(searchQuery) // 검색어로 필터링
+        }
+
+        // Spinner 카테고리 선택 리스너 설정
+        binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCategory = parentView?.getItemAtPosition(position).toString()
+                applyFilters(selectedCategory) // 카테고리로 필터링
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // 아무 것도 선택되지 않았을 때 (보통 사용되지 않지만 기본 구현)
+            }
+        }
     }
 
+    // 서버에서 부품 정보 가져오기
     private fun selectPartsInfo(){
         val api = AppServerClass.instance
-        val call = api.ProductChoose()
+        val call = api.ProductChoose(null)
         retrofitResponse(call)
     }
 
+    // 카테고리 필터링을 위한 함수
+    private fun applyFilters(category: String) {
+        val filteredList = if (category == "전체") {
+            fullList // "전체" 선택 시 모든 상품을 보여줍니다.
+        } else {
+            fullList.filter { it.partCate == category } // 선택된 카테고리에 맞는 상품만 필터링
+        }
+
+        // 필터링된 리스트로 RecyclerView 갱신
+        productList.clear()
+        productList.addAll(filteredList)
+        adapter.notifyDataSetChanged()
+    }
+
+    // 검색어를 기준으로 필터링하는 함수
+    private fun applySearchQuery(query: String) {
+        if (query.isBlank()) {
+            // 검색어가 비어있다면, 필터링하지 않고 전체 리스트를 보여줍니다.
+            productList.clear()
+            productList.addAll(fullList)
+            adapter.notifyDataSetChanged()
+            return
+        }
+
+        val filteredList = fullList.filter {
+            it.partId.contains(query, ignoreCase = true) || // part_id로 검색
+                    it.partCate.contains(query, ignoreCase = true) || // part_cate로 검색
+                    it.partName.contains(query, ignoreCase = true)    // part_name으로 검색
+        }
+
+        // 필터링된 리스트로 RecyclerView 갱신
+        productList.clear()
+        productList.addAll(filteredList)
+        adapter.notifyDataSetChanged()
+    }
+
+
+    // 필터링된 상품 목록을 받아오는 함수
     private fun retrofitResponse(call: Call<List<PartsDTO>>) {
         call.enqueue(object : Callback<List<PartsDTO>> {
             override fun onResponse(p0: Call<List<PartsDTO>>, res: Response<List<PartsDTO>>) {
                 if (res.isSuccessful) {
-
                     val partsList = res.body()
                     if (!partsList.isNullOrEmpty()) {
+                        // 전체 상품 목록 저장
+                        fullList = partsList
+                        // 카테고리 목록 추출 (중복 제거 및 '전체' 카테고리 추가)
+                        val categories = listOf("전체") + partsList.map { it.partCate }.distinct()
+
+                        // Spinner에 카테고리 목록 설정
+                        val spinnerAdapter = ArrayAdapter(this@ProjectSelectActivity, android.R.layout.simple_spinner_item, categories)
+                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        binding.spinnerCategory.adapter = spinnerAdapter
+
                         Log.d("csy", "받은 부품 목록: $partsList")
                         // 기존 productList 제거
                         productList.clear()
@@ -150,5 +196,7 @@ class ProjectSelectActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
 

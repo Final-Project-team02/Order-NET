@@ -29,7 +29,7 @@ interface AppServerInterface {
 
   // 대리점 상품선택
   @GET("branch/productChoose")
-  fun ProductChoose(): Call<List<PartsDTO>>
+  fun ProductChoose(@Query("category") category: String?): Call<List<PartsDTO>>
 
   // 대리점 주문 요청
   @POST("branch/orderRequest")
