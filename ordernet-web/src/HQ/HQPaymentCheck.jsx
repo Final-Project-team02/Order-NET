@@ -1,39 +1,216 @@
-function HQPaymentCheck() {
-  const rows = [
-    { orderId: '25-001', date: '2024-04-20', name: '엔진', status: '결제' },
-    { orderId: '25-002', date: '2024-04-20', name: '사이드 미러', status: '반려' },
-    { orderId: '25-003', date: '2024-04-20', name: '엔진', status: '결제' },
-    { orderId: '25-004', date: '2024-04-20', name: '사이드 미러', status: '반려' },
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-  ];
-
-  return (
-      <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-        <h2 className="h5 fw-bold mb-3">가맹점 주문 내역</h2>
-        <table className="table table-bordered">
-          <thead className="table-info">
-          <tr>
-            <th className="text-center align-middle">주문 번호</th>
-            <th className="text-center align-middle">주문 날짜</th>
-            <th className="text-center align-middle">부품명</th>
-            <th className="text-center align-middle">주문 상태</th>
-          </tr>
-          </thead>
-          <tbody>
-          {rows.map((row, i) => (
-              <tr key={i}>
-                <td className="text-center align-middle">{row.orderId}</td>
-                <td className="text-center align-middle">{row.date}</td>
-                <td className="text-center align-middle">{row.name}</td>
-                <td className="text-center align-middle">{row.status}</td>
-              </tr>
-          ))}
-          </tbody>
-        </table>
-      </div>
-  );
-}
+function HQPaymentCheck({ filteredRows, isFiltered }) {
 
 
-export default HQPaymentCheck
+    const [rows, setRows] = useState([]);
+
+    const [rows2, setRows2] = useState([]);
+
+    const [selectedOrderId, setSelectedOrderId] = useState(null);  // 행 클릭
+    const [showOrderDetails, setShowOrderDetails] = useState(false); // 상세 내역 숨기기
+
+    //  페이징 상태
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    useEffect(() => {
+
+        if (!isFiltered) {
+            axios.get("http://localhost:8080/HQMain/payment")
+                .then(res => {
+                    console.log("서버 응답:", res.data);
+                    setRows(res.data);
+                })
+                .catch(err => {
+                    console.error("데이터 불러오기 실패:", err);
+                });
+
+            axios.get("http://localhost:8080/HQMain/paymentDetail")
+                .then(res => {
+                    console.log("서버 응답:", res.data);
+                    setRows2(res.data);
+                })
+                .catch(err => {
+                    console.error("데이터 불러오기 실패:", err);
+                });
+
+        }
+    }, [isFiltered]);
+
+
+    useEffect(() => {
+        if (isFiltered) {
+            setRows(filteredRows);
+            setRows2(filteredRows);
+        }
+    }, [filteredRows, isFiltered]);
+
+    // 주문번호 기준으로 그룹핑하여 대표 부품명 가공
+    const groupedRows = Object.values(
+        rows.reduce((acc, row) => {
+            if (!acc[row.orderId]) {
+                acc[row.orderId] = {
+                    ...row,
+                    partNames: [row.partName],
+                };
+            } else {
+                acc[row.orderId].partNames.push(row.partName);
+            }
+            return acc;
+        }, {})
+    );
+
+    const displayRows = groupedRows.map(group => {
+        const firstPartName = group.partNames[0];
+        const total = group.partNames.length;
+        return {
+            ...group,
+            displayPartName: total > 1 ? `${firstPartName} 외 ${total - 1}종` : firstPartName,
+        };
+    });
+
+    const handleRowClick = (orderId) => {
+        setSelectedOrderId(orderId);
+        setShowOrderDetails(true);
+    };
+
+    const closeModal = () => {
+        setShowOrderDetails(false);
+        setSelectedOrderId(null);
+    };
+
+    const filteredDetailRows = rows2.filter(row => row.orderId === selectedOrderId);
+
+    //  페이징 처리
+    const totalPages = Math.ceil(filteredDetailRows.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredDetailRows.slice(indexOfFirstItem, indexOfLastItem);
+
+    return (
+        <div>
+        <div className="p-4 mt-3 bg-light w-100 overflow-auto">
+            <h2 className="h5 fw-bold mb-3">가맹점 주문 내역</h2>
+            <table className="table table-bordered">
+                <thead className="table-info">
+                <tr>
+                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문번호</th>
+                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문일자</th>
+                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>부품명</th>
+                    <th className="text-center align-middle" style={{ backgroundColor: "#E3F0FF" }}>주문현황</th>
+                </tr>
+                </thead>
+                <tbody>
+                {displayRows.length === 0 ? (
+                    <tr>
+                        <td colSpan="4" className="text-center">처리된 것이 없습니다.</td>
+                    </tr>
+                ) : (
+                    displayRows.map((row, i) => (
+                        <tr key={i} onClick={() => handleRowClick(row.orderId)} style={{ cursor: 'pointer' }}>
+                            <td className="text-center align-middle">{row.orderId}</td>
+                            <td className="text-center align-middle">{row.orderDate}</td>
+                            <td className="text-center align-middle">{row.displayPartName}</td>
+                            <td className="text-center align-middle">{row.orderStatus}</td>
+                        </tr>
+                    ))
+                )}
+                </tbody>
+            </table>
+        </div>
+            {showOrderDetails && (
+                <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                    <div className="modal-dialog modal-xl" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header" style={{ backgroundColor: '#cfe2ff' }}>
+                                <h5 className="modal-title">상세 내역</h5>
+                                <button type="button" className="btn-close" onClick={closeModal}></button>
+                            </div>
+                            <div className="modal-body">
+                                <table className="table table-bordered">
+                                    <thead className="table-info">
+                                    <tr>
+                                        <th className="text-center align-middle" rowSpan="2"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>대리점 ID
+                                        </th>
+                                        <th className="text-center align-middle" colSpan="2"
+                                            style={{backgroundColor: "#E3F0FF"}}>부품
+                                        </th>
+                                        <th className="text-center align-middle" colSpan="2"
+                                            style={{backgroundColor: "#E3F0FF"}}>가격
+                                        </th>
+                                        <th className="text-center align-middle" rowSpan="2"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-center align-middle"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품 Code
+                                        </th>
+                                        <th className="text-center align-middle"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품명
+                                        </th>
+                                        <th className="text-center align-middle"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>수량
+                                        </th>
+                                        <th className="text-center align-middle"
+                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>비용
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {currentItems.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">상세 내역이 없습니다.</td>
+                                        </tr>
+                                    ) : (
+                                        currentItems.map((row, i) => (
+                                            <tr key={i}>
+                                                <td className="text-center">{row.branchId}</td>
+                                                <td className="text-center">{row.partId}</td>
+                                                <td className="text-center">{row.partName}</td>
+                                                <td className="text-center">{row.orderItemQuantity}</td>
+                                                <td className="text-center">{row.orderItemPrice.toLocaleString()}원</td>
+                                                <td className="text-center">{row.orderDate}</td>
+                                            </tr>
+                                        ))
+                                    )}
+                                    </tbody>
+                                </table>
+                                {/*  페이지네이션 컨트롤 */}
+                                {totalPages > 1 && (
+                                    <div className="d-flex justify-content-center align-items-center mt-3 gap-3">
+                                        <button
+                                            className="btn btn-outline-primary"
+                                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                            disabled={currentPage === 1}
+                                        >
+                                            이전
+                                        </button>
+                                        <span>{currentPage} / {totalPages}</span>
+                                        <button
+                                            className="btn btn-outline-primary"
+                                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            다음
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" onClick={closeModal}>닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    )}
+                 </div>
+            );
+        }
+
+
+        export default HQPaymentCheck;
 

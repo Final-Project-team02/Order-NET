@@ -4,4 +4,138 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bitc.fullstack503.ordernetserver.mapper.HQMapper">
 
+<!--    미결제 리스트 -->
+    <select id="findOrderItemsWithBranchAndParts" resultType="bitc.fullstack503.ordernetserver.dto.UnpaidListDTO">
+        select *
+        FROM orders
+        where order_status in ('승인 대기');
+    </select>
+
+<!--    발주 내역 -->
+    <select id="orderList" resultType="bitc.fullstack503.ordernetserver.dto.OrderListDTO">
+        SELECT
+        b.branch_id,
+        b.branch_name,
+        oi.part_id,
+        p.part_name,
+        oi.order_item_quantity,
+        oi.order_item_price,
+        o.order_date,
+        o.order_status,
+        o.order_deny,
+        o.order_id
+        FROM order_item oi
+        JOIN parts p ON oi.part_id = p.part_id
+        JOIN orders o ON oi.order_id = o.order_id
+        JOIN branch b ON o.branch_id = b.branch_id
+        WHERE o.order_status IN ('승인 대기');
+    </select>
+
+    <!--    결제나 반려된 것들 -->
+    <select id="findPayment" resultType="bitc.fullstack503.ordernetserver.dto.FindPaymentDTO">
+        SELECT
+        o.order_id,
+        o.order_date,
+        o.order_status,
+        p.part_name,
+        o.order_deny
+        FROM order_item oi
+        JOIN parts p ON oi.part_id = p.part_id
+        JOIN orders o ON oi.order_id = o.order_id
+        WHERE o.order_deny IN ('결제', '반려')
+        OR o.order_status IN ('결제', '반려')
+    </select>
+
+    <!--    결제 or 반려 상세 -->
+    <select id ="findPaymentDetail" resultType="bitc.fullstack503.ordernetserver.dto.FindPaymentDetailDTO">
+        SELECT
+        b.branch_id,
+        b.branch_name,
+        oi.part_id,
+        p.part_name,
+        oi.order_item_quantity,
+        oi.order_item_price,
+        o.order_date,
+        o.order_deny,
+        o.order_id,
+        o.order_status
+        FROM order_item oi
+        JOIN parts p ON oi.part_id = p.part_id
+        JOIN orders o ON oi.order_id = o.order_id
+        JOIN branch b ON o.branch_id = b.branch_id
+        WHERE o.order_status IN ('결제', '반려');
+    </select>
+
+<!--    조회 -->
+    <select id="selectOrderList" resultType="bitc.fullstack503.ordernetserver.dto.SearchDTO">
+        SELECT o.branch_id, b.branch_name, o.order_status, o.order_date,  oi.part_id, p.part_name, oi.order_item_quantity, o.order_price,
+        oi.order_item_price, o.order_id, o.order_deny, o.order_due_date
+        FROM order_item oi
+        JOIN parts p ON oi.part_id = p.part_id
+        JOIN orders o ON oi.order_id = o.order_id
+        JOIN branch b ON o.branch_id = b.branch_id
+        WHERE 1 = 1
+        <if test="branchId != null and branchId != ''">
+            AND o.branch_id = #{branchId}
+        </if>
+
+        <if test="branchName != null and branchName != ''">
+            AND b.branch_name = #{branchName}
+        </if>
+
+        <if test="orderStatus != null and orderStatus != ''">
+            AND (
+            o.order_status = #{orderStatus}
+            OR o.order_deny = #{orderStatus}
+            )
+        </if>
+
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND o.order_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+
+<!--        <if test="branchId != null and branchId != ''">-->
+<!--            AND o.branch_id = #{branchId}-->
+<!--        </if>-->
+<!--        <if test="branchName != null and branchName != ''">-->
+<!--            AND b.branch_name = #{branchName}-->
+<!--        </if>-->
+
+<!--        <choose>-->
+<!--            <when test="orderStatus == '승인' or orderStatus == '승인 대기' or orderStatus == '반려'">-->
+<!--                AND o.order_status = #{orderStatus}-->
+<!--            </when>-->
+<!--            <when test="orderStatus == '결제' or orderStatus == '반려'">-->
+<!--                AND o.order_deny = #{orderStatus}-->
+<!--            </when>-->
+<!--        </choose>-->
+
+
+<!--        <if test="startDate != null and endDate != null">-->
+<!--            AND o.order_date BETWEEN #{startDate} AND #{endDate}-->
+<!--        </if>-->
+    </select>
+
+<!--    단일 주문 처리-->
+    <!-- 주문 상태 및 반려 사유 업데이트 -->
+    <update id="updateOrderStatusAndDeny">
+        UPDATE orders
+        SET
+        order_status = #{orderStatus},
+        order_deny = #{orderDeny}
+        WHERE
+        order_id = #{orderId}
+    </update>
+
+<!--    복수 주문 처리-->
+    <update id="updateMultipleOrderStatusAndDeny">
+        UPDATE orders
+        SET
+        order_status = #{orderStatus},
+        order_deny = #{orderDeny}
+        WHERE order_id IN
+        <foreach item="id" collection="orderIdList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>
