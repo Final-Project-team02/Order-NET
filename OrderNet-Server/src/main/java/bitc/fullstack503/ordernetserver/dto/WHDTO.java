@@ -19,14 +19,11 @@ public class WHDTO {
 
 
     // 출고 재고 관리
-
     private int orderItemId; //상세 주문 번호
     private String orderId; //주문번호
     private int orderItemQuantity; //주문수량
     private String branchName; //대리점명
     private String orderItemStatus; //주문상태
     private String orderDueDate; //배송 원하는 날짜
-
-
 
 }

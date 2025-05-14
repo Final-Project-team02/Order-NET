@@ -22,12 +22,12 @@ public class WHController {
 
     //    물류센터 재고조회
     @GetMapping("/WHMain")
-    public Map<String, List<WHDTO>> selectWHcheck() {
+    public Map<String, List<WHDTO>> selectWHcheck(@RequestHeader("userId") String userId) {
         // 입고 리스트
-        List<WHDTO> comeInList = whService.selectWHComeIn();
+        List<WHDTO> comeInList = whService.selectWHComeIn(userId);
 
         //  재고 리스트
-        List<WHDTO> stockList = whService.selectWHStock();
+        List<WHDTO> stockList = whService.selectWHStock(userId);
 
         // result 변수 Map 객체 선언
         Map<String, List<WHDTO>> result = new HashMap<>();
@@ -39,16 +39,47 @@ public class WHController {
         return result;
     }
 
-    //    출고관리
+//    출고관리
+    @GetMapping("/WHManage")
+    public Map<String, Object> selectWHManage(
+            @RequestHeader("userId") String userId,
+            @RequestParam(required = false) String orderItemStatus,
+            @RequestParam(required = false) String branchName,
+            @RequestParam(required = false) String orderId,
+            @RequestParam(required = false) String orderStartDate,
+            @RequestParam(required = false) String orderEndDate
+    ) {
+        List<WHDTO> stockList = whService.selectWHManageFiltered(
+                userId, orderItemStatus, branchName, orderId, orderStartDate, orderEndDate
+        );
 
-    // 출고 상태 변경
+        Map<String, Object> result = new HashMap<>();
+        result.put("stockList", stockList);
+        return result;
+    }
+
+
+
+    // 출고상태 변경 & 수량 변경
     @PutMapping("/saveStatus")
     public ResponseEntity<String> saveAllStatus(@RequestBody List<WHDTO> updatedItems) {
         for (WHDTO dto : updatedItems) {
-            whService.updateOrderStatus(dto.getOrderItemId(), dto.getOrderItemStatus());
+            whService.updateOrderStatus(
+                    dto.getOrderItemId(),
+                    dto.getOrderItemStatus(),
+                    dto.getPartId(),
+                    dto.getOrderItemQuantity()
+            );
         }
         return ResponseEntity.ok("전체 저장 완료");
     }
 
-
 }
+
+
+
+
+
+
+
+

@@ -14,7 +14,12 @@ function WHMainPanel() {
     const [whData, setWhData] = useState({ comeInList: [], stockList: [] });
 
     const  selectWHMain= () => {
-        axios.get("http://localhost:8080/WHMain")
+        axios.get("http://localhost:8080/WHMain", {
+            headers: {
+                userId: "WH_BRK"  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
+            }
+        }
+    )
             .then(res => {
                 console.log('물류센터 재고현황 페이지 조회 성공');
                 console.log(res.data);
