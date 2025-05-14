@@ -36,6 +36,7 @@ function PartInsertPopUp({ isOpen, onClose }) {
       setFormData(prev => ({
         ...prev,
         warehouseId: selectedWarehouse.warehouseId,
+        partId: '',
       }));
     }
   }, [formData.warehouseName, warehouses]);
