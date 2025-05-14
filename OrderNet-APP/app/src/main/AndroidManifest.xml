@@ -20,12 +20,7 @@
         <!-- 대리점 메인 화면 -->
         <activity
             android:name=".Branch.BranchMainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
 
         <!-- 대리점 주문 화면 -->
@@ -45,6 +40,16 @@
         <activity
             android:name=".Branch.OrderItemListActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".Register_Login.Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

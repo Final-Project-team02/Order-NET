@@ -18,7 +18,10 @@ interface AppServerInterface {
 
   // 대리점 로그인 첫 화면
   @GET("branch")
-  fun BranchInfo(@Header("branchId") branchId: String): Call<BranchCountDTO>
+  fun BranchInfo(
+    @Header("Authorization") token: String,
+    @Header("branchId") branchId: String
+  ): Call<BranchCountDTO>
 
   // 대리점 주문화면
   @GET("branch/branchOrder")
@@ -49,5 +52,9 @@ interface AppServerInterface {
   fun selectOrderDetail(
     @Query("orderNumber") orderNumber: String
   ): Call<BranchOrderDTO>
+
+  //  로그인
+  @POST("login")
+  fun login(@Body loginRequest: LoginRequestDto): Call<LoginResponseDto>
 
 }

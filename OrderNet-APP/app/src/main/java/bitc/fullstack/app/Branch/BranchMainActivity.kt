@@ -28,9 +28,11 @@ class BranchMainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
 
+        }
         selectbranch()
+
+//        selectbranch()
         
         // 주문하기 버튼
         binding.orderButton.setOnClickListener {
@@ -69,11 +71,21 @@ class BranchMainActivity : AppCompatActivity() {
     }
 
     // 대리점 로그인 첫 페이지
-    private fun selectbranch(){
+    private fun selectbranch() {
+        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
+        val token = prefs.getString("token", "") ?: ""
+        val branchId = intent.getStringExtra("userRefId") ?: ""
+
         val api = AppServerClass.instance
-        val call = api.BranchInfo("Busan01")
+        val call = api.BranchInfo("Bearer $token", branchId)
         retrofitResponse(call)
     }
+
+//    private fun selectbranch(){
+//        val api = AppServerClass.instance
+//        val call = api.BranchInfo("Busan01")
+//        retrofitResponse(call)
+//    }
 
     private fun retrofitResponse(call: Call<BranchCountDTO>) {
         call.enqueue(object : Callback<BranchCountDTO> {
