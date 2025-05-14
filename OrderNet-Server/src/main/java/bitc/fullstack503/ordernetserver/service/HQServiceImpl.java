@@ -12,6 +12,11 @@ public class HQServiceImpl implements HQService {
     @Autowired
     private HQMapper hqMapper;
 
+    @Override
+    public int getCurrentOrderCount() {
+        return hqMapper.getCurrentOrderCount();
+    }
+
 //    미결제 리스트
     @Override
     public List<UnpaidListDTO> getOrderItemInfoList() {

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import bellIcon from '../assets/bellIcon.png';
+import './AlertBox.css';
 
 function HQMainPanel( { filteredRows, isFiltered }) {
 
@@ -56,11 +58,46 @@ function HQMainPanel( { filteredRows, isFiltered }) {
     }
   }, [filteredRows, isFiltered]);
 
+  const [orderCount, setOrderCount] = useState(0); // 주문 개수
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false); // 알림 상태
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // 서버로 주문 개수 요청
+      axios.get("http://localhost:8080/HQMain/orderCount")// 서버에서 새로운 주문 개수 요청
+          .then((response) => {
+            const newOrderCount = response.data;
+
+            // 새로운 주문이 있으면 알림 띄우기
+            if (newOrderCount > 0) {
+              setOrderCount(prevCount => prevCount + newOrderCount); // 주문 개수 업데이트
+              setIsNotificationVisible(true); // 알림 표시
+            }
+          })
+          .catch((error) => {
+            console.error('서버 요청 실패:', error);
+          });
+    }, 5000); // 5초마다 요청
+
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(intervalId);
+  }, []); // 빈 배열로 인해 한번만 실행
+
+  const closeNotification = () => {
+    setIsNotificationVisible(false); // 알림 닫기
+  };
 
   return (
-
-
       <div>
+        <div>
+          {isNotificationVisible && (
+              <div className="alert-box">
+                <img src={bellIcon} alt="bell icon" className="bell-icon" />
+                <p>새로운 주문 {orderCount}건 있습니다!</p>
+                <button onClick={closeNotification}>닫기</button>
+              </div>
+          )}
+        </div>
         <div className="p-4 mt-3 bg-light w-100 overflow-auto">
           <h2 className="h5 fw-bold mb-3">미결재 리스트</h2>
           <table className="table table-bordered">

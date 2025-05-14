@@ -8,19 +8,22 @@ import java.util.List;
 @Mapper
 public interface HQMapper {
 
-//    미결제 리스트
+    //  현재 주문 개수 가져오기
+    int getCurrentOrderCount();
+
+    //    미결제 리스트
     List<UnpaidListDTO> findOrderItemsWithBranchAndParts();
 
-//    결제 내역
+    //    결제 내역
     List<FindPaymentDTO> findPayment();
 
     //    결제 내역 상세
     List<FindPaymentDetailDTO> findPaymentDetail();
 
-//    발주
+    //    발주
     List<OrderListDTO>  orderList();
 
-//    조회 결과
+    //    조회 결과
     List<SearchDTO> selectOrderList(SearchDTO dto);
 
     // 단일 주문 처리

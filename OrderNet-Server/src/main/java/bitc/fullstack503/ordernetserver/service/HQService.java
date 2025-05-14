@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface HQService {
 
+    // 현재 주문 개수 가져오기
+    int getCurrentOrderCount();
+
 //    미결제 리스트
     List<UnpaidListDTO> getOrderItemInfoList();
 
