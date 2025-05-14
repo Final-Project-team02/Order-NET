@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.WarehouseStockMapper">
+
+    <select id="selectStockQuantity" resultType="int">
+        SELECT stock_quantity
+        FROM warehouse_stock
+        WHERE part_id = #{partId}
+    </select>
+
+
+    <update id="deleteStock" parameterType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        UPDATE warehouse_stock
+        SET stock_quantity = stock_quantity - #{orderItemQuantity}
+        WHERE part_id = #{partId}
+        AND stock_quantity >= #{orderItemQuantity}
+    </update>
+
+    <update id="restoreStock" >
+        UPDATE warehouse_stock
+        SET stock_quantity = stock_quantity + #{orderItemQuantity}
+        WHERE part_id = #{partId}
+    </update>
+
+
+</mapper>

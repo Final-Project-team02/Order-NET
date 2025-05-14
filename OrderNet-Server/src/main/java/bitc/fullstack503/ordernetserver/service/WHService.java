@@ -6,8 +6,19 @@ import java.util.List;
 
 public interface WHService {
     //    물류센터 재고조회
-    List<WHDTO> selectWHStock();
+    List<WHDTO> selectWHComeIn(String userId);
 
     //    물류센터 입고 조회
-    List<WHDTO> selectWHComeIn();
+    List<WHDTO> selectWHStock(String userId);
+
+    // 출고관리
+    List<WHDTO> selectWHManage(String userId);
+
+
+    void updateOrderStatus(int orderItemId, String orderItemStatus, String partId, int orderItemQuantity);
+
+
+    List<WHDTO> selectWHManageFiltered(String userId, String orderItemStatus, String branchName,
+                                       String orderId, String orderStartDate, String orderEndDate);
+
 }

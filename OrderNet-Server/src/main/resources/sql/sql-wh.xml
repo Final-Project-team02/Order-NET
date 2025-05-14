@@ -3,26 +3,123 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bitc.fullstack503.ordernetserver.mapper.WHMapper">
 
-    <!--  물류센터 재고 조회  -->
-    <select id="selectWHStock"  resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
-        select parts.part_id, parts.part_name, parts.part_cate, warehouse_stock.stock_quantity, parts.part_price
-        from warehouse_stock
-        join parts
-        on warehouse_stock.part_id=parts.part_id
-        where warehouse_stock.warehouse_id = "WH_ENG/PT"
+    <!-- 물류센터 재고 조회 -->
+    <select id="selectWHStock" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        SELECT parts.part_id, parts.part_name, parts.part_cate, warehouse_stock.stock_quantity, parts.part_price
+        FROM warehouse_stock
+        JOIN parts ON warehouse_stock.part_id = parts.part_id
+        WHERE warehouse_stock.warehouse_id = #{userId}
     </select>
 
-    <!--  물류센터 입고 조회  -->
+    <!-- 물류센터 입고 조회 -->
     <select id="selectWHComeIn" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
-        select parts.part_id, parts.part_name , parts.part_price,parts.part_cate, warehouse_inbound.inbound_quantity,warehouse_inbound.inbound_date
-        from warehouse_inbound
-        join parts
-        on warehouse_inbound.part_id=parts.part_id
-        where warehouse_inbound.warehouse_id='WH_ENG/PT'
+        SELECT parts.part_id, parts.part_name, parts.part_price, parts.part_cate,
+        warehouse_inbound.inbound_quantity, warehouse_inbound.inbound_date
+        FROM warehouse_inbound
+        JOIN parts ON warehouse_inbound.part_id = parts.part_id
+        WHERE warehouse_inbound.warehouse_id = #{userId}
+    </select>
+
+    <!-- 출고관리 필터링 조회 (페이징 적용) -->
+    <select id="selectWHManageFiltered" parameterType="map" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        SELECT
+        oi.order_item_id,
+        oi.order_id,
+        oi.part_id,
+        p.part_name,
+        p.part_cate,
+        oi.order_item_quantity,
+        b.branch_name,
+        oi.order_item_status,
+        o.order_due_date,
+        o.order_date
+        FROM order_item oi
+        LEFT JOIN parts p ON oi.part_id = p.part_id
+        LEFT JOIN orders o ON oi.order_id = o.order_id
+        LEFT JOIN branch b ON o.branch_id = b.branch_id
+        LEFT JOIN warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{userId}
+        WHERE ws.warehouse_id IS NOT NULL
+
+        <if test="orderItemStatus != null and orderItemStatus != ''">
+            AND oi.order_item_status = #{orderItemStatus}
+        </if>
+        <if test="branchName != null and branchName != ''">
+            AND b.branch_name = #{branchName}
+        </if>
+        <if test="orderStartDate != null and orderEndDate != null">
+            AND o.order_date BETWEEN #{orderStartDate} AND #{orderEndDate}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            AND o.order_id = #{orderId}
+        </if>
+
+        ORDER BY
+        CASE oi.order_item_status
+        WHEN '출고대기' THEN 0
+        ELSE 1
+        END,
+        o.order_due_date ASC
+
     </select>
 
 
+    <!-- 출고 상태 업데이트 -->
+    <update id="updateOrderStatus" parameterType="map">
+        UPDATE order_item
+        SET order_item_status = #{orderItemStatus}
+        WHERE order_item_id = #{orderItemId}
+    </update>
+
+    <select id="selectOrderItemStatus" resultType="String">
+        SELECT order_item_status
+        FROM order_item
+        WHERE order_item_id = #{orderItemId}
+    </select>
+
+<!--order_item_id 를 통해  order_id 들고옴 -->
+    <select id="selectOrderIdByItemId" resultType="String">
+        SELECT order_id FROM order_item WHERE order_item_id = #{orderItemId}
+    </select>
+
+<!--     출고 완료 아닌 값 확인하기-->
+    <select id="countNonShippedItems" resultType="int">
+        SELECT COUNT(*)
+        FROM order_item
+        WHERE order_id = #{orderId}
+        AND order_item_status != '출고완료'
+    </select>
+
+<!--    최종 주문 상태를 출고로 변경-->
+    <update id="updateOrderToShipped">
+        UPDATE orders
+        SET order_status = '출고'
+        WHERE order_id = #{orderId}
+    </update>
+
+<!--    출고 정보 입력-->
+    <insert id="insertOutbound">
+        INSERT INTO warehouse_outbound (warehouse_id, order_id, outbound_date)
+        VALUES (#{warehouseId}, #{orderId}, NOW())
+    </insert>
 
 
+<!--출고이력 중복 방지 (중복 INSERT 방지)-->
+    <select id="existsOutbound" resultType="boolean">
+        SELECT EXISTS (
+        SELECT 1
+        FROM warehouse_outbound
+        WHERE order_id = #{orderId}
+        AND warehouse_id = #{warehouseId}
+        )
+    </select>
+
+<!--   특정 order_id가 어떤 warehouse_id에서 출고되었는지 추정하여 반환하는 쿼리-->
+    <select id="selectWarehouseIdByOrderId" resultType="String" parameterType="String">
+        SELECT w.warehouse_id
+        FROM warehouse w
+        JOIN order_item oi ON SUBSTRING_INDEX(oi.part_id, '-', 1) = SUBSTRING(w.warehouse_id, 4)
+        WHERE oi.order_id = #{orderId}
+        LIMIT 1
+    </select>
 
 </mapper>

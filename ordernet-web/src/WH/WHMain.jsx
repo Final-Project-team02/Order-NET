@@ -9,7 +9,7 @@ function WHMain() {
 
     const menuItems = [
         { text: "물류 현황", link: "/WHMain" },
-        { text: "물류 재고관리", link: "/WHManage" },
+        { text: "출고관리", link: "/WHManage" },
     ];
 
 

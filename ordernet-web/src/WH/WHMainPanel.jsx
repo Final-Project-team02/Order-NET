@@ -14,7 +14,12 @@ function WHMainPanel() {
     const [whData, setWhData] = useState({ comeInList: [], stockList: [] });
 
     const  selectWHMain= () => {
-        axios.get("http://localhost:8080/WHMain")
+        axios.get("http://localhost:8080/WHMain", {
+            headers: {
+                userId: "WH_BRK"  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
+            }
+        }
+    )
             .then(res => {
                 console.log('물류센터 재고현황 페이지 조회 성공');
                 console.log(res.data);
@@ -79,7 +84,7 @@ function WHMainPanel() {
                             <tr key={row.partId + '-' + i}>
                                 <td className="text-center align-middle">{row.partId}</td>
                                 <td className="text-center align-middle">{row.partName}</td>
-                                <td className="text-center align-middle">{row.partPrice}</td>
+                                <td className="text-center align-middle">  {Number(row.partPrice).toLocaleString()} (원)</td>
                                 <td className="text-center align-middle">{row.partCate}</td>
                                 <td className="text-center align-middle">{row.inboundQuantity}</td>
                                 <td className="text-center align-middle">{row.inboundDate}</td>
@@ -131,7 +136,7 @@ function WHMainPanel() {
                             <td className="text-center align-middle">{row.partName}</td>
                             <td className="text-center align-middle">{row.partCate}</td>
                             <td className="text-center align-middle">{row.stockQuantity}</td>
-                            <td className="text-center align-middle">{row.partPrice}</td>
+                            <td className="text-center align-middle">{Number(row.partPrice).toLocaleString()} (원)</td>
                         </tr>
                     ))}
 
