@@ -1,21 +1,30 @@
 import {LogIn, LogOut, BarChart2 } from "lucide-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import GraphImage from "../assets/Graph.png";
+import axios from "axios";
 
 function WHMainPanel() {
 
+    useEffect(() => {
+        selectWHMain();
+    }, []);
+
     const [isGraphChecked, setIsGraphChecked] = useState(false);
 
-  // 부품 고유 ID,  부품명, 부품코드 번호, 부품카테고리,입고량,카테고리
-  const rows = [
-    { stockId:'ABC-1234',  name: '브레이크 패드', stockCodeId: 'A2345', warehouseCate: '브레이크', quantity: '3', CateNumber: '100'  },
-    { stockId:'DKF-5223',  name: '크랭크샤프트', stockCodeId: 'AB12', warehouseCate: '엔진', quantity: '2', CateNumber: '100'  },
-    { stockId:'EFW-1234',  name: '타이밍 벨트', stockCodeId: 'CADS1', warehouseCate: '엔진', quantity: '1', CateNumber: '100'  },
-    { stockId:'CFW-3145',  name: '서스펜션 패드', stockCodeId: '4124', warehouseCate: '서스펜션', quantity: '1', CateNumber: '100'  },
-    { stockId:'ABC-1234',  name: '브레이크 패드', stockCodeId: 'A2345', warehouseCate: '브레이크', quantity: '3', CateNumber: '100'  },
-    { stockId:'DKF-5223',  name: '크랭크샤프트', stockCodeId: 'AB12', warehouseCate: '엔진', quantity: '2', CateNumber: '100'  },
-    { stockId:'EFW-1234',  name: '타이밍 벨트', stockCodeId: 'CADS1', warehouseCate: '엔진', quantity: '1', CateNumber: '100'  },
-    { stockId:'CFW-3145',  name: '서스펜션 패드', stockCodeId: '4124', warehouseCate: '서스펜션', quantity: '1', CateNumber: '100'  }, ]
+    const [whData, setWhData] = useState({ comeInList: [], stockList: [] });
+
+    const  selectWHMain= () => {
+        axios.get("http://localhost:8080/WHMain")
+            .then(res => {
+                console.log('물류센터 재고현황 페이지 조회 성공');
+                console.log(res.data);
+                setWhData(res.data);
+            })
+            .catch(err => {
+                console.log("비동기 통신 중 오류가 발생했습니다.");
+                console.log(err);
+            });
+    }
 
     return (
         <div>
@@ -23,15 +32,16 @@ function WHMainPanel() {
                 {/*<h2 className="h5 fw-bold mb-3">입고리스트</h2>*/}
 
                 <div className="d-flex justify-content-between align-items-center text-primary mb-3">
-                    <div className="fw-bold d-flex align-items-center gap-2">
+                    <h5 className="fw-bold mb-0 d-flex align-items-center gap-2">
                         {isGraphChecked ? (
-                            <BarChart2 className="cursor-pointer text-primary" size={20} strokeWidth={2} />
+                            <BarChart2 className="cursor-pointer text-primary" size={20} strokeWidth={2}/>
                         ) : (
-                            <LogIn className="cursor-pointer text-primary" size={20} strokeWidth={2} />
+                            <LogIn className="cursor-pointer text-primary" size={20} strokeWidth={2}/>
                         )}
                         {isGraphChecked ? "입고리스트주문대비출고그래프" : "입고리스트"}
+                    </h5>
 
-                    </div>
+
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" id="graphCheck"
                                checked={isGraphChecked} onChange={(e) => setIsGraphChecked(e.target.checked)}/>
@@ -52,28 +62,30 @@ function WHMainPanel() {
                 ) : (
                     <div className="mt-4">
                     <table className="table table-bordered">
-                        <thead className="table-info">
+                        <thead className="table-primary">
                         <tr>
-                            <th className="text-center align-middle">부품 고유 ID</th>
+                            <th className="text-center align-middle">부품 코드번호</th>
                             <th className="text-center align-middle">부품 명</th>
-                            <th className="text-center align-middle">부품코드 번호</th>
+                            <th className="text-center align-middle">부품 가격</th>
                             <th className="text-center align-middle">부품 카테고리</th>
                             <th className="text-center align-middle">입고량</th>
-                            <th className="text-center align-middle">카테고리</th>
+                            <th className="text-center align-middle">입고날짜 </th>
+
                         </tr>
                         </thead>
                         <tbody>
-                        {rows.map((row, i) => (
-                            // <tr key={i}>
-                            <tr key={row.stockId + '-' + i}>
-                                <td className="text-center align-middle">{row.stockId}</td>
-                                <td className="text-center align-middle">{row.name}</td>
-                                <td className="text-center align-middle">{row.stockCodeId}</td>
-                                <td className="text-center align-middle">{row.warehouseCate}</td>
-                                <td className="text-center align-middle">{row.quantity}</td>
-                                <td className="text-center align-middle">{row.CateNumber}</td>
+
+                        {whData.comeInList.map((row, i) => (
+                            <tr key={row.partId + '-' + i}>
+                                <td className="text-center align-middle">{row.partId}</td>
+                                <td className="text-center align-middle">{row.partName}</td>
+                                <td className="text-center align-middle">{row.partPrice}</td>
+                                <td className="text-center align-middle">{row.partCate}</td>
+                                <td className="text-center align-middle">{row.inboundQuantity}</td>
+                                <td className="text-center align-middle">{row.inboundDate}</td>
                             </tr>
                         ))}
+
                         </tbody>
                     </table>
                     </div>
@@ -103,29 +115,26 @@ function WHMainPanel() {
 
                 <div className="mt-4">
                 <table className="table table-bordered">
-                    <thead className="table-info">
+                    <thead className="table-primary">
                     <tr>
-                        <th className="text-center align-middle">부품 고유 ID</th>
+                        <th className="text-center align-middle">부품 코드번호</th>
                         <th className="text-center align-middle">부품명</th>
-                        <th className="text-center align-middle">부품코드 번호</th>
                         <th className="text-center align-middle">부품 카테고리</th>
                         <th className="text-center align-middle">재고량</th>
-                        <th className="text-center align-middle">카테고리</th>
+                        <th className="text-center align-middle">부품가격</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {rows.map((row, i) => (
-
+                    {whData.stockList.map((row, i) => (
                         <tr key={i}>
-                            <td className="text-center align-middle">{row.stockId}</td>
-                            <td className="text-center align-middle">{row.name}</td>
-                            <td className="text-center align-middle">{row.stockCodeId}</td>
-                            <td className="text-center align-middle">{row.warehouseCate}</td>
-                            <td className="text-center align-middle">{row.quantity}</td>
-                            <td className="text-center align-middle">{row.CateNumber}</td>
+                            <td className="text-center align-middle">{row.partId}</td>
+                            <td className="text-center align-middle">{row.partName}</td>
+                            <td className="text-center align-middle">{row.partCate}</td>
+                            <td className="text-center align-middle">{row.stockQuantity}</td>
+                            <td className="text-center align-middle">{row.partPrice}</td>
                         </tr>
-                    ))
-                    }
+                    ))}
+
                     </tbody>
                 </table>
                 </div>
