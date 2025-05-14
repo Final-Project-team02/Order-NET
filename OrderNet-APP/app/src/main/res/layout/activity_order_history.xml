@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:orientation="vertical">
 
@@ -52,7 +53,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:backgroundTint="#EBF2FC"
-            android:drawableLeft="@drawable/calendar"
+            android:drawableLeft="@drawable/ic_calendar"
             android:drawablePadding="8dp"
             android:text="시작 기간 선택"
             android:textColor="#355389" />
@@ -63,45 +64,79 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:backgroundTint="#EBF2FC"
-            android:drawableLeft="@drawable/calendar"
+            android:drawableLeft="@drawable/ic_calendar"
             android:drawablePadding="8dp"
             android:text="종료 기간 선택"
             android:textColor="#355389" />
 
     </LinearLayout>
 
-    <!--  주문번호 입력  -->
-    <EditText
-        android:id="@+id/editTextOrderNumber"
+<!--    &lt;!&ndash;  주문번호 입력  &ndash;&gt;-->
+<!--    <EditText-->
+<!--        android:id="@+id/editTextOrderNumber"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:hint="주문번호"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:background="@drawable/button_round_bg"-->
+<!--        android:paddingHorizontal="16dp"-->
+<!--        android:textSize="16sp"-->
+<!--        android:singleLine="true" />-->
+
+
+
+<!--    &lt;!&ndash;    주문조회 버튼&ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_order_search"-->
+<!--            android:layout_width="380dp"-->
+<!--            android:layout_height="65dp"-->
+<!--            android:layout_marginVertical="20dp"-->
+<!--            android:background="@drawable/button_gradient"-->
+<!--            android:text="주문내역 조회하기"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="18sp" />-->
+
+<!--    </LinearLayout>-->
+
+
+    <FrameLayout
+        android:id="@+id/search_container"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="주문번호"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_round_bg"
-        android:paddingHorizontal="16dp"
-        android:textSize="16sp"
-        android:singleLine="true" />
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/spinner_category"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <!-- EditText -->
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_edittext_bg"
+            android:hint="상품명을 입력하세요"
+            android:paddingStart="12dp"
+            android:paddingEnd="40dp"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
-
-    <!--    주문조회 버튼-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatButton
+        <!-- ImageButton (오른쪽에 겹치기) -->
+        <ImageButton
             android:id="@+id/btn_order_search"
-            android:layout_width="380dp"
-            android:layout_height="65dp"
-            android:layout_marginVertical="20dp"
-            android:background="@drawable/button_gradient"
-            android:text="주문내역 조회하기"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-    </LinearLayout>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/search_button_bg"
+            android:contentDescription="검색"
+            android:scaleType="centerInside"
+            android:src="@drawable/search1" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
