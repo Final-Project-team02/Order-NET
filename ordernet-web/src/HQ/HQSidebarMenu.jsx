@@ -15,7 +15,8 @@ function HQSidebarMenu({ menuItems }) {
                 {menuItems.map((item, index) => (
                     <li className="nav-item" key={index}>
                         <Link to={item.link} className="nav-link text-white">
-                            📁 {item.text}
+                          <img src="/src/assets/folder.png" alt="folder" style={{ width: 20, height: 20, marginRight: 10 }} />
+                          {item.text}
                         </Link>
                     </li>
                 ))}
