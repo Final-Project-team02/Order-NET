@@ -8,5 +8,6 @@ public class LoginRequestDto {
     private String userPw;
     private String userType;
     private String branchSupervisor;
+    private String branchName;
     private String warehouseName;
 }

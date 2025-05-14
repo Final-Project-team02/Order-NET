@@ -75,6 +75,10 @@ class BranchMainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
         val token = prefs.getString("token", "") ?: ""
         val branchId = intent.getStringExtra("userRefId") ?: ""
+        Log.d("BranchMain", "전달받은 branchId: $branchId")
+
+        val branchName = intent.getStringExtra("branchName") ?: ""
+        binding.branchName.text = branchName
 
         val api = AppServerClass.instance
         val call = api.BranchInfo("Bearer $token", branchId)
@@ -96,7 +100,7 @@ class BranchMainActivity : AppCompatActivity() {
                     Log.d("csy", "branch 조회 결과 : $data")
 
                     data?.let {
-                        binding.branchName.text = it.branchName
+//                        binding.branchName.text = it.branchName
                         binding.branchOrderCount.text = "${it.orderCount}건"
                         binding.branchAcceptCount.text = "${it.acceptCount}건"
                         binding.branchDeliveryCount.text = "${it.deliveryCount}건"

@@ -66,6 +66,7 @@ class Login : AppCompatActivity() {
                                 putExtra("userRefId", it.userRefId)
                                 putExtra("branchSupervisor", it.branchSupervisor)
                                 putExtra("warehouseName", it.warehouseName)
+                                putExtra("branchName", it.branchName)
                             }
                             startActivity(intent)
                             finish()

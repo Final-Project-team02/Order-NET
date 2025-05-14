@@ -43,7 +43,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/login", "/HQMain/**", "/branch/**", "/WHMain/**",
-                        "/WHManage/**", "/app/branch/**", "/HQstatus/**").permitAll()
+                        "/WHManage/**", "/app/branch/**", "/HQstatus/**", "/app/login").permitAll()
                     .requestMatchers("/HQMain/**").authenticated()
                     .anyRequest().authenticated()
             )
@@ -56,7 +56,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://172.27.48.1:8080", "http://10.0.2.2:8080/app")); // React 등 프론트 도메인, 모바일
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://172.27.48.1:8080", "http://10.0.2.2:8080")); // React 등 프론트 도메인, 모바일
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // 인증 포함 허용 (Authorization 헤더 등)

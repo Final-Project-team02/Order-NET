@@ -15,5 +15,6 @@ data class LoginResponseDto(
     val userType: String,
     val userRefId: String,
     val branchSupervisor: String?,
+    val branchName: String?,
     val warehouseName: String?
 )
