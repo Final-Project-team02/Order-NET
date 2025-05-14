@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 public class WHController {
 
-
     @Autowired
     private WHService whService;
 
@@ -57,8 +56,6 @@ public class WHController {
         result.put("stockList", stockList);
         return result;
     }
-
-
 
     // 출고상태 변경 & 수량 변경
     @PutMapping("/saveStatus")

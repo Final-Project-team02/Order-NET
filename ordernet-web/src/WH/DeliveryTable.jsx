@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import {useParams} from "react-router-dom";
 
 // DeliveryTable 컴포넌트: 재고(출고) 데이터를 보여주고 상태를 변경하는 테이블
 function DeliveryTable({ filters, setBranchList }) {
+
     // 재고 및 상태 데이터 관리용 상태 변수
     const [WHM, setWHM] = useState({ stockList: [] });     // 전체 재고 데이터
     const [statusMap, setStatusMap] = useState({});        // 각 주문 항목의 상태 저장
 
     // 페이징 처리 상태 변수
     const [currentPage, setCurrentPage] = useState(1);     // 현재 페이지 번호
-    const itemsPerPage = 10;                               // 페이지당 보여줄 항목 수
+    const itemsPerPage = 10; // 페이지당 보여줄 항목 수
+
+    const { agencyCode } = useParams();// 주소에서 :agencyCode 파라미터 추출
+
+    const userId = agencyCode;
 
     // 필터가 변경될 때마다 서버에서 데이터 요청
     useEffect(() => {
@@ -21,7 +27,7 @@ function DeliveryTable({ filters, setBranchList }) {
     // 서버로부터 재고 데이터를 가져오는 함수
     const selectWHManage = (filters) => {
         axios.get("http://localhost:8080/WHManage", {
-            headers: { userId: "WH_BRK" },
+            headers: { userId: userId },
             params: filters
         })
             .then(res => {

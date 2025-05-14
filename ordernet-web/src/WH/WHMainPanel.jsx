@@ -2,6 +2,7 @@ import {LogIn, LogOut, BarChart2 } from "lucide-react";
 import {useEffect, useState} from "react";
 import GraphImage from "../assets/Graph.png";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
 function WHMainPanel() {
 
@@ -13,10 +14,15 @@ function WHMainPanel() {
 
     const [whData, setWhData] = useState({ comeInList: [], stockList: [] });
 
+
+
+    const { agencyCode } = useParams();  // 주소에서 :agencyCode 파라미터 추출
+    const userId = agencyCode;
+
     const  selectWHMain= () => {
         axios.get("http://localhost:8080/WHMain", {
             headers: {
-                userId: "WH_BRK"  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
+                userId: userId  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
             }
         }
     )

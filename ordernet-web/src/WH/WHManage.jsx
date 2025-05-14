@@ -4,11 +4,18 @@ import DeliveryTable from "./DeliveryTable.jsx";
 import HQSidebarMenu from "../HQ/HQSidebarMenu.jsx";
 import HQTopbar from "../HQ/HQTopbar.jsx";
 import {useState} from "react";
+import {useParams} from "react-router-dom";
 
 function WHManage() {
+
+
+    const { agencyCode } = useParams();
+
+    const MaagencyCode = agencyCode;
+
     const menuItems = [
-        { text: "물류 현황", link: "/WHMain" },
-        { text: "출고관리", link: "/WHManage" }
+        { text: "물류 현황", link: `/WHMain/${MaagencyCode}` },
+        { text: "출고관리", link: `/WHManage/${MaagencyCode}` }
     ];
 
     const breadcrumb = "☆ 물류 관리 > 출고관리"; // Change this as needed

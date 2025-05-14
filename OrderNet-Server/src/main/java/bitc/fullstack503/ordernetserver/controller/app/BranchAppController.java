@@ -77,7 +77,6 @@ public class BranchAppController {
     return branchAppService.getOrderHistory(branchId, orderStatus, startDate, endDate, orderId);
   }
 
-
   // 대리점 주문 상세 내역
   @GetMapping("/orderDetail")
   public BranchOrderDTO getOrderDetail(@RequestParam("orderNumber") String orderNumber) {

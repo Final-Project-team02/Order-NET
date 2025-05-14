@@ -16,21 +16,19 @@ public class WHServiceImpl implements WHService {
 
     @Autowired
     private WHMapper whMapper;
-@Autowired
-private WarehouseStockMapper warehouseStockMapper;
 
+    @Autowired
+    private WarehouseStockMapper warehouseStockMapper;
 
     //    물류센터 입고조회
     @Override
     public List<WHDTO> selectWHComeIn(String userId) {
         return whMapper.selectWHComeIn(userId);
     }
-
     //    물류센터 재고조회
     @Override
     public List<WHDTO> selectWHStock(String userId) {
         return whMapper.selectWHStock(userId);
-
     }
 
     //    재고관리 조회
@@ -76,9 +74,6 @@ private WarehouseStockMapper warehouseStockMapper;
         }
     }
 
-
-
-
     //    출고관리 필터링
     @Override
     public List<WHDTO> selectWHManageFiltered(String userId, String orderItemStatus, String branchName,
@@ -93,7 +88,6 @@ private WarehouseStockMapper warehouseStockMapper;
 
         return whMapper.selectWHManageFiltered(paramMap); // Mapper에서 필터링된 데이터 반환
     }
-
 
     }
 

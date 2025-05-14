@@ -36,7 +36,7 @@ public class WebController {
         return hqService.getOrderList();
     }
 
-//    결제 확인
+    //    결제 확인
     @GetMapping("/payment")
     public List<FindPaymentDTO> getFindPaymentList() {
         return hqService.getFindPaymentList();
@@ -46,14 +46,14 @@ public class WebController {
     @GetMapping("/paymentDetail")
     public List<FindPaymentDetailDTO> getFindPaymentDetailList() { return hqService.getFindPaymentDetailList();}
 
-//    검색
-@PostMapping("/search")
-public List<SearchDTO> searchOrders(@RequestBody SearchDTO dto) {
-    System.out.println("Received search params: " + dto);
-    return hqService.getFilteredOrders(dto);
-}
+    //    검색
+    @PostMapping("/search")
+    public List<SearchDTO> searchOrders(@RequestBody SearchDTO dto) {
+        System.out.println("Received search params: " + dto);
+        return hqService.getFilteredOrders(dto);
+    }
 
-// 단일 , 복수 주문 처리
+    // 단일 , 복수 주문 처리
     @PostMapping("/update")
     public ResponseEntity<?> updateOrders(@RequestBody UpdateOrdersRequest request) {
         if (request.getOrderIdList() != null && !request.getOrderIdList().isEmpty()) {

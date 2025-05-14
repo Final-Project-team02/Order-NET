@@ -16,9 +16,6 @@ import retrofit2.http.Query
 
 interface AppServerInterface {
 
-  @GET("server")
-  fun serverTest(): Call<String>
-
   // 대리점 로그인 첫 화면
   @GET("branch")
   fun BranchInfo(@Header("branchId") branchId: String): Call<BranchCountDTO>

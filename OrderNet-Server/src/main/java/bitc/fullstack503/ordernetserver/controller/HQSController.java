@@ -73,8 +73,6 @@ public class HQSController {
     return hqStatusService.getPartCategories(warehouseId); // 부품 카테고리 조회
   }
 
-
-
   // 부품 등록 - parts + WarehouseStock
   @PostMapping("/insert")
   public ResponseEntity<String> insertPart(@RequestBody HQStatusDTO hqStatusDTO) throws Exception{
