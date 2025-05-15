@@ -5,6 +5,7 @@ import HQStockStatus from "./HQ/HQStockStatus.jsx";
 import HQClientList from "./HQ/HQClientList.jsx";
 import WHManage from "./WH/WHManage.jsx";
 import WHMain from "./WH/WHMain.jsx";
+import HQClientRanking from "./HQ/HQClientRanking.jsx";
 
 function WebMain() {
     return (
@@ -17,6 +18,7 @@ function WebMain() {
                 </Route>
                 <Route path={"/HQClientList"} element={<HQClientList/>}></Route>
                 <Route path={"/HQStockStatus"} element={<HQStockStatus/>}></Route>
+                <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
                 <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
                 <Route path={"/WHMain"} element={<WHMain/>}/>
                 <Route path={"/WHManage"} element={<WHManage/>}/>

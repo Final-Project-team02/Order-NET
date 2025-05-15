@@ -16,30 +16,21 @@ import {
 import axios from "axios";
 
 
-// // 더미 데이터 (임시 데이터)
-// const dummyData = [
-//     {name: "대리점A", 주문금액: 120000},
-//     {name: "대리점B", 주문금액: 90000},
-//     {name: "대리점C", 주문금액: 75000},
-//     {name: "대리점D", 주문금액: 60000},
-//     {name: "대리점E", 주문금액: 49000},
-//     {name: "대리점E", 주문금액: 35000},
-//     {name: "대리점E", 주문금액: 27000},
+
+// const data = [
+//     {name: 'Page A', pv: 800},
+//     {name: 'Page B', pv: 967},
+//     {name: 'Page C', pv: 1098},
+//     {name: 'Page D', pv: 1200},
+//     {name: 'Page E', pv: 1108},
+//     {name: 'Page F', pv: 680},
+//     {name: 'Page K', pv: 680},
 // ];
-const data = [
-    {name: 'Page A', pv: 800},
-    {name: 'Page B', pv: 967},
-    {name: 'Page C', pv: 1098},
-    {name: 'Page D', pv: 1200},
-    {name: 'Page E', pv: 1108},
-    {name: 'Page F', pv: 680},
-    {name: 'Page K', pv: 680},
-];
 
 
 function HQClientRanking() {
     const [rankingData, setRankingData] = useState([]);
-    // const [productData, setProductData] = useState([]);
+    const [productData, setProductData] = useState([]);
 
     const menuItems = [
         {text: "주문 확정", link: "/"},
@@ -47,15 +38,15 @@ function HQClientRanking() {
         {text: "재고현황", link: "/HQStockStatus"},
     ];
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8080/HQMain/productranking')
-    //         .then(response =>{
-    //             setProductData(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.log("오류가 났음", error);
-    //         });
-    // }, []);
+    useEffect(() => {
+        axios.get('http://localhost:8080/HQMain/productranking')
+            .then(response =>{
+                setProductData(response.data);
+            })
+            .catch(error => {
+                console.log("오류가 났음", error);
+            });
+    }, []);
 
     // API 호출 (useEffect)
     useEffect(() => {
@@ -102,7 +93,7 @@ function HQClientRanking() {
                                 <div className={'my-5'} style={{height: 500, width: 550}}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <ComposedChart
-                                            data={data}
+                                            data={productData}
                                             margin={{top: 20, right: 20, bottom: 20, left: 20}}>
                                             <CartesianGrid stroke="#f5f5f5"/>
                                             <XAxis dataKey="name" scale="band"/>
