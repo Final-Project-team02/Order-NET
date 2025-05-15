@@ -58,6 +58,7 @@ function BranchMain() {
         try {
             const response = await Axios.get(`http://localhost:8080/branch/order/${orderId}/parts`);
             setPartsData(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error("부품 데이터를 불러오는 데 실패했습니다.", error);
         }
@@ -208,7 +209,7 @@ function BranchMain() {
                                             <tbody>
                                             {partsData.map((part, index) => (
                                                 <tr key={index}>
-                                                    <td>{part.partsId}</td>
+                                                    <td>{part.partId}</td>
                                                     <td>{part.partCate}</td>
                                                     <td>{part.partName}</td>
                                                     <td>{part.quantity}</td>

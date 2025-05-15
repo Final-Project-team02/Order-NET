@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun selectTest() {
-    val api = AppServerClass.instance
-    val call = api.serverTest()
-    retrofitResponse(call)
+//    val api = AppServerClass.instance
+//    val call = api.serverTest()
+//    retrofitResponse(call)
   }
 
   private fun retrofitResponse(call: Call<String>) {
