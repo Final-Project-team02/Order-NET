@@ -20,26 +20,19 @@
         <activity
             android:name=".Warehouse.OrderDetailActivity"
             android:exported="false">
-
-
         </activity>
+
         <activity
             android:name=".Warehouse.WHOrderHistory"
             android:exported="true">
-
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".Warehouse.OrderDetailActivity"
-            android:exported="false">
 
-        </activity>
         <activity
             android:name=".Branch.BranchOrderLIst"
             android:exported="false">
@@ -47,17 +40,12 @@
 
         <activity
             android:name=".Warehouse.WHMainActivity"
-            android:exported="false">
-
-
-
-
+            android:exported="true">
         </activity>
 
         <activity
             android:name=".MainActivity"
             android:exported="false">
-
         </activity>
     </application>
 

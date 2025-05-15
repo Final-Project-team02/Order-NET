@@ -7,6 +7,8 @@ import bitc.fullstack.app.dto.WHOrderAppItemDTO
 import bitc.fullstack.app.databinding.ItemOrderDetailBinding
 import com.bumptech.glide.Glide
 import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Locale
 
 
 class WHOrderAppItemAdapter(private var items: List<WHOrderAppItemDTO>) :
@@ -49,9 +51,8 @@ class WHOrderAppItemAdapter(private var items: List<WHOrderAppItemDTO>) :
             binding.tvProductQuantity.text = "수량: ${item.orderItemQuantity}"
 
             // 가격은 BigDecimal로 되어 있으므로, 포맷팅해서 출력
-            val totalPrice = item.orderItemPrice.multiply(BigDecimal(item.orderItemQuantity))
-            val formattedPrice = totalPrice.setScale(0, BigDecimal.ROUND_DOWN).toPlainString()
-            binding.tvProductPrice.text = "금액: $formattedPrice (원)"
+            binding.tvProductPrice.text = "금액 ${NumberFormat.getNumberInstance(Locale.KOREA).format(item.orderItemPrice.multiply(BigDecimal(item.orderItemQuantity)).setScale(0, BigDecimal.ROUND_DOWN).toDouble())} 원"
+
 
 
         }

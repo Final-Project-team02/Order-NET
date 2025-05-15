@@ -38,6 +38,9 @@ public class OrderAppDTO {
   @JsonProperty("order_item_price")
   private BigDecimal orderItemPrice;
 
+  @JsonProperty("order_price")
+  private BigDecimal orderPrice;
+
   @JsonProperty("order_item_status")
   private String orderItemStatus;
 

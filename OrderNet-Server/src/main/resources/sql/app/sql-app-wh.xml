@@ -42,6 +42,8 @@
             o.order_due_date,
             o.branch_id,
             b.branch_name,
+            o.order_price,
+            oi.order_item_status,
             SUM(oi.order_item_quantity) AS total_quantity,
             CASE
                 WHEN COUNT(oi.order_item_status) = COUNT(CASE WHEN oi.order_item_status = '출고대기' THEN 1 END) THEN '승인 대기'

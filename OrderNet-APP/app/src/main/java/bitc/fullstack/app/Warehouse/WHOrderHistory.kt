@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityWhorderHistoryBinding
 import bitc.fullstack.app.dto.WHDTO
@@ -42,17 +43,14 @@ class WHOrderHistory : AppCompatActivity() {
             insets
         }
         // Retrofit 초기화
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.100.203.89:8080/") // 서버 주소
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        apiService = retrofit.create(AppServerInterface::class.java)
-
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("http://10.100.203.54:8080/") // 서버 주소
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        apiService = retrofit.create(AppServerInterface::class.java)
 
         setupSpinner()
-
-
         // setupPieChart()
     }
 
@@ -80,51 +78,97 @@ class WHOrderHistory : AppCompatActivity() {
 
     private fun filterByMonth(monthStr: String) {
         val month = monthStr.replace("월", "").toInt()
-        val year = 2025 // 예시 연도, 실제 연도로 대체 가능
-        val warehouseId = "WH_BRK" // 물류센터 ID를 실제 값으로 대체
+        val year = 2025 // 예시 연도
+        val warehouseId = "WH_BRK" // 실제 물류센터 ID로 대체
 
         Log.d("WH_API", "요청 파라미터: warehouseId=$warehouseId, month=$month, year=$year")
 
-        // Retrofit 호출
-        apiService.getMonthlyOutboundParts(warehouseId, month, year)
-            .enqueue(object : Callback<List<WHDTO>> { // 수정된 부분
-                override fun onResponse(
-                    call: Call<List<WHDTO>>,
-                    response: Response<List<WHDTO>>
-                ) {
-                    if (response.isSuccessful) {
-                        val dataList = response.body() ?: emptyList()
+        val api = AppServerClass.instance
+        val call = api.getMonthlyOutboundParts(warehouseId, month, year)
 
-                        Log.d("WH_API", "받은 데이터 수: $dataList") // 로그 확인
+        call.enqueue(object : Callback<List<WHDTO>> {
+            override fun onResponse(call: Call<List<WHDTO>>, response: Response<List<WHDTO>>) {
+                if (response.isSuccessful) {
+                    val dataList = response.body() ?: emptyList()
 
-                        Log.d("WH_API", "받은 데이터 내용: ${Gson().toJson(dataList)}")
+                    Log.d("WH_API", "받은 데이터 수: ${dataList.size}")
+                    Log.d("WH_API", "받은 데이터 내용: ${Gson().toJson(dataList)}")
 
-                        if (dataList.isEmpty()) {
-                            Log.d("WH_API", "데이터가 없습니다.")
-                        }
-                        val entries = dataList.map {
-                            PieEntry(it.totalQuantity.toFloat(), it.partId)
-
-                        }
-                        Log.d("WH_API", "데이터가 nocome.")
-
-                        showPieChart(entries)
-
-                        // 🔹 리사이클러뷰 어댑터 연결
-                        binding.recyclerView.layoutManager = LinearLayoutManager(this@WHOrderHistory)
-                        // 🔹 RecyclerView 어댑터 연결
-                        binding.recyclerView.adapter = WHOrderHistoryAdapter(dataList)
+                    if (dataList.isEmpty()) {
+                        Log.d("WH_API", "데이터가 없습니다.")
                     }
-                    else {
-                        Log.e("WH_API", "응답 실패: ${response.code()}")
+
+                    val entries = dataList.map {
+                        PieEntry(it.totalQuantity.toFloat(), it.partId)
                     }
+
+                    showPieChart(entries)
+
+                    binding.recyclerView.layoutManager = LinearLayoutManager(this@WHOrderHistory)
+                    binding.recyclerView.adapter = WHOrderHistoryAdapter(dataList)
+                } else {
+                    Log.e("WH_API", "응답 실패: ${response.code()}")
                 }
-                override fun onFailure(call: Call<List<WHDTO>>, t: Throwable) {
-                    Log.e("WH_API", "서버 호출 실패: ${t.message}")
-                    t.printStackTrace()
-                }
-            })
+            }
+
+            override fun onFailure(call: Call<List<WHDTO>>, t: Throwable) {
+                Log.e("WH_API", "서버 호출 실패: ${t.message}")
+                t.printStackTrace()
+            }
+        })
     }
+
+
+//    private fun filterByMonth(monthStr: String) {
+//        val month = monthStr.replace("월", "").toInt()
+//        val year = 2025 // 예시 연도, 실제 연도로 대체 가능
+//        val warehouseId = "WH_BRK" // 물류센터 ID를 실제 값으로 대체
+//
+//        Log.d("WH_API", "요청 파라미터: warehouseId=$warehouseId, month=$month, year=$year")
+//
+//        val api = AppServerClass.instance
+//        val call = api.getMonthlyOutboundParts(warehouseId, month, year)
+//
+//        // Retrofit 호출
+//        apiService.getMonthlyOutboundParts(warehouseId, month, year)
+//            .enqueue(object : Callback<List<WHDTO>> { // 수정된 부분
+//                override fun onResponse(
+//                    call: Call<List<WHDTO>>,
+//                    response: Response<List<WHDTO>>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        val dataList = response.body() ?: emptyList()
+//
+//                        Log.d("WH_API", "받은 데이터 수: $dataList") // 로그 확인
+//
+//                        Log.d("WH_API", "받은 데이터 내용: ${Gson().toJson(dataList)}")
+//
+//                        if (dataList.isEmpty()) {
+//                            Log.d("WH_API", "데이터가 없습니다.")
+//                        }
+//                        val entries = dataList.map {
+//                            PieEntry(it.totalQuantity.toFloat(), it.partId)
+//
+//                        }
+//                        Log.d("WH_API", "데이터가 nocome.")
+//
+//                        showPieChart(entries)
+//
+//                        // 🔹 리사이클러뷰 어댑터 연결
+//                        binding.recyclerView.layoutManager = LinearLayoutManager(this@WHOrderHistory)
+//                        // 🔹 RecyclerView 어댑터 연결
+//                        binding.recyclerView.adapter = WHOrderHistoryAdapter(dataList)
+//                    }
+//                    else {
+//                        Log.e("WH_API", "응답 실패: ${response.code()}")
+//                    }
+//                }
+//                override fun onFailure(call: Call<List<WHDTO>>, t: Throwable) {
+//                    Log.e("WH_API", "서버 호출 실패: ${t.message}")
+//                    t.printStackTrace()
+//                }
+//            })
+//    }
 
     private fun showPieChart(entries: List<PieEntry>) {
         if (entries.isEmpty()) {

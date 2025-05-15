@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import bitc.fullstack.app.R
 import bitc.fullstack.app.dto.OrderAppDTO
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,11 +48,11 @@ class WHOrderAdapter(
         holder.tvOrderCount.text = "${order.totalQuantity}건"
 
         // 가격 및 상태 표시
-        holder.tvOrderPrice.text = order.orderItemPrice?.let {
-            "금액 ${it.toPlainString()}"
+        holder.tvOrderPrice.text = order.orderPrice?.let {
+            "금액 ${NumberFormat.getNumberInstance(Locale.KOREA).format(it)} 원"
         } ?: "금액 정보 없음"
 
-        holder.tvOrderStatus.text = order.orderItemStatus ?: "상태 없음"
+        holder.tvOrderStatus.text = order.orderItemStatus
 
         // 주문 상세 페이지로 이동
         holder.btnOrderDetail.setOnClickListener {

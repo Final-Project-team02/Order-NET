@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 @Slf4j  // 이 어노테이션을 추가
 @RestController
-@RequestMapping("/app")
+@RequestMapping("/app/wh")
 public class WHAppController {
 
   private final OrderAppService orderAppService;
@@ -41,11 +41,12 @@ public class WHAppController {
   }
 
   // 특정 물류센터의 주문 조회
-  @GetMapping("/warehouse/{warehouseId}")
+  @GetMapping("/{warehouseId}")
   public List<OrderAppDTO> getOrdersByWarehouse(@PathVariable("warehouseId") String warehouseId) {
     return orderAppService.getOrdersByWarehouse(warehouseId);
   }
 
+  // 물류센터 주문 목록 조회
   @GetMapping("/orders/{orderId}/items/{warehouseId}")
   public List<WHOrderAppItemDTO> getOrderItemsByWarehouseAndOrder(
           @PathVariable("orderId") String orderId,
@@ -53,6 +54,7 @@ public class WHAppController {
     return orderAppService.getOrderItemsByWarehouseAndOrder(orderId, warehouseId);
   }
 
+  // 물류센터 출고 조회
   @PostMapping("/orders/{orderId}/outbound")
   public String processOutbound(
           @PathVariable("orderId") String orderId,
@@ -63,7 +65,7 @@ public class WHAppController {
 
 
 //  상품목록
-@GetMapping("/parts")
+@GetMapping("/partsStock")
 public ResponseEntity<List<WHDTO>> getMonthlyOutbound(
         @RequestParam String warehouseId,
         @RequestParam int month,

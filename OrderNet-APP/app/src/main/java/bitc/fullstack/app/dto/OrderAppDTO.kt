@@ -35,6 +35,9 @@ data class OrderAppDTO(
     @SerializedName("order_item_price")
     var orderItemPrice: BigDecimal,
 
+    @SerializedName("order_price")
+    var orderPrice: BigDecimal,
+
     @SerializedName("order_item_status")
     var orderItemStatus: String,
 
@@ -43,4 +46,8 @@ data class OrderAppDTO(
 
     @SerializedName("total_quantity")
     var totalQuantity: Int,
+
+    @SerializedName("order_status")
+    var orderStatus: String,
+
 )

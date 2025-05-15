@@ -2,6 +2,7 @@ package bitc.fullstack.app.Warehouse
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
@@ -9,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bitc.fullstack.app.R
+import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityWarehouseMainBinding
 import bitc.fullstack.app.dto.OrderAppDTO
+import com.google.gson.Gson
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
@@ -34,13 +37,6 @@ class WHMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWarehouseMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Retrofit 초기화
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.100.203.54:8080/app/") // 서버 주소
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        apiService = retrofit.create(AppServerInterface::class.java)
 
         // RecyclerView 설정
         recyclerView = binding.recyclerViewOrder
@@ -78,7 +74,6 @@ class WHMainActivity : AppCompatActivity() {
             }
         }
 
-
         binding.etOrderNumber.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableEnd = binding.etOrderNumber.compoundDrawables[2]  // 아이콘을 가져옵니다.
@@ -98,9 +93,6 @@ class WHMainActivity : AppCompatActivity() {
             }
             false  // 다른 터치 이벤트는 기본적으로 처리
         }
-
-
-
 
         // 데이터 불러오기
         getOrdersByWarehouse("WH_BRK")
@@ -131,7 +123,9 @@ class WHMainActivity : AppCompatActivity() {
     }
 
     private fun getOrdersByWarehouse(warehouseId: String) {
-        retrofitResponse(apiService.getOrdersByWarehouse(warehouseId)) { result ->
+        val api = AppServerClass.instance
+        val call = api.getOrdersByWarehouse(warehouseId)
+        retrofitResponse(call) { result ->
             fullOrders = result ?: emptyList()
             whOrderAdapter.updateData(fullOrders)
         }
@@ -171,7 +165,9 @@ class WHMainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 if (response.isSuccessful) {
-                    onSuccess(response.body())
+                    val body = response.body()
+                    onSuccess(body)
+                    Log.d("WHMainActivity", "서버 응답 성공, 결과: ${Gson().toJson(body)}")
                 } else {
                     val error = response.errorBody()?.string()
                     Toast.makeText(this@WHMainActivity, "서버 오류: $error", Toast.LENGTH_SHORT).show()
