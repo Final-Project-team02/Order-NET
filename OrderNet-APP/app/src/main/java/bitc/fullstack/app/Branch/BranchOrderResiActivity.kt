@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -14,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import bitc.fullstack.app.Branch.BranchMainActivity
 import bitc.fullstack.app.R
+import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityBranchOrderRegiBinding
 import bitc.fullstack.app.databinding.OrderPopupBinding
@@ -39,6 +43,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
     lateinit var selectedAdapter: SelectedProductAdapter
     private val selectedItems: MutableList<PartsDTO> = mutableListOf()
 
+    private lateinit var userRefId: String
+    private lateinit var branchName: String
+
     internal  lateinit var selectProductLauncher: ActivityResultLauncher<Intent>
 
 
@@ -46,13 +53,69 @@ class BranchOrderResiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        userRefId = intent.getStringExtra("userRefId") ?: ""
+        branchName = intent.getStringExtra("userRefId") ?: ""
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        firstConnection()
+        //        홈 버튼
+        val homeButton: ImageButton = findViewById(R.id.home)
+        homeButton.setOnClickListener {
+            val intent = Intent(this, BranchMainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+
+//        메뉴 버튼
+        val menuButton: ImageButton = findViewById(R.id.menu)
+
+        menuButton.setOnClickListener { view ->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.menuInflater.inflate(R.menu.branch_header_menu, popupMenu.menu)
+
+            // 현재 액티비티가 BranchOrderResiActivity이므로 "주문하기" 메뉴 제거
+            popupMenu.menu.removeItem(R.id.menu_order)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+
+                    R.id.menu_stock -> {
+                        Toast.makeText(this, "주문 현황", Toast.LENGTH_SHORT).show()
+                        val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
+                        val intent = Intent(this, OrderHistoryActivity::class.java)
+                        intent.putExtra("userRefId", branchId) // userRefId 전달
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.btn_logout -> {
+                        // 1. 저장된 값 삭제
+                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
+                        prefs.edit().clear().apply()
+
+                        // 2. 로그인 화면으로 이동
+                        val intent = Intent(this@BranchOrderResiActivity, Login::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                        // 3. 현재 액티비티 종료
+                        finish()
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+        }
+
+        firstConnection(userRefId)
 
         // 결과 받아오기 위한 selectProductLauncher 등록
         selectProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -108,7 +171,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
 
         // 상품추가 버튼
         binding.productPlusBtn.setOnClickListener {
+            val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
             val intent = Intent(this, ProjectSelectActivity::class.java)
+            intent.putExtra("userRefId", branchId) // userRefId 전달
             selectProductLauncher.launch(intent)
         }
 
@@ -144,7 +209,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
                     orderDueDate = dueDate,
                     orderPrice = totalAmount,
                     // 로그인하고 나면 해당 대리점 id로 변경
-                    branchId = "Seoul01",
+                    branchId = userRefId,
                     items = orderItems
                 )
                 // 주문 요청 서버로 전송
@@ -164,10 +229,10 @@ class BranchOrderResiActivity : AppCompatActivity() {
     }
 
     // 주문하기 화면 접속 후 출력 화면
-    private fun firstConnection(){
+    private fun firstConnection(userRefId: String){
         val api = AppServerClass.instance
         // 나중에 로그인하면 로그인한 사용자 user-ref-id 전달
-        val call = api.BranchOrder("Seoul01")
+        val call = api.BranchOrder(userRefId)
         retrofitResponse(call)
     }
 
@@ -244,10 +309,15 @@ class BranchOrderResiActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+
+                    val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
+                    val branchName = intent.getStringExtra("branchName") ?: "" //  userRefId 재사용
                     // 주문 성공
                     Toast.makeText(this@BranchOrderResiActivity, "주문이 신청되었습니다.", Toast.LENGTH_SHORT).show()
                     // 메인화면으로 이동
                     val intent = Intent(this@BranchOrderResiActivity, BranchMainActivity::class.java)
+                    intent.putExtra("userRefId", branchId)
+                    intent.putExtra("branchName", branchName)
                     startActivity(intent)
                 } else {
                     // 주문 실패

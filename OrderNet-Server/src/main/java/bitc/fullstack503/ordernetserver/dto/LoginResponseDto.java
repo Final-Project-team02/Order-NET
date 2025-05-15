@@ -11,5 +11,6 @@ public class LoginResponseDto {
     private String userType;
     private String userRefId;
     private String branchSupervisor;
+    private String branchName;
     private String warehouseName;
 }

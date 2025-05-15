@@ -68,11 +68,11 @@ public class BranchAppController {
   // 대리점 주문내역
   @GetMapping("/orderHistory")
   public List<BranchOrderDTO> orderHistory(
-      @RequestParam("branch_id") String branchId,
-      @RequestParam("order_status") String orderStatus,
-      @RequestParam(value = "start_date", required = false) String startDate,
-      @RequestParam(value = "end_date", required = false) String endDate,
-      @RequestParam(value = "order_id", required = false) String orderId) {
+          @RequestParam("branch_id") String branchId,
+          @RequestParam("order_status") String orderStatus,
+          @RequestParam(value = "start_date", required = false) String startDate,
+          @RequestParam(value = "end_date", required = false) String endDate,
+          @RequestParam(value = "order_id", required = false) String orderId) {
 
     return branchAppService.getOrderHistory(branchId, orderStatus, startDate, endDate, orderId);
   }

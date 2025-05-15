@@ -17,12 +17,21 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
 
+        <!-- 앱 로그인 -->
+        <activity
+                android:name=".Register_Login.Login"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- 대리점 메인 화면 -->
         <activity
             android:name=".Branch.BranchMainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="false"/>
 
         <!-- 대리점 주문 화면 -->
         <activity android:name=".Branch.BranchOrderResiActivity"
@@ -45,26 +54,17 @@
         <!--  물류센터 메인 화면  -->
         <activity
             android:name=".Warehouse.WHMainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="false"/>
 
         <!-- 물류센터 상세 주문 목록 화면 -->
         <activity
             android:name=".Warehouse.OrderDetailActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
 
         <!-- 물류센터 재고 화면 -->
         <activity
             android:name=".Warehouse.WHOrderHistory"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
 
     </application>
 

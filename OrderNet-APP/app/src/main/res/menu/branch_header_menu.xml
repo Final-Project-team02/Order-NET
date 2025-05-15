@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_order"
-        android:title="주문 처리" />
+        android:title="주문하기" />
     <item
         android:id="@+id/menu_stock"
-        android:title="재고 현황" />
+        android:title="주문현황" />
+    <item
+        android:id="@+id/btn_logout"
+        android:title="로그아웃"/>
 </menu>

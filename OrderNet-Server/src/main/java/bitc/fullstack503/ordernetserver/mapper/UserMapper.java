@@ -14,6 +14,7 @@ public interface UserMapper {
     SELECT 
         ua.*, 
         b.branch_supervisor,
+        b.branch_name,
         w.warehouse_name
     FROM user_account ua
     LEFT JOIN branch b ON ua.user_ref_id = b.branch_id

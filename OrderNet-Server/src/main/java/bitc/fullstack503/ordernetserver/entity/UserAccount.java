@@ -12,5 +12,6 @@ public class UserAccount {
 
     // 추가된 필드 (JOIN 결과용)
     private String branchSupervisor;
+    private String branchName;
     private String warehouseName;
 }
