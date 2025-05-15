@@ -20,7 +20,7 @@ function WHMainPanel() {
     const userId = agencyCode;
 
     const  selectWHMain= () => {
-        axios.get("http://localhost:8080/WHMain", {
+        axios.get("http://localhost:8080/webWh/WHMain", {
             headers: {
                 userId: userId  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
             }

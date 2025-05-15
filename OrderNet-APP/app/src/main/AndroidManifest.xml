@@ -21,24 +21,6 @@
         <activity
             android:name=".Branch.BranchMainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-
-        <!-- 물류센터 상세 주문 목록 화면 -->
-        <activity
-            android:name=".Warehouse.OrderDetailActivity"
-            android:exported="false">
-        </activity>
-
-        <!-- 물류센터 재고 화면 -->
-        <activity
-            android:name=".Warehouse.WHOrderHistory"
-            android:exported="true">
 
         </activity>
 
@@ -60,16 +42,28 @@
             android:name=".Branch.OrderItemListActivity"
             android:exported="false"/>
 
-
-<!--        <activity-->
-<!--            android:name=".Branch.BranchOrderLIst"-->
-<!--            android:exported="false">-->
-<!--        </activity>-->
-
         <!--  물류센터 메인 화면  -->
         <activity
             android:name=".Warehouse.WHMainActivity"
             android:exported="true">
+
+        </activity>
+
+        <!-- 물류센터 상세 주문 목록 화면 -->
+        <activity
+            android:name=".Warehouse.OrderDetailActivity"
+            android:exported="false">
+        </activity>
+
+        <!-- 물류센터 재고 화면 -->
+        <activity
+            android:name=".Warehouse.WHOrderHistory"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
     </application>

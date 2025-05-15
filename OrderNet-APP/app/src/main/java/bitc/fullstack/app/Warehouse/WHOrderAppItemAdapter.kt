@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import bitc.fullstack.app.dto.WHOrderAppItemDTO
 import bitc.fullstack.app.databinding.ItemOrderDetailBinding
+import bitc.fullstack.app.databinding.ItemOrderDetailWhBinding
 import com.bumptech.glide.Glide
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -21,7 +22,7 @@ class WHOrderAppItemAdapter(private var items: List<WHOrderAppItemDTO>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemOrderDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemOrderDetailWhBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -32,7 +33,7 @@ class WHOrderAppItemAdapter(private var items: List<WHOrderAppItemDTO>) :
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(private val binding: ItemOrderDetailBinding) :
+    inner class ViewHolder(private val binding: ItemOrderDetailWhBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: WHOrderAppItemDTO) {

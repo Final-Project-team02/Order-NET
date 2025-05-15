@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="2dp"
+    android:background="@android:color/white">
+
+  <LinearLayout
+      android:layout_width="352dp"
+      android:layout_height="160dp"
+      android:layout_gravity="center"
+      android:layout_marginTop="18dp"
+      android:background="@drawable/branch_order_product_info"
+      android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+      <TextView
+          android:id="@+id/item_number"
+          android:layout_width="19dp"
+          android:layout_height="19dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/circle_blue"
+          android:text="1"
+          android:textColor="#3F82EA"
+          android:gravity="center"/>
+
+      <TextView
+          android:id="@+id/part_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="10dp"
+          android:text="볼트"
+          android:textSize="14sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/category"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="28dp"
+          android:layout_marginTop="10dp"
+          android:text="카테고리"
+          android:textSize="14sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/part_cate"
+          android:layout_width="30dp"
+          android:layout_height="15dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/branch_order_engine"
+          android:text="엔진"
+          android:textSize="10sp"
+          android:gravity="center"
+          android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+      <TextView
+          android:id="@+id/product_code"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="부품코드"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/part_id"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="a1011" />
+
+      <android.widget.Button
+          android:id="@+id/product_change"
+          android:layout_width="56dp"
+          android:layout_height="26dp"
+          android:layout_marginLeft="86dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/branch_order_product_change"
+          android:backgroundTint="@null"
+          android:gravity="center"
+          android:text="상품변경"
+          android:textColor="#3F82EA"
+          android:textSize="10sp"
+          android:textStyle="bold"
+          android:padding="0dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+      <TextView
+          android:id="@+id/product_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="개 당 가격"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/part_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="10,000" />
+
+      <android.widget.Button
+          android:id="@+id/product_delete"
+          android:layout_width="56dp"
+          android:layout_height="26dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginLeft="90dp"
+          android:background="@drawable/branch_order_product_delete"
+          android:gravity="center"
+          android:text="상품삭제"
+          android:textColor="#FF0000"
+          android:textSize="10sp"
+          android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="5dp"
+        android:background="#D9D9D9" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <TextView
+          android:id="@+id/product_total"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginTop="5dp"
+          android:text="총 수량"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/part_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="14dp"
+          android:layout_marginRight="100dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="1" />
+
+
+      <TextView
+          android:id="@+id/product_total_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="60dp"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="금액" />
+
+      <TextView
+          android:id="@+id/total_price"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:layout_weight="1"
+          android:text="10,000" />
+
+    </LinearLayout>
+  </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+

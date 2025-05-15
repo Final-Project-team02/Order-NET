@@ -26,7 +26,7 @@ function DeliveryTable({ filters, setBranchList }) {
 
     // 서버로부터 재고 데이터를 가져오는 함수
     const selectWHManage = (filters) => {
-        axios.get("http://localhost:8080/WHManage", {
+        axios.get("http://localhost:8080/webWh/WHManage", {
             headers: { userId: userId },
             params: filters
         })
@@ -70,7 +70,7 @@ function DeliveryTable({ filters, setBranchList }) {
             orderItemQuantity: row.orderItemQuantity     // 필수: 몇 개 차감할지
         }));
 
-        axios.put("http://localhost:8080/saveStatus", updatedItems)
+        axios.put("http://localhost:8080/webWh/saveStatus", updatedItems)
             .then(res => {
                 alert(`${updatedItems.length} 개 항목이 상태 변경되었습니다.`);
                 // 저장 후 새로고침

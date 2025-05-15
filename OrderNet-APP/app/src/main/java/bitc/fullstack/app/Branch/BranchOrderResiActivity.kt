@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import bitc.fullstack.app.R
 import bitc.fullstack.app.appserver.AppServerClass
-import bitc.fullstack.app.databinding.ActivityBranchOrderResiBinding
+import bitc.fullstack.app.databinding.ActivityBranchOrderRegiBinding
 import bitc.fullstack.app.databinding.OrderPopupBinding
 import bitc.fullstack.app.dto.BranchDTO
 import bitc.fullstack.app.dto.OrderItemDTO
@@ -32,8 +32,8 @@ import java.util.Locale
 
 class BranchOrderResiActivity : AppCompatActivity() {
 
-    private val binding: ActivityBranchOrderResiBinding by lazy {
-        ActivityBranchOrderResiBinding.inflate(layoutInflater)
+    private val binding: ActivityBranchOrderRegiBinding by lazy {
+        ActivityBranchOrderRegiBinding.inflate(layoutInflater)
     }
 
     lateinit var selectedAdapter: SelectedProductAdapter

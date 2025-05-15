@@ -21,16 +21,6 @@ public class OrderAppServiceImpl implements OrderAppService {
   }
 
   @Override
-  public List<OrderAppDTO> getAllOrders() {
-    return orderAppMapper.getAllOrders();
-  }
-
-  @Override
-  public OrderAppDTO getOrderById(String orderId) {
-    return orderAppMapper.getOrderById(orderId);
-  }
-
-  @Override
   public List<OrderAppDTO> getOrdersByWarehouse(String warehouseId) {
     return orderAppMapper.getOrdersByWarehouse(warehouseId); // 물류센터 ID를 이용한 조회
   }

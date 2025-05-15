@@ -53,6 +53,7 @@ interface AppServerInterface {
   fun selectOrderDetail(
     @Query("orderNumber") orderNumber: String
   ): Call<BranchOrderDTO>
+
   // 물류센터 주문목록 조회
   @GET("wh/{warehouseId}")
   fun getOrdersByWarehouse(@Path("warehouseId") warehouseId: String): Call<List<OrderAppDTO>>

@@ -28,7 +28,6 @@ public class WHDTO {
 
     private int outboundId;
     private String warehouseId;
-    private String orderId;
     private String outboundDate;
 
     private int totalQuantity;

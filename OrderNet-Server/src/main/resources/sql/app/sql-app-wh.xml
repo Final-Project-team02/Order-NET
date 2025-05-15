@@ -5,35 +5,6 @@
 
 <mapper namespace="bitc.fullstack503.ordernetserver.mapper.app.OrderAppMapper">
 
-    <!-- 주문 전체 조회 -->
-    <select id="getAllOrders" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO">
-        SELECT
-            o.order_id,
-            o.branch_id,
-            o.order_date,
-            o.order_status,
-            o.order_price,
-            o.order_deny,
-            b.branch_name
-        FROM orders o
-                 JOIN branch b ON o.branch_id = b.branch_id
-    </select>
-
-    <!-- 주문 상세 조회 (order_id 기준) -->
-    <select id="getOrderById" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO" parameterType="String">
-        SELECT
-            o.order_id,
-            o.branch_id,
-            o.order_date,
-            o.order_status,
-            o.order_price,
-            o.order_deny,
-            b.branch_name
-        FROM orders o
-                 JOIN branch b ON o.branch_id = b.branch_id
-        WHERE o.order_id = #{orderId}
-    </select>
-
     <!-- 특정 물류센터의 주문 조회 -->
     <select id="getOrdersByWarehouse" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO" parameterType="String">
         SELECT

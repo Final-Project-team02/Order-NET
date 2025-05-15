@@ -1,8 +1,6 @@
 package bitc.fullstack503.ordernetserver.controller;
 
-import bitc.fullstack503.ordernetserver.dto.ClientDTO;
-import bitc.fullstack503.ordernetserver.dto.OrderDTO;
-import bitc.fullstack503.ordernetserver.dto.OrderItemDTO;
+import bitc.fullstack503.ordernetserver.dto.*;
 import bitc.fullstack503.ordernetserver.service.ClientService;
 import bitc.fullstack503.ordernetserver.service.HQService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,9 @@ public class WebController {
     @Autowired
     private HQService hqService;
 
+    @Autowired
+    private ClientService clientService;
+
     // 새로 들어온 주문 건수
     private int newOrderCount = 0;
     // 지난 주문 건수
@@ -50,10 +51,7 @@ public class WebController {
 
         return response;
     }
-  @GetMapping("")
-  public String test() {
-    return "test";
-  }
+
   //DB에 있는 데이터를 가져오기(대리점 정보)
   @GetMapping("/clientlist")
   public Object selectClientList() throws Exception {
