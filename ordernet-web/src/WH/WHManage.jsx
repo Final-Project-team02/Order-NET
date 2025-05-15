@@ -18,7 +18,7 @@ function WHManage() {
         { text: "출고관리", link: `/WHManage/${MaagencyCode}` }
     ];
 
-    const breadcrumb = "☆ 물류 관리 > 출고관리"; // Change this as needed
+    const breadcrumb = "☆ 물류 센터 > 출고관리"; // Change this as needed
     const panelTitle = "출고관리"; // Change this as needed
 
     // 1. 필터 상태를 상위 컴포넌트에서 관리

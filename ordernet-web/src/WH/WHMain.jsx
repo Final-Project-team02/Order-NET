@@ -14,7 +14,7 @@ function WHMain() {
 
   const menuItems = [
     { text: "물류 현황", link: `/WHMain/${MaagencyCode}` },
-    { text: "물류 재고관리", link: `/WHManage/${MaagencyCode}` },
+    { text: "출고관리", link: `/WHManage/${MaagencyCode}` },
   ];
 
 
@@ -24,7 +24,7 @@ function WHMain() {
         <div className="flex-grow-1 d-flex flex-column overflow-hidden">
           <HQTopbar title="물류현황"/>
           <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-           <Title breadcrumb= "☆ 물류 관리 > 물류 현황" panelTitle="물류 현황"/>
+           <Title breadcrumb= "☆ 물류 센터 > 물류 현황" panelTitle="물류 현황"/>
            <WHMainPanel/>
           </div>
         </div>
