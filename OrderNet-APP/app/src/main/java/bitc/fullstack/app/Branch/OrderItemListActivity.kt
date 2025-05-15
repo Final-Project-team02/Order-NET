@@ -41,6 +41,16 @@ class OrderItemListActivity : AppCompatActivity() {
 
         userRefId = intent.getStringExtra("userRefId") ?: ""
 
+        //        홈 버튼
+        val homeButton: ImageButton = findViewById(R.id.home)
+        homeButton.setOnClickListener {
+            val intent = Intent(this, BranchMainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+
+//        메뉴 버튼
         val menuButton: ImageButton = findViewById(R.id.menu)
 
 
