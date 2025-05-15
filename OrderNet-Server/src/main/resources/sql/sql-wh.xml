@@ -53,8 +53,9 @@
             AND o.order_date BETWEEN #{orderStartDate} AND #{orderEndDate}
         </if>
         <if test="orderId != null and orderId != ''">
-            AND o.order_id = #{orderId}
+            AND o.order_id LIKE CONCAT('%', #{orderId}, '%')
         </if>
+
 
         ORDER BY
         CASE oi.order_item_status

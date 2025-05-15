@@ -43,7 +43,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/login", "/HQMain/**", "/branch/**", "/WHMain/**",
-                        "/WHManage/**", "/app/branch/**", "/HQstatus/**").permitAll()
+                        "/WHManage/**", "/app/branch/**", "/HQstatus/**", "/saveStatus/**").permitAll()
                     .requestMatchers("/HQMain/**").authenticated()
                     .anyRequest().authenticated()
             )
