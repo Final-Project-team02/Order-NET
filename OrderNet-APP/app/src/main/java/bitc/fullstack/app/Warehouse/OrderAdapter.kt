@@ -21,12 +21,9 @@ class OrderAdapter(private val items: List<OrderItem>) :
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val item = items[position]
-        holder.binding.code.text = item.code
-        holder.binding.part1.text = item.part1
-        holder.binding.part2.text = item.part2
+        holder.binding.partName.text = item.partName
+        holder.binding.price.text = item.price
         holder.binding.quantity.text = item.quantity
-        holder.binding.price1.text = item.price1
-        holder.binding.price2.text = item.price2
     }
 
     override fun getItemCount(): Int = items.size

@@ -28,6 +28,20 @@
             </intent-filter>
         </activity>
 
+
+        <!-- 물류센터 상세 주문 목록 화면 -->
+        <activity
+            android:name=".Warehouse.OrderDetailActivity"
+            android:exported="false">
+        </activity>
+
+        <!-- 물류센터 재고 화면 -->
+        <activity
+            android:name=".Warehouse.WHOrderHistory"
+            android:exported="true">
+
+        </activity>
+
         <!-- 대리점 주문 화면 -->
         <activity android:name=".Branch.BranchOrderResiActivity"
             android:exported="false"/>
@@ -45,6 +59,18 @@
         <activity
             android:name=".Branch.OrderItemListActivity"
             android:exported="false"/>
+
+
+<!--        <activity-->
+<!--            android:name=".Branch.BranchOrderLIst"-->
+<!--            android:exported="false">-->
+<!--        </activity>-->
+
+        <!--  물류센터 메인 화면  -->
+        <activity
+            android:name=".Warehouse.WHMainActivity"
+            android:exported="true">
+        </activity>
 
     </application>
 

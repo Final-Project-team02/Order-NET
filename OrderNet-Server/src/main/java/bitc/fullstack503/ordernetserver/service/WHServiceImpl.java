@@ -25,6 +25,11 @@ public class WHServiceImpl implements WHService {
     public List<WHDTO> selectWHComeIn(String userId) {
         return whMapper.selectWHComeIn(userId);
     }
+    @Override
+    public List<WHDTO> getMonthlyOutboundParts(String warehouseId, int month, int year) {
+        return whMapper.getMonthlyOutboundPartsByWarehouse(warehouseId, month, year);
+    }
+
     //    물류센터 재고조회
     @Override
     public List<WHDTO> selectWHStock(String userId) {
@@ -89,7 +94,4 @@ public class WHServiceImpl implements WHService {
         return whMapper.selectWHManageFiltered(paramMap); // Mapper에서 필터링된 데이터 반환
     }
 
-    }
-
-
-
+}

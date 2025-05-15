@@ -9,6 +9,12 @@ import java.util.Map;
 
 @Mapper
 public interface WHMapper {
+    //Mapper는 추상 메서드로 선언만 해야 함
+    List<WHDTO> getMonthlyOutboundPartsByWarehouse(
+            @Param("warehouseId") String warehouseId,
+            @Param("month") int month,
+            @Param("year") int year
+    );
 
     //    물류센터 재고조회
     List<WHDTO> selectWHStock(String userId);

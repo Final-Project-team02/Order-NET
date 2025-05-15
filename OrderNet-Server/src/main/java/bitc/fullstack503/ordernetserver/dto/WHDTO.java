@@ -24,4 +24,13 @@ public class WHDTO {
     private String orderItemStatus; //주문상태
     private String orderDueDate; //배송 원하는 날짜
 
+    //-----------------출구 DTO
+
+    private int outboundId;
+    private String warehouseId;
+    private String orderId;
+    private String outboundDate;
+
+    private int totalQuantity;
+
 }

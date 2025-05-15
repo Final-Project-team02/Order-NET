@@ -124,4 +124,33 @@
         LIMIT 1
     </select>
 
+
+    <select id="getMonthlyOutboundPartsByWarehouse" resultType="bitc.fullstack503.ordernetserver.dto.WHDTO">
+        SELECT
+        oi.part_id AS partId,
+        p.part_name AS partName,
+        p.part_cate AS partCate,
+        p.part_price AS partPrice,
+        ws.stock_quantity AS stockQuantity,  -- 여기 수정
+        SUM(oi.order_item_quantity) AS totalQuantity
+        FROM
+        warehouse_outbound wo
+        JOIN
+        order_item oi ON wo.order_id = oi.order_id
+        JOIN
+        parts p ON oi.part_id = p.part_id
+        JOIN
+        warehouse_stock ws ON ws.part_id = p.part_id AND ws.warehouse_id = wo.warehouse_id  -- 새로 추가된 JOIN
+        WHERE
+        wo.warehouse_id = #{warehouseId}
+        AND MONTH(wo.outbound_date) = #{month}
+        AND YEAR(wo.outbound_date) = #{year}
+        GROUP BY
+        oi.part_id, p.part_name, p.part_cate, p.part_price, ws.stock_quantity;
+
+    </select>
+
+
+
+
 </mapper>

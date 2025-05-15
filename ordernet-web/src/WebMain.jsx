@@ -7,6 +7,7 @@ import WHManage from "./WH/WHManage.jsx";
 import WHMain from "./WH/WHMain.jsx";
 import LoginForm from "./layout/LoginForm.jsx";
 import PrivateRoute from "./layout/PrivateRoute.jsx";
+import HQClientRanking from "./HQ/HQClientRanking.jsx";
 
 function WebMain() {
     return (
@@ -16,7 +17,6 @@ function WebMain() {
                 <Route path="/" element={<Navigate to="/HQMain" replace/>}/>
                 <Route path={"/HQMain"}>
                     <Route index element={
-
                         <PrivateRoute>
                             <HQMain />
                         </PrivateRoute>
@@ -39,10 +39,8 @@ function WebMain() {
                     />
                 </Route>
 
-
                 <Route path={"/WHMain/:agencyCode"}>
                     <Route index element={
-
                         <PrivateRoute>
                             <WHMain />
                         </PrivateRoute>
@@ -52,10 +50,12 @@ function WebMain() {
 
                 <Route path="/WHManage/:agencyCode" element={<WHManage/>}/>
                 <Route path="/login" element={<LoginForm />} />
+                <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
+                <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
+                <Route path={"/WHMain"} element={<WHMain/>}/>
+                <Route path={"/WHManage"} element={<WHManage/>}/>
             </Routes>
         </BrowserRouter>
-
-
     );
 }
 

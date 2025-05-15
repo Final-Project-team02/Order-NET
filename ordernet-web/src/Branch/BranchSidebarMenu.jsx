@@ -1,3 +1,5 @@
+import folder from "../assets/folder.png";
+
 function BranchSidebarMenu({menuItems}) {
     return (
         <div className="d-flex flex-column text-white vh-100 p-3" style={{width: '250px', backgroundColor: '#343a40'}}>
@@ -12,7 +14,7 @@ function BranchSidebarMenu({menuItems}) {
                 {menuItems.map((item, index) => (
                     <li className="nav-item" key={index}>
                         <a href="#" className="nav-link text-white">
-                            📁 {item}
+                            <img src={folder} style={{ width: '20px', height: '20px', marginRight: '8px' }}/>{item}
                         </a>
                     </li>
                 ))}
