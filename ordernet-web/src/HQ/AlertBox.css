@@ -43,9 +43,31 @@
 .sticky-table thead th {
     position: sticky;
     top: 0;
-    background-color: #CFE2FF; /* 배경 지정 필수 */
+    background-color: #CFE2FF;
     z-index: 1;
 }
+
+
+/* 첫 번째 줄 th - 상단 고정 */
+.sticky-th-top-0 {
+    position: sticky;
+    top: 0;
+    background-color: #CFE2FF;
+    z-index: 2;
+}
+
+/* 두 번째 줄 th - 첫 번째 줄 높이만큼 밀어냄 */
+.sticky-th-top-60 {
+    position: sticky;
+    top: 40px; /* 첫 번째 줄 높이만큼 */
+    background-color: #CFE2FF;
+    z-index: 2;
+}
+
+
+
+
+
 
 
 
