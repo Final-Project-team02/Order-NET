@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import bitc.fullstack.app.R
-import bitc.fullstack.app.Warehouse.WarehouseMainActivity
+import bitc.fullstack.app.Warehouse.WHMainActivity
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.LoginRequestDto
 import bitc.fullstack.app.appserver.LoginResponseDto
@@ -90,7 +90,7 @@ class Login : AppCompatActivity() {
                                 }
 
                                 "물류센터" -> {
-                                    val intent = Intent(this@Login, WarehouseMainActivity::class.java).apply {
+                                    val intent = Intent(this@Login, WHMainActivity::class.java).apply {
                                         putExtra("userType", it.userType)
                                         putExtra("userRefId", it.userRefId)
                                         putExtra("warehouseName", it.warehouseName)
