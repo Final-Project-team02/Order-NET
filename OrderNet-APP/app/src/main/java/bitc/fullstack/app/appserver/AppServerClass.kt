@@ -10,6 +10,7 @@ object AppServerClass {
 
   private val BASE_URL = "http://10.0.2.2:8080/app/"
 
+
   val instance: AppServerInterface by lazy {
     Retrofit.Builder()
       .baseUrl(BASE_URL)

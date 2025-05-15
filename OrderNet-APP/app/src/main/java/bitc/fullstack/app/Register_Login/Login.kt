@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import bitc.fullstack.app.R
+import bitc.fullstack.app.Warehouse.WarehouseMainActivity
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.LoginRequestDto
 import bitc.fullstack.app.appserver.LoginResponseDto
@@ -31,6 +32,9 @@ class Login : AppCompatActivity() {
         pwEditText = findViewById(R.id.btn_password)
         loginButton = findViewById(R.id.btn_login)
         toggleGroup = findViewById(R.id.toggle_group)
+
+
+        toggleGroup.clearChecked()
 
         loginButton.setOnClickListener {
             val userId = idEditText.text.toString()
@@ -60,16 +64,45 @@ class Login : AppCompatActivity() {
 
                             Toast.makeText(this@Login, "${it.userType} 로그인 성공", Toast.LENGTH_SHORT).show()
 
-                            // 다음 화면으로 이동
-                            val intent =  Intent(this@Login, BranchMainActivity::class.java).apply {
-                                putExtra("userType", it.userType)
-                                putExtra("userRefId", it.userRefId)
-                                putExtra("branchSupervisor", it.branchSupervisor)
-                                putExtra("warehouseName", it.warehouseName)
-                                putExtra("branchName", it.branchName)
+                            // 대리점 로그인 시 대리점 메인 화면으로 이동
+//                            val intent =  Intent(this@Login, BranchMainActivity::class.java).apply {
+//                                putExtra("userType", it.userType)
+//                                putExtra("userRefId", it.userRefId)
+//                                putExtra("branchSupervisor", it.branchSupervisor)
+//                                putExtra("warehouseName", it.warehouseName)
+//                                putExtra("branchName", it.branchName)
+//                            }
+//                            startActivity(intent)
+//                            finish()
+
+                            when (it.userType) {
+                                "대리점" -> {
+                                    val intent = Intent(this@Login, BranchMainActivity::class.java).apply {
+                                        putExtra("userType", it.userType)
+                                        putExtra("userRefId", it.userRefId)
+                                        putExtra("branchSupervisor", it.branchSupervisor)
+                                        putExtra("warehouseName", it.warehouseName)
+                                        putExtra("branchName", it.branchName)
+                                    }
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                "물류센터" -> {
+                                    val intent = Intent(this@Login, WarehouseMainActivity::class.java).apply {
+                                        putExtra("userType", it.userType)
+                                        putExtra("userRefId", it.userRefId)
+                                        putExtra("warehouseName", it.warehouseName)
+                                    }
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                else -> {
+                                    Toast.makeText(this@Login, "알 수 없는 사용자 유형입니다.", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            startActivity(intent)
-                            finish()
+
                         }
 
                     } else {

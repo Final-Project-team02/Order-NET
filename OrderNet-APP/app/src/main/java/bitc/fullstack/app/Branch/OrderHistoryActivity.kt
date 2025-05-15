@@ -31,6 +31,8 @@ class OrderHistoryActivity : AppCompatActivity() {
     private var startDate: Calendar? = null
     private lateinit var orderList: List<BranchOrderDTO>
 
+    private lateinit var userRefId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +42,8 @@ class OrderHistoryActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        userRefId = intent.getStringExtra("userRefId") ?: ""
 
         val spinner2 = binding.mySpinner2
 
@@ -149,7 +153,7 @@ class OrderHistoryActivity : AppCompatActivity() {
 
 
         // 로그인 후에는 로그인한 id로
-        val branchId = "Busan01"
+        val branchId = userRefId
 
         Log.d("csy", "branchId: $branchId, orderStatus: $statusForQuery, startDate: $startDateStr, endDate: $endDateStr, orderId: $orderId")
 

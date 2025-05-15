@@ -39,6 +39,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
     lateinit var selectedAdapter: SelectedProductAdapter
     private val selectedItems: MutableList<PartsDTO> = mutableListOf()
 
+    private lateinit var userRefId: String
+    private lateinit var branchName: String
+
     internal  lateinit var selectProductLauncher: ActivityResultLauncher<Intent>
 
 
@@ -46,13 +49,17 @@ class BranchOrderResiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        userRefId = intent.getStringExtra("userRefId") ?: ""
+        branchName = intent.getStringExtra("userRefId") ?: ""
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        firstConnection()
+        firstConnection(userRefId)
 
         // 결과 받아오기 위한 selectProductLauncher 등록
         selectProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -144,7 +151,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
                     orderDueDate = dueDate,
                     orderPrice = totalAmount,
                     // 로그인하고 나면 해당 대리점 id로 변경
-                    branchId = "Seoul01",
+                    branchId = userRefId,
                     items = orderItems
                 )
                 // 주문 요청 서버로 전송
@@ -164,10 +171,10 @@ class BranchOrderResiActivity : AppCompatActivity() {
     }
 
     // 주문하기 화면 접속 후 출력 화면
-    private fun firstConnection(){
+    private fun firstConnection(userRefId: String){
         val api = AppServerClass.instance
         // 나중에 로그인하면 로그인한 사용자 user-ref-id 전달
-        val call = api.BranchOrder("Seoul01")
+        val call = api.BranchOrder(userRefId)
         retrofitResponse(call)
     }
 
@@ -244,10 +251,15 @@ class BranchOrderResiActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+
+                    val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
+                    val branchName = intent.getStringExtra("branchName") ?: "" //  userRefId 재사용
                     // 주문 성공
                     Toast.makeText(this@BranchOrderResiActivity, "주문이 신청되었습니다.", Toast.LENGTH_SHORT).show()
                     // 메인화면으로 이동
                     val intent = Intent(this@BranchOrderResiActivity, BranchMainActivity::class.java)
+                    intent.putExtra("userRefId", branchId)
+                    intent.putExtra("branchName", branchName)
                     startActivity(intent)
                 } else {
                     // 주문 실패

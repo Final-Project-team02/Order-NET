@@ -70,7 +70,6 @@
                 android:layout_marginHorizontal="35dp"
                 android:gravity="center"
                 app:singleSelection="true"
-                app:checkedButton="@id/btn_center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
@@ -79,8 +78,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:text="물류센터"
-                    android:backgroundTint="#FFFFFF"
-                    android:textColor="@color/black"
+                    app:backgroundTint="@drawable/selected_button_color"
+                    android:textColor="@drawable/text_color_selector"
                     style="@style/Widget.Material3.Button.OutlinedButton"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -89,8 +88,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:text="대리점"
-                    android:backgroundTint="#FFFFFF"
-                    android:textColor="@color/black"
+                    app:backgroundTint="@drawable/selected_button_color"
+                    android:textColor="@drawable/text_color_selector"
                     style="@style/Widget.Material3.Button.OutlinedButton"/>
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
