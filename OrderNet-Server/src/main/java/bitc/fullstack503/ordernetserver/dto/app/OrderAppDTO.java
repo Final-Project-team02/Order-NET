@@ -14,6 +14,9 @@ public class OrderAppDTO {
   @JsonProperty("order_date")
   private Date orderDate;
 
+  @JsonProperty("order_due_date")
+  private Date orderDueDate;
+
   @JsonProperty("branch_id")
   private String branchId;
 

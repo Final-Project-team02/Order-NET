@@ -11,6 +11,9 @@ data class OrderAppDTO(
     @SerializedName("order_date")
     var orderDate: Date,
 
+    @SerializedName("order_due_date")
+    var orderDueDate: Date,
+
     @SerializedName("branch_id")
     var branchId: String,
 
@@ -33,5 +36,6 @@ data class OrderAppDTO(
     var orderItemPrice: BigDecimal,
 
     @SerializedName("order_item_status")
-    var orderItemStatus: String
+    var orderItemStatus: String,
+
 )

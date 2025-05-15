@@ -48,6 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/branch_name1"
                 android:text="부산지점"
                 android:layout_marginStart="18dp"
                 android:textSize="14sp"
@@ -71,6 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/dt_start_data"
                 android:text="2025-04-18"
                 android:textSize="14sp"
                 android:layout_marginStart="52dp"/>
@@ -92,6 +94,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/dt_end_data"
                 android:text="2025-04-23"
                 android:textSize="14sp"
                 android:layout_marginStart="36dp"/>
@@ -113,6 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/status"
                 android:text="납품예정"
                 android:textSize="14sp"
                 android:layout_marginStart="79dp"/>
