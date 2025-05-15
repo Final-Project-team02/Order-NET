@@ -11,7 +11,7 @@
     <item android:drawable="@drawable/down"
         android:gravity="right|center_vertical"
         android:height="10dp"
-        android:width="15dp"
+        android:width="20dp"
         android:right="15dp">
     </item>
 </layer-list>

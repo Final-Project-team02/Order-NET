@@ -4,11 +4,14 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -106,18 +109,40 @@ class OrderHistoryActivity : AppCompatActivity() {
         val spinner2 = binding.mySpinner2
 
         val items2 = listOf("신청", "승인", "출고", "반려")
-        val adapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items2)
+
+        val adapter2 = object : ArrayAdapter<String>(
+            this,
+            R.layout.spinner_selected_item, // 선택된 항목에 사용할 레이아웃
+            items2
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                // ✅ 선택된 항목 표시용 TextView만 반환해야 Spinner가 정상 출력함
+                val textView = layoutInflater.inflate(R.layout.spinner_selected_item, parent, false)
+                    .findViewById<TextView>(R.id.spinner_selected_text)
+                textView.text = getItem(position)
+                return textView
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = layoutInflater.inflate(R.layout.spinner_dropdown_item, parent, false)
+                val textView = view.findViewById<TextView>(R.id.spinner_item_text)
+                val divider = view.findViewById<View>(R.id.divider)
+
+                textView.text = getItem(position)
+
+                // ✅ 마지막 항목은 divider 숨기기
+                if (position == count - 1) {
+                    divider.visibility = View.GONE
+                } else {
+                    divider.visibility = View.VISIBLE
+                }
+
+                return view
+            }
+        }
 
         spinner2.adapter = adapter2
 
-        // 메인화면서 신청/승인/출고/반려 선택한 값 드롭다운 기본값으로 출력
-        val selectedStatus = intent.getStringExtra("selectedStatus")
-        selectedStatus?.let {
-            val position = items2.indexOf(it)
-            if (position != -1) {
-                spinner2.setSelection(position)
-            }
-        }
 
         selectBranchOrderList()
 
@@ -246,5 +271,6 @@ class OrderHistoryActivity : AppCompatActivity() {
             }
         })
     }
+
 
 }

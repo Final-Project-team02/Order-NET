@@ -1,14 +1,15 @@
 package bitc.fullstack.app.Branch
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,6 @@ import bitc.fullstack.app.R
 import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityProjectSelectBinding
-import bitc.fullstack.app.dto.BranchDTO
 import bitc.fullstack.app.dto.PartsDTO
 import retrofit2.Call
 import retrofit2.Callback
@@ -222,9 +222,27 @@ class ProjectSelectActivity : AppCompatActivity() {
                         // 카테고리 목록 추출 (중복 제거 및 '전체' 카테고리 추가)
                         val categories = listOf("전체") + partsList.map { it.partCate }.distinct()
 
-                        // Spinner에 카테고리 목록 설정
-                        val spinnerAdapter = ArrayAdapter(this@ProjectSelectActivity, android.R.layout.simple_spinner_item, categories)
-                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // ✅ 커스텀 SpinnerAdapter 적용
+                        val spinnerAdapter = object : ArrayAdapter<String>(
+                            this@ProjectSelectActivity,
+                            R.layout.project_select_spinner_selected_item,
+                            categories
+                        ) {
+                            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                                val view = layoutInflater.inflate(R.layout.project_select_spinner_selected_item, parent, false)
+                                val textView = view.findViewById<TextView>(R.id.spinner_selected_text)
+                                textView.text = getItem(position)
+                                return view
+                            }
+
+                            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                                val view = layoutInflater.inflate(R.layout.project_select_spinner_dropdown_item, parent, false)
+                                val textView = view.findViewById<TextView>(R.id.spinner_item_text)
+                                textView.text = getItem(position)
+                                return view
+                            }
+                        }
+
                         binding.spinnerCategory.adapter = spinnerAdapter
 
                         Log.d("csy", "받은 부품 목록: $partsList")
