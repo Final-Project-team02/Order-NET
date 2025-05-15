@@ -39,3 +39,14 @@
     object-fit: cover;
     margin-right: 10px;  /* 아이콘과 텍스트 사이에 여백을 추가 */
 }
+
+.sticky-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #CFE2FF; /* 배경 지정 필수 */
+    z-index: 1;
+}
+
+
+
+
