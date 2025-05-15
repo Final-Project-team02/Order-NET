@@ -18,10 +18,13 @@ function HQMainPanel( { filteredRows, isFiltered }) {
     setShowApprovalModal(true);
   };
 
+  const handleCloseModal = () => setShowApprovalModal(false);
 
 
+  const [denyReason, setDenyReason] = useState("");
 
-    // const [rows, setRows] = useState([]);
+
+    const [rows, setRows] = useState([]);
 
     const [rows2, setRows2] = useState([]);
 
@@ -96,82 +99,83 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                 </div>
             )}
           </div>
-          {/*<div className="p-4 mt-3 bg-light w-100 overflow-auto" style={{ maxHeight: '400px', overflowY: 'auto' }}>*/}
-          {/*  <h2 className="h5 fw-bold mb-3">미결제 리스트</h2>*/}
-          {/*  <table className="table table-bordered sticky-table">*/}
-          {/*    <thead className="table-info">*/}
-          {/*    <tr>*/}
-          {/*      <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#CFE2FF"}}>주문번호</th>*/}
-          {/*      <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#CFE2FF"}}>대리점 ID</th>*/}
-          {/*      <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#CFE2FF"}}>일자</th>*/}
-          {/*      <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#CFE2FF"}}>가격</th>*/}
-          {/*      <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#CFE2FF"}}>주문현황</th>*/}
-          {/*    </tr>*/}
-          {/*    <tr>*/}
-          {/*      <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>주문일자</th>*/}
-          {/*      <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>도착일자</th>*/}
-          {/*    </tr>*/}
-          {/*    </thead>*/}
-          {/*    <tbody>*/}
-          {/*    {rows.length === 0 ? (*/}
-          {/*        <tr>*/}
-          {/*          <td colSpan="9" className="text-center">미결제 리스트가 없습니다.</td>*/}
-          {/*        </tr>*/}
-          {/*    ) : (*/}
-          {/*        // 중복 주문번호 제거: 가장 첫 번째 orderId 기준으로 하나만 표시*/}
-          {/*        Array.from(new Map(rows.map(row => [row.orderId, row])).values()).map((row, i) => (*/}
-          {/*            <tr key={i} onClick={() => {*/}
-          {/*              if (selectedOrderId === row.orderId) {*/}
-          {/*                // 이미 선택된 경우 → 선택 해제*/}
-          {/*                setSelectedOrderId(null);*/}
-          {/*                setShowOrderDetails(false);*/}
-          {/*              } else {*/}
-          {/*                // 새로 선택한 경우*/}
-          {/*                setSelectedOrderId(row.orderId);*/}
-          {/*                setShowOrderDetails(true);*/}
-          {/*              }*/}
-          {/*            }} style={{ cursor: 'pointer',backgroundColor: selectedOrderId === row.orderId ? '#ffe8a1' : 'white',  }}>*/}
-          {/*              <td className="text-center align-middle">{row.orderId}</td>*/}
-          {/*              <td className="text-center align-middle">{row.branchId}</td>*/}
-          {/*              <td className="text-center align-middle">{row.orderDate}</td>*/}
-          {/*              <td className="text-center align-middle">{row.orderDueDate}</td>*/}
-          {/*              <td className="text-center align-middle">{row.orderPrice.toLocaleString() + " (원)"}</td>*/}
-          {/*              <td className="text-center align-middle" style={{ color: row.orderStatus === '반려' ? 'red' : 'black' }}>{row.orderStatus}</td>*/}
-          {/*            </tr>*/}
-          {/*        ))*/}
-          {/*    )}*/}
-          {/*    </tbody>*/}
-          {/*  </table>*/}
-          {/*</div>*/}
+          <div className="p-4 mt-3 bg-light w-100">
+            <h2 className="h5 fw-bold mb-3">미결제 리스트</h2>
 
-          {/*<div className="p-4 mt-3 bg-light w-100">*/}
-          {/*  <h2 className="h5 fw-bold mb-3">미결제 리스트</h2>*/}
+            {/*<div className="table-wrapper" style={{maxHeight: '400px', overflowY: 'auto'}}>*/}
+            <table className="table table-bordered" style={{tableLayout: 'fixed', width: '100%', marginBottom: 0}}>
+              <colgroup>
+                <col style={{width: '130px'}}/>
+                <col style={{width: '130px'}}/>
+                <col style={{width: '130px'}}/>
+                <col style={{width: '130px'}}/>
+                <col style={{width: '130px'}}/>
+                <col style={{width: '130px'}}/>
+              </colgroup>
+              <thead className="table-info">
+              <tr>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}  rowSpan="2">주문번호</th>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}  rowSpan="2">대리점 ID</th>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} colSpan="2">일자</th>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} rowSpan="2">가격</th>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} rowSpan="2">주문현황</th>
+              </tr>
+              <tr>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}>주문일자</th>
+                <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}>도착일자</th>
+              </tr>
+              </thead>
+            </table>
 
-          {/*  /!*<div className="table-wrapper" style={{maxHeight: '400px', overflowY: 'auto'}}>*!/*/}
-          {/*    <table className="table table-bordered" style={{tableLayout: 'fixed', width: '100%', marginBottom: 0}}>*/}
-          {/*      <colgroup>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*        <col style={{width: '130px'}}/>*/}
-          {/*      </colgroup>*/}
-          {/*      <thead className="table-info">*/}
-          {/*      <tr>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}  rowSpan="2">주문번호</th>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}  rowSpan="2">대리점 ID</th>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} colSpan="2">일자</th>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} rowSpan="2">가격</th>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}} rowSpan="2">주문현황</th>*/}
-          {/*      </tr>*/}
-          {/*      <tr>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}>주문일자</th>*/}
-          {/*        <th className="text-center align-middle" style={{backgroundColor: "#CFE2FF"}}>도착일자</th>*/}
-          {/*      </tr>*/}
-          {/*      </thead>*/}
-          {/*    </table>*/}
-
+            <div style={{maxHeight: '340px', overflowY: 'auto'}}>
+              <table className="table table-bordered" style={{tableLayout: 'fixed', width: '100%'}}>
+                <colgroup>
+                  <col style={{width: '130px'}}/>
+                  <col style={{width: '130px'}}/>
+                  <col style={{width: '130px'}}/>
+                  <col style={{width: '130px'}}/>
+                  <col style={{width: '130px'}}/>
+                  <col style={{width: '130px'}}/>
+                </colgroup>
+                <tbody>
+                {rows.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="text-center">미결제 리스트가 없습니다.</td>
+                    </tr>
+                ) : (
+                    Array.from(new Map(rows.map(row => [row.orderId, row])).values()).map((row, i) => (
+                        <tr key={i}
+                            onClick={() => {
+                              if (selectedOrderId === row.orderId) {
+                                setSelectedOrderId(null);
+                                setShowOrderDetails(false);
+                              } else {
+                                setSelectedOrderId(row.orderId);
+                                setShowOrderDetails(true);
+                              }
+                            }}
+                            style={{
+                              cursor: 'pointer',
+                              backgroundColor: selectedOrderId === row.orderId ? '#ffe8a1' : 'white'
+                            }}
+                        >
+                          <td className="text-center align-middle"  >{row.orderId}</td>
+                          <td className="text-center align-middle">{row.branchId}</td>
+                          <td className="text-center align-middle">{row.orderDate}</td>
+                          <td className="text-center align-middle">{row.orderDueDate}</td>
+                          <td className="text-center align-middle">{row.orderPrice.toLocaleString()} (원)</td>
+                          <td className="text-center align-middle"
+                              style={{color: row.orderStatus === '반려' ? 'red' : 'black'}}>
+                            {row.orderStatus}
+                          </td>
+                        </tr>
+                    ))
+                )}
+                </tbody>
+              </table>
+            </div>
+            {/*</div>*/}
+          </div>
 
 
 
