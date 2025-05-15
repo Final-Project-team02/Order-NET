@@ -141,6 +141,10 @@ function PartInsertPopUp({ isOpen, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+
+    const confirmed = window.confirm('진짜 등록 하시겠습니까?');
+    if (!confirmed) return;  // 취소 시 함수 종료
+    
     axios.post('http://localhost:8080/HQstatus/insert', formData)
       .then((response) => {
         alert(response.data);
@@ -156,6 +160,16 @@ function PartInsertPopUp({ isOpen, onClose }) {
 
   return (
     <>
+      <style>
+        {`
+        input::placeholder,
+        textarea::placeholder {
+          color: #6c757d !important;
+          opacity: 1;
+        }
+      `}
+      </style>
+
       <div className="modal-backdrop fade show" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }} />
 
       <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', position: 'fixed', top: '60%', left: '50%', zIndex: 1050, transform: 'translate(-50%, -50%)' }}>
@@ -163,7 +177,7 @@ function PartInsertPopUp({ isOpen, onClose }) {
 
       <div className="modal-dialog modal-fullscreen-md-down" role="document">
           <div className="modal-content">
-            <div className="modal-header d-flex justify-content-center" style={{ backgroundColor: '#cfe2ff' }}>
+            <div className="modal-header d-flex justify-content-center" style={{ backgroundColor: '#CFE2FF' }}>
               <h5 className="modal-title text-center"><b>부품 등록</b></h5>
             </div>
             <div className="modal-body">
@@ -197,7 +211,7 @@ function PartInsertPopUp({ isOpen, onClose }) {
                 </div>
 
                 <div className="mb-3">
-                  <input type="text" className="form-control" placeholder="부품명" name="partName" value={formData.partName} onChange={handleChange} />
+                  <input type="text" className="form-control" placeholder="부품명" name="partName" value={formData.partName} readOnly onChange={handleChange} />
                 </div>
 
                 <div className="mb-3">

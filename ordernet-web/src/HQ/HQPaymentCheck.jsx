@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function HQPaymentCheck({ filteredRows, isFiltered }) {
 
 
+    const tableRef = useRef(null);
     const [rows, setRows] = useState([]);
 
     const [rows2, setRows2] = useState([]);
@@ -74,6 +75,9 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
     const handleRowClick = (orderId) => {
         setSelectedOrderId(orderId);
         setShowOrderDetails(true);
+        if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     };
 
     const closeModal = () => {
@@ -92,14 +96,14 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
     return (
         <div>
         <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-            <h2 className="h5 fw-bold mb-3">가맹점 주문 내역</h2>
-            <table className="table table-bordered">
+            <h2 className="h5 fw-bold mb-3">대리점 주문 내역</h2>
+            <table className="table table-bordered sticky-table" ref={tableRef}>
                 <thead className="table-info">
                 <tr>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문번호</th>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문일자</th>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>부품명</th>
-                    <th className="text-center align-middle" style={{ backgroundColor: "#E3F0FF" }}>주문현황</th>
+                    <th className="text-center align-middle" style={{backgroundColor: "#CFE2FFFF"}}>주문번호</th>
+                    <th className="text-center align-middle" style={{backgroundColor: "#CFE2FFFF"}}>주문일자</th>
+                    <th className="text-center align-middle" style={{backgroundColor: "#CFE2FFFF"}}>부품명</th>
+                    <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FFFF" }}>주문현황</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -113,7 +117,7 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                             <td className="text-center align-middle">{row.orderId}</td>
                             <td className="text-center align-middle">{row.orderDate}</td>
                             <td className="text-center align-middle">{row.displayPartName}</td>
-                            <td className="text-center align-middle">{row.orderStatus}</td>
+                            <td className="text-center align-middle" style={{ color: row.orderStatus === '반려' ? 'red' : 'black' }}>{row.orderStatus} </td>
                         </tr>
                     ))
                 )}
@@ -124,7 +128,7 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                 <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <div className="modal-dialog modal-xl" role="document">
                         <div className="modal-content">
-                            <div className="modal-header" style={{ backgroundColor: '#cfe2ff' }}>
+                            <div className="modal-header" style={{ backgroundColor: '#CFE2FFFF' }}>
                                 <h5 className="modal-title">상세 내역</h5>
                                 <button type="button" className="btn-close" onClick={closeModal}></button>
                             </div>
@@ -133,30 +137,30 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                                     <thead className="table-info">
                                     <tr>
                                         <th className="text-center align-middle" rowSpan="2"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>대리점 ID
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>대리점 ID
                                         </th>
                                         <th className="text-center align-middle" colSpan="2"
-                                            style={{backgroundColor: "#E3F0FF"}}>부품
+                                            style={{backgroundColor: "#CFE2FFFF"}}>부품
                                         </th>
                                         <th className="text-center align-middle" colSpan="2"
-                                            style={{backgroundColor: "#E3F0FF"}}>가격
+                                            style={{backgroundColor: "#CFE2FFFF"}}>가격
                                         </th>
                                         <th className="text-center align-middle" rowSpan="2"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>주문일자
                                         </th>
                                     </tr>
                                     <tr>
                                         <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품 Code
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>부품 Code
                                         </th>
                                         <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품명
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>부품명
                                         </th>
                                         <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>수량
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>수량
                                         </th>
                                         <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>비용
+                                            style={{width: '130px', backgroundColor: "#CFE2FFFF"}}>비용
                                         </th>
                                     </tr>
                                     </thead>
@@ -172,7 +176,7 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                                                 <td className="text-center">{row.partId}</td>
                                                 <td className="text-center">{row.partName}</td>
                                                 <td className="text-center">{row.orderItemQuantity}</td>
-                                                <td className="text-center">{row.orderItemPrice.toLocaleString()}원</td>
+                                                <td className="text-center">{row.orderItemPrice.toLocaleString() + " (원)"}</td>
                                                 <td className="text-center">{row.orderDate}</td>
                                             </tr>
                                         ))

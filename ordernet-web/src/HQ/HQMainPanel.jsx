@@ -98,20 +98,20 @@ function HQMainPanel( { filteredRows, isFiltered }) {
               </div>
           )}
         </div>
-        <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-          <h2 className="h5 fw-bold mb-3">미결재 리스트</h2>
-          <table className="table table-bordered">
+        <div className="p-4 mt-3 bg-light w-100 overflow-auto" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <h2 className="h5 fw-bold mb-3">미결제 리스트</h2>
+          <table className="table table-bordered sticky-table">
             <thead className="table-info">
             <tr>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>주문번호</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>대리점 ID</th>
-              <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>일자</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>가격</th>
-              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문현황</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#CFE2FF"}}>주문번호</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#CFE2FF"}}>대리점 ID</th>
+              <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#CFE2FF"}}>일자</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#CFE2FF"}}>가격</th>
+              <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#CFE2FF"}}>주문현황</th>
             </tr>
             <tr>
-              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자</th>
-              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>도착일자</th>
+              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>주문일자</th>
+              <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>도착일자</th>
             </tr>
             </thead>
             <tbody>
@@ -123,6 +123,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                 // 중복 주문번호 제거: 가장 첫 번째 orderId 기준으로 하나만 표시
                 Array.from(new Map(rows.map(row => [row.orderId, row])).values()).map((row, i) => (
                     <tr key={i} onClick={() => {
+                      console.log('row clicked:', row.orderId);
                       if (selectedOrderId === row.orderId) {
                         // 이미 선택된 경우 → 선택 해제
                         setSelectedOrderId(null);
@@ -132,13 +133,14 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                         setSelectedOrderId(row.orderId);
                         setShowOrderDetails(true);
                       }
-                    }} style={{ cursor: 'pointer' }}>
+                    }}
+                      style={{ cursor: 'pointer',backgroundColor: selectedOrderId === row.orderId ? '#ffe8a1' : '', }}>
                       <td className="text-center align-middle">{row.orderId}</td>
                       <td className="text-center align-middle">{row.branchId}</td>
                       <td className="text-center align-middle">{row.orderDate}</td>
                       <td className="text-center align-middle">{row.orderDueDate}</td>
-                      <td className="text-center align-middle">{row.orderPrice.toLocaleString()}</td>
-                      <td className="text-center align-middle">{row.orderStatus}</td>
+                      <td className="text-center align-middle">{row.orderPrice.toLocaleString() + " (원)"}</td>
+                      <td className="text-center align-middle" style={{ color: row.orderStatus === '반려' ? 'red' : 'black' }}>{row.orderStatus}</td>
                     </tr>
                 ))
             )}
@@ -152,21 +154,21 @@ function HQMainPanel( { filteredRows, isFiltered }) {
             <>
               <div className="p-4 mt-3 bg-light w-100 overflow-auto" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                 <h2 className="h5 fw-bold mt-1 mb-3" >발주 내역</h2>
-                <table className="table table-bordered">
+                <table className="table table-bordered sticky-table">
                   <thead className="table-info">
                   <tr>
                     {/*<th className="text-center align-middle" rowSpan="2" style={{width: '20px', height: '60px'}}></th>*/}
-                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#E3F0FF"}}>대리점 ID
+                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', height: '60px', backgroundColor: "#CFE2FF"}}>대리점 ID
                     </th>
-                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>부품</th>
-                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#E3F0FF"}}>가격</th>
-                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자</th>
+                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#CFE2FF"}}>부품</th>
+                    <th className="text-center align-middle" colSpan="2" style={{backgroundColor: "#CFE2FF"}}>가격</th>
+                    <th className="text-center align-middle" rowSpan="2" style={{width: '130px', backgroundColor: "#CFE2FF"}}>주문일자</th>
                   </tr>
                   <tr>
-                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품 Code</th>
-                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품명</th>
-                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>수량</th>
-                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#E3F0FF"}}>비용</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>부품 Code</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>부품명</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>수량</th>
+                    <th className="text-center align-middle" style={{width: '130px', backgroundColor: "#CFE2FF"}}>비용</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -195,7 +197,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                                 <td className="text-center align-middle">{row.partId}</td>
                                 <td className="text-center align-middle">{row.partName}</td>
                                 <td className="text-center align-middle">{row.orderItemQuantity}</td>
-                                <td className="text-center align-middle">{row.orderItemPrice.toLocaleString()}</td>
+                                <td className="text-center align-middle">{row.orderItemPrice.toLocaleString()} (원)</td>
                                 <td className="text-center align-middle">{row.orderDate}</td>
                               </tr>
                           );
@@ -206,7 +208,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
                 </table>
                 <div className="mt-3 text-end">
-                  <button className={'btn'} style={{backgroundColor: "#CFE2FF"}} type={"button"} onClick={handleOpenModal}>결제</button>
+                  <button className={'btn'} style={{backgroundColor: "#CFE2FF"}} type={"button"} onClick={handleOpenModal}>결재</button>
                 </div>
 
               </div>
@@ -294,7 +296,7 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
       <div className="modal show d-block" tabIndex={-1} role="dialog">
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
-            <div className="modal-header" style={{ backgroundColor: '#cfe2ff' }}>
+            <div className="modal-header" style={{ backgroundColor: '#CFE2FF' }}>
               <h5 className="modal-title">결제</h5>
               <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
             </div>
@@ -338,5 +340,3 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
 }
 
 export default HQMainPanel
-
-

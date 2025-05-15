@@ -89,6 +89,9 @@ function HQRequestPopup({isOpen, onClose}) {
       return;
     }
 
+    const confirmed = window.confirm('진짜 신청 하시겠습니까?');
+    if (!confirmed) return;  // 취소 시 함수 종료
+
     // 서버에 필요한 필드만 추려서 전송
     const requestData = partsList.map(({warehouseId, partId, inboundQuantity, inboundPrice}) => ({
       warehouseId,

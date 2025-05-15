@@ -103,11 +103,6 @@ function WHMainPanel() {
                 )}
             </div>
 
-            {/*<hr></hr>*/}
-
-            {/*<h2 className="p-1 h5 fw-bold mb-3">재고</h2>*/}
-            {/*<hr></hr>*/}
-
             <div className="p-4 mt-3 bg-light w-100 overflow-auto">
                 <div className="d-flex justify-content-between align-items-center text-primary mb-3">
                     <div className="d-flex align-items-center gap-2">
@@ -119,9 +114,7 @@ function WHMainPanel() {
                         <h5 className="fw-bold mb-0">재고</h5>
                     </div>
                 </div>
-
-                {/*<h2 className="h5 fw-bold mb-3 text-primary">재고</h2>*/}
-
+                
                 <hr></hr>
 
                 <div className="mt-4">
