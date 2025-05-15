@@ -110,7 +110,7 @@ function HQMainPanel() {
             </tbody>
           </table>
           <div className="mt-3 text-end">
-            <button className="btn btn-warning" onClick="">결제</button>
+            <button className="btn btn-warning">결제</button>
           </div>
         </div>
 

@@ -23,7 +23,7 @@ function BranchMain() {
         }, 0).toLocaleString(); // 천 단위 쉼표 추가
     };
     // 나중에 변경해야하는
-    const branchId = "Busan-1";
+    const branchId = "Busan01";
 
     const fetchOrders = async () => {
         if (startDate && endDate && startDate > endDate) {
@@ -150,7 +150,7 @@ function BranchMain() {
                                             <td style={tdStyle}>{order.orderId}</td>
                                             <td style={tdStyle}>{order.branchId}</td>
                                             <td style={tdStyle}>{order.orderDate}</td>
-                                            <td style={tdStyle}>{order.orderPrice.toLocaleString()} 원</td>
+                                            <td style={tdStyle}>{order.orderPrice.toLocaleString()} (원)</td>
                                             <td style={tdStyle}>{order.orderStatus}</td>
                                         </tr>
                                     ))}
@@ -212,7 +212,7 @@ function BranchMain() {
                                                     <td>{part.partCate}</td>
                                                     <td>{part.partName}</td>
                                                     <td>{part.quantity}</td>
-                                                    <td>{(parseFloat(part.partPrice) * parseInt(part.quantity)).toLocaleString()} 원</td>
+                                                    <td>{(parseFloat(part.partPrice) * parseInt(part.quantity)).toLocaleString()} (원)</td>
                                                 </tr>
                                             ))}
                                             </tbody>
@@ -221,7 +221,7 @@ function BranchMain() {
 
                                     <div style={totalPriceBoxStyle}>
                                         <span>총 주문 금액</span>
-                                        <span>{calculateTotalPrice()} 원</span>
+                                        <span>{calculateTotalPrice()} (원)</span>
                                     </div>
                                 </>
                             ) : (

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.ClientMapper">
+
+    <select id="selectClientList" resultType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        SELECT branch_id, branch_name, branch_supervisor, branch_phone, branch_zip_code, branch_road_addr, branch_detail_addr
+        FROM branch
+    </select>
+
+    <insert id="insertclientdata" parameterType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        INSERT INTO branch (branch_id, branch_name, branch_supervisor, branch_phone, branch_zip_code, branch_road_addr, branch_detail_addr)
+        VALUES(#{branchId}, #{branchName}, #{branchSupervisor}, #{branchPhone}, #{branchZipCode}, #{branchRoadAddr}, #{branchDetailAddr})
+    </insert>
+
+    <insert id="insertclientLogin" parameterType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        INSERT INTO user_account (user_id, user_pw, user_ref_id, user_type)
+        VALUES(#{userId}, #{userPw}, #{branchId}, '대리점')  <!-- user_ref_id에 branchId 삽입 -->
+    </insert>
+
+
+    <select id="countBranchesByCity" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM branch
+        WHERE branch_id LIKE CONCAT(#{city}, '%')
+    </select>
+
+    <!--    update-->
+
+    <select id="selectClientByBranchId" resultType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        SELECT
+        ua.user_id AS userId,
+        ua.user_pw AS userPw,
+        b.branch_id AS branchId,
+        b.branch_name AS branchName,
+        b.branch_supervisor AS branchSupervisor,
+        b.branch_phone AS branchPhone,
+        b.branch_zip_code AS branchZipCode,
+        b.branch_road_addr AS branchRoadAddr,
+        b.branch_detail_addr AS branchDetailAddr
+        FROM user_account ua
+        JOIN branch b ON ua.user_ref_id = b.branch_id
+        WHERE b.branch_id = #{branchId}
+    </select>
+
+    <update id="updateClientLogin" parameterType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        UPDATE user_account
+        SET user_pw = #{userPw}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateClientBranch" parameterType="bitc.fullstack503.ordernetserver.dto.ClientDTO">
+        UPDATE branch
+        SET
+        branch_name = #{branchName},
+        branch_supervisor = #{branchSupervisor},
+        branch_phone = #{branchPhone},
+        branch_zip_code = #{branchZipCode},
+        branch_road_addr = #{branchRoadAddr},
+        branch_detail_addr = #{branchDetailAddr}
+        WHERE branch_id = #{branchId}
+    </update>
+
+
+    <!-- 대리점 삭제 -->
+    <delete id="deletecliendata" parameterType="list">
+        DELETE FROM branch
+        WHERE branch_id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteClientLogin" parameterType="list">
+        DELETE FROM user_account
+        WHERE user_id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+<!--    순위-->
+    <select id="selectClientRanking" resultType="bitc.fullstack503.ordernetserver.dto.OrderDTO">
+        SELECT
+        b.branch_name AS branchId,        -- 대리점 이름을 branchId 필드로 매핑
+        SUM(order_price) AS orderPrice -- 주문 총액
+        FROM
+        orders                         -- orders 테이블을 별칭 없이 사용
+        JOIN
+        branch b                       -- branch 테이블은 별칭 b 사용
+        ON
+        orders.branch_id = b.branch_id -- orders 테이블의 branch_id와 branch 테이블의 branch_id로 조인
+        GROUP BY
+        orders.branch_id               -- orders 테이블의 branch_id로 그룹화
+        ORDER BY
+        orderPrice DESC
+    </select>
+
+
+    <select id="selectProtuctRanking" resultType="bitc.fullstack503.ordernetserver.dto.OrderItemDTO">
+        SELECT
+        oi.part_id AS name,
+        SUM(oi.order_item_quantity) AS quantity
+        FROM
+        order_item oi
+        JOIN
+        orders o ON oi.order_id = o.order_id
+        WHERE
+        DATE_FORMAT(o.order_date, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+        AND o.branch_id = #{branchId}
+        GROUP BY
+        oi.part_id
+        ORDER BY
+        quantity DESC
+        LIMIT 5;
+    </select>
+
+
+
+
+    <!--    //DATE_FORMAT(CURDATE(), '%Y-%m')-->
+
+
+</mapper>

@@ -1,25 +1,64 @@
 import React, { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import axios from "axios";
+
 
 function HQInsertPopUp({ isOpen, onClose }) {
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [formData, setFormData] = useState({
     branchName: '',
-    ceoName: '',
-    branchId: '',
-    password: '',
-    phoneNumber: '',
-    zonecode: '',
-    address: '',
-    detailAddress: '',
+    branchSupervisor: '',
+    userId: '',
+    userPw: '',
+    branchPhone: '',
+    branchZipCode: '',
+    branchRoadAddr: '',
+    branchDetailAddr: '',
+    city: '',  // 도시명 추가
   });
 
   const handleComplete = (data) => {
+    console.log("Received sido:", data.sido);
+    const sidoToEnglish = {
+      '서울': 'Seoul',
+      '부산': 'Busan',
+      '대구': 'Daegu',
+      '인천': 'Incheon',
+      '광주': 'Gwangju',
+      '대전': 'Daejeon',
+      '울산': 'Ulsan',
+      '세종': 'Sejong',
+      '경기도': 'Gyeonggi',
+      '강원도': 'Gangwon',
+      '충청북도': 'Chungbuk',
+      '충청남도': 'Chungnam',
+      '전라북도': 'Jeonbuk',
+      '전라남도': 'Jeonnam',
+      '경상북도': 'Gyeongbuk',
+      '경상남도': 'Gyeongnam',
+      '제주특별자치도': 'Jeju',
+    };
+
+    let englishCity = sidoToEnglish[data.sido];
+    console.log("englishCity before check:", englishCity);
+
+    // 없는 경우, 광역시나 특별시를 제외한 도시명만 추출
+    if (!englishCity) {
+      if (data.sido.includes('광역시') || data.sido.includes('특별시')) {
+        englishCity = data.sido.replace(/(광역시|특별시)/g, '').trim(); // '광역시'나 '특별시'를 제거
+        console.log("City after remove 광역시/특별시:", englishCity);
+      } else {
+        englishCity = 'Unknown';  // 매핑에 없는 경우
+      }
+    }
+    console.log("Mapped city:", englishCity);
     setFormData((prev) => ({
       ...prev,
-      zonecode: data.zonecode,
-      address: data.address,
+      branchZipCode: data.zonecode,
+      branchRoadAddr: data.roadAddress,
+      city: englishCity, // 수정된 city
     }));
+
     setIsPostOpen(false);
   };
 
@@ -31,12 +70,25 @@ function HQInsertPopUp({ isOpen, onClose }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('등록할 대리점 정보:', formData);
     // TODO: Axios POST 요청 가능
 
-    onClose(); // 팝업 닫기
+    try {
+      const res = await axios.post('http://localhost:8080/HQMain/insertclient', formData,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+      console.log("서버 응답:", res.data);
+      alert("대리점이 성공적으로 등록되었습니다.");
+      onClose();  // 등록 후 팝업 닫기
+    } catch (error) {
+      console.error("등록 실패:", error);
+      alert("대리점 등록 중 오류가 발생했습니다.");
+    }
   };
 
   const handleClose = () => {
@@ -77,21 +129,21 @@ function HQInsertPopUp({ isOpen, onClose }) {
                       <input type="text" name="branchName" value={formData.branchName} onChange={handleChange} className="form-control" placeholder="대리점명" />
                     </div>
                     <div className="col">
-                      <input type="text" name="ceoName" value={formData.ceoName} onChange={handleChange} className="form-control" placeholder="대표자명" />
+                      <input type="text" name="branchSupervisor" value={formData.branchSupervisor} onChange={handleChange} className="form-control" placeholder="대표자명" />
                     </div>
                   </div>
 
                   <div className="row mb-3">
                     <div className="col">
-                      <input type="text" name="branchId" value={formData.branchId} onChange={handleChange} className="form-control" placeholder="대리점 ID" />
+                      <input type="text" name="userId" value={formData.userId} onChange={handleChange} className="form-control" placeholder="대리점 ID" />
                     </div>
                     <div className="col">
-                      <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-control" placeholder="비밀번호" />
+                      <input type="password" name="userPw" value={formData.userPw} onChange={handleChange} className="form-control" placeholder="비밀번호" />
                     </div>
                   </div>
 
                   <div className="mb-3">
-                    <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} className="form-control" placeholder="전화번호" />
+                    <input type="text" name="branchPhone" value={formData.branchPhone} onChange={handleChange} className="form-control" placeholder="전화번호" />
                   </div>
 
                   <div className="mb-3 d-flex align-items-center">
@@ -103,20 +155,20 @@ function HQInsertPopUp({ isOpen, onClose }) {
                   </div>
 
                   <div className="d-flex mb-3">
-                    <input type="text" className="form-control" style={{ flex: 3 }} placeholder="우편번호" value={formData.zonecode} readOnly />
+                    <input type="text" name={"branchZipCode"} className="form-control" style={{ flex: 3 }} placeholder="우편번호" value={formData.branchZipCode} readOnly />
                     <button type="button" className="btn btn-secondary"
                             onClick={() => setIsPostOpen(true)}
-                            style={{ flex: 0.3, backgroundColor: '#cfe2ff', color: 'black' }}>
+                            style={{ flex: 0.3, backgroundColor: '#cfe2ff', color: 'black' }} >
                       검색
                     </button>
                   </div>
 
                   <div className="mb-3">
-                    <input type="text" name="address" className="form-control" placeholder="주소" value={formData.address} readOnly />
+                    <input type="text" name="branchRoadAddr" className="form-control" placeholder="주소" value={formData.branchRoadAddr} readOnly />
                   </div>
 
                   <div className="mb-3">
-                    <input type="text" name="detailAddress" className="form-control" placeholder="상세주소 (예: 101동 202호)" value={formData.detailAddress} onChange={handleChange} />
+                    <input type="text" name="branchDetailAddr" className="form-control" placeholder="상세주소 (예: 101동 202호)" value={formData.branchDetailAddr} onChange={handleChange} />
                   </div>
 
                   {isPostOpen && (

@@ -1,46 +1,52 @@
 // HQUpdatePopUp.jsx
 import React, { useState, useEffect } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import axios from "axios";
 
-function HQUpdatePopUp({ isOpen, onClose }) {
+function HQUpdatePopUp({ isOpen, onClose,selectedBranchId,refreshClientList}) {
+  console.log("팝업 렌더링됨, isOpen 상태:", isOpen);
+  const [localIsOpen, setLocalIsOpen] = useState(isOpen); // 내부 상태로 관리
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [formData, setFormData] = useState({
     branchName: '',
-    supervisorName: '',
-    branchId: '',
-    password: '',
-    phone: '',
+    branchSupervisor: '',
+    userId: '',
+    userPw: '',
+    branchPhone: '',
     branchZipCode: '',
     branchRoadAddr: '',
     branchDetailAddr: '',
   });
 
-  // 임시 데이터: 수정할 기존 정보
-  const existingData = {
-    branchName: 'ABC 대리점',
-    supervisorName: '홍길동',
-    branchId: 'abc123',
-    phone: '010-1234-5678',
-    branchZipCode: '12345',
-    branchRoadAddr: '서울시 강남구 테헤란로 123',
-    branchDetailAddr: '101동 202호',
-  };
+  // isOpen 상태가 변경될 때만 localIsOpen 상태 업데이트
+  useEffect(() => {
+    setLocalIsOpen(isOpen); // 부모 컴포넌트로부터 받은 isOpen 상태 반영
+  }, [isOpen]);
 
   // isOpen이 true 될 때 기존 데이터 세팅
   useEffect(() => {
-    if (isOpen && existingData) {
-      setFormData({
-        branchName: existingData.branchName || '',
-        supervisorName: existingData.supervisorName || '',
-        branchId: existingData.branchId || '',
-        password: '',
-        phone: existingData.phone || '',
-        branchZipCode: existingData.branchZipCode || '',
-        branchRoadAddr: existingData.branchRoadAddr || '',
-        branchDetailAddr: existingData.branchDetailAddr || '',
-      });
+    if (localIsOpen && selectedBranchId) {
+      console.log("수정할 대리점 ID:", selectedBranchId);
+      // 서버에서 대리점 정보 불러오기
+      axios.get(`http://localhost:8080/HQMain/clientupdate/${selectedBranchId}`)
+          .then(res => {
+            const data = res.data;
+            setFormData({
+              branchName: data.branchName || '',
+              branchSupervisor: data.branchSupervisor || '',
+              userId: data.userId || '',
+              userPw: data.userPw || '', // 초기화
+              branchPhone: data.branchPhone || '',
+              branchZipCode: data.branchZipCode || '',
+              branchRoadAddr: data.branchRoadAddr || '',
+              branchDetailAddr: data.branchDetailAddr || '',
+            });
+          })
+          .catch(err => {
+            console.error('대리점 정보 불러오기 실패:', err);
+          });
     }
-  }, [isOpen]);
+  }, [localIsOpen, selectedBranchId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,17 +65,38 @@ function HQUpdatePopUp({ isOpen, onClose }) {
     setIsPostOpen(false);
   };
 
-  const handleSubmit = () => {
-    console.log('수정할 데이터:', formData);
-    onClose();
+  const handleSubmit = async () => {
+    const payload = {
+      branchId: selectedBranchId, // 대리점 ID 추가
+      userId: formData.userId, // 수정할 대리점 ID
+      userPw: formData.userPw, // 변경 비밀번호
+      branchName: formData.branchName,
+      branchSupervisor: formData.branchSupervisor,
+      branchPhone: formData.branchPhone,
+      branchZipCode: formData.branchZipCode,
+      branchRoadAddr: formData.branchRoadAddr,
+      branchDetailAddr: formData.branchDetailAddr,
+    };
+
+    try {
+      const res = await axios.put('http://localhost:8080/HQMain/clientupdate', payload);
+      alert(res.data);
+      onClose();
+      refreshClientList();
+    } catch (err) {
+      console.error('수정 실패:', err);
+      alert('수정 실패');
+    }
   };
+
 
   const handleClose = () => {
     setIsPostOpen(false);
-    onClose();
+    setLocalIsOpen(false); // 로컬 상태 변경
+    onClose(); // 부모에게 팝업 닫혔음을 알림
   };
 
-  if (!isOpen) return null; // 열리지 않으면 렌더 X
+  if (!localIsOpen) return null; // 열리지 않으면 렌더 X
 
   return (
       <>
@@ -104,21 +131,21 @@ function HQUpdatePopUp({ isOpen, onClose }) {
                       <input type="text" name="branchName" value={formData.branchName} onChange={handleChange} className="form-control" placeholder="대리점명" />
                     </div>
                     <div className="col">
-                      <input type="text" name="supervisorName" value={formData.supervisorName} onChange={handleChange} className="form-control" placeholder="대표자명" />
+                      <input type="text" name="branchSupervisor" value={formData.branchSupervisor} onChange={handleChange} className="form-control" placeholder="대표자명" />
                     </div>
                   </div>
 
                   <div className="row mb-3">
                     <div className="col">
-                      <input type="text" name="branchId" value={formData.branchId} onChange={handleChange} className="form-control" placeholder="대리점 ID" />
+                      <input type="text" autoComplete="username" name="userId" value={formData.userId} onChange={handleChange} className="form-control" placeholder="대리점 ID" />
                     </div>
                     <div className="col">
-                      <input type="password" name="password" value={formData.password} onChange={handleChange} className="form-control" placeholder="비밀번호" />
+                      <input type="password" autoComplete="current-password"  name="userPw" value={formData.userPw} onChange={handleChange} className="form-control" placeholder="비밀번호" />
                     </div>
                   </div>
 
                   <div className="mb-3">
-                    <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="form-control" placeholder="전화번호" />
+                    <input type="text" name="branchPhone" value={formData.branchPhone} onChange={handleChange} className="form-control" placeholder="전화번호" />
                   </div>
 
                   <div className="mb-3 d-flex align-items-center">

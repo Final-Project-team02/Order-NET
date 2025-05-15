@@ -4,21 +4,13 @@ import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 import java.util.Date
 
-data class OrderAppDTO(
+data class WHOrderAppItemDTO(
+
     @SerializedName("order_id")
     var orderId: String,
 
-    @SerializedName("order_date")
-    var orderDate: Date,
-
-    @SerializedName("order_due_date")
-    var orderDueDate: Date,
-
-    @SerializedName("branch_id")
-    var branchId: String,
-
-    @SerializedName("branch_name")
-    var branchName: String,
+    @SerializedName("order_item_id")
+    var orderItemId: Int,
 
     @SerializedName("part_id")
     var partId: String,
@@ -29,6 +21,9 @@ data class OrderAppDTO(
     @SerializedName("part_cate")
     var partCate: String,
 
+    @SerializedName("part_img")
+    var partImg: String,
+
     @SerializedName("order_item_quantity")
     var orderItemQuantity: Int,
 
@@ -38,9 +33,20 @@ data class OrderAppDTO(
     @SerializedName("order_item_status")
     var orderItemStatus: String,
 
-    @SerializedName("warehouse_stock")
-    var warehouseStock: Int?,
+    @SerializedName("order_date")
+    var orderDate: Date,
 
-    @SerializedName("total_quantity")
-    var totalQuantity: Int,
-)
+    @SerializedName("order_due_date")
+    var orderDueDate: Date,
+
+    @SerializedName("order_status")
+    var orderStatus: String,
+
+    @SerializedName("order_price")
+    var orderPrice: BigDecimal,
+
+    @SerializedName("branch_name")
+    var branchName: String,
+
+
+    )

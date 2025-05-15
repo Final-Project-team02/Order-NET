@@ -37,31 +37,75 @@
     <!-- 특정 물류센터의 주문 조회 -->
     <select id="getOrdersByWarehouse" resultType="bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO" parameterType="String">
         SELECT
-            oi.order_id,
-            oi.part_id,
-            p.part_name,
-            p.part_cate,
-            oi.order_item_quantity,
-            b.branch_id,
-            b.branch_name,
-            oi.order_item_status,
-            o.order_due_date,
+            o.order_id,
             o.order_date,
-            oi.order_item_price
-        FROM
-            order_item oi
-                LEFT JOIN parts p ON oi.part_id = p.part_id
-                LEFT JOIN orders o ON oi.order_id = o.order_id
-                LEFT JOIN branch b ON o.branch_id = b.branch_id
-                LEFT JOIN warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{warehouseId}
-        WHERE
-            ws.warehouse_id IS NOT NULL
-        ORDER BY
-            CASE oi.order_item_status
-                WHEN '출고대기' THEN 0
-                ELSE 1
-                END,
-            o.order_due_date ASC;
+            o.order_due_date,
+            o.branch_id,
+            b.branch_name,
+            SUM(oi.order_item_quantity) AS total_quantity,
+            CASE
+                WHEN COUNT(oi.order_item_status) = COUNT(CASE WHEN oi.order_item_status = '출고대기' THEN 1 END) THEN '승인 대기'
+                ELSE '출고완료'
+                END AS order_status
+        FROM orders o
+                 LEFT JOIN order_item oi ON o.order_id = oi.order_id
+                 LEFT JOIN branch b ON o.branch_id = b.branch_id
+                 LEFT JOIN warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{warehouseId}
+        WHERE ws.warehouse_id IS NOT NULL
+        GROUP BY o.order_id
+        ORDER BY o.order_due_date ASC;
     </select>
+
+    <select id="getOrderItemsByWarehouseAndOrder"
+            parameterType="map"
+            resultType="bitc.fullstack503.ordernetserver.dto.app.WHOrderAppItemDTO">
+        SELECT o.order_id,
+               o.order_date,
+               o.order_due_date,
+               o.order_status,
+               o.order_price,
+               b.branch_name,
+               oi.order_item_id,
+               oi.part_id,
+               p.part_name,
+               p.part_img,
+               p.part_cate,
+               oi.order_item_quantity,
+               oi.order_item_price,
+               oi.order_item_status,
+               ws.stock_quantity AS warehouse_stock
+        FROM orders o
+                 JOIN branch b ON o.branch_id = b.branch_id
+                 JOIN order_item oi ON o.order_id = oi.order_id
+                 JOIN parts p ON oi.part_id = p.part_id
+                 LEFT JOIN warehouse_stock ws
+                           ON p.part_id = ws.part_id
+                               AND ws.warehouse_id = #{warehouseId}
+        WHERE o.order_id = #{orderId}
+          AND ws.stock_quantity IS NOT NULL
+    </select>
+
+    <insert id="insertOutbound" parameterType="map">
+        INSERT INTO warehouse_outbound (warehouse_id,
+                                        order_id,
+                                        outbound_date)
+        VALUES (#{warehouseId},
+                #{orderId},
+                NOW())
+    </insert>
+
+
+    <update id="decreaseStock" parameterType="map">
+        UPDATE warehouse_stock
+        SET stock_quantity = stock_quantity - #{quantity}
+        WHERE warehouse_id = #{warehouseId}
+          AND part_id = #{partId}
+    </update>
+
+    <update id="updateOrderItemStatus" parameterType="map">
+        UPDATE order_item
+        SET order_item_status = '출고완료'
+        WHERE order_id = #{orderId}
+    </update>
 
 </mapper>

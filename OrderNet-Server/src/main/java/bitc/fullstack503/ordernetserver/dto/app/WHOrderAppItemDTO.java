@@ -2,26 +2,18 @@ package bitc.fullstack503.ordernetserver.dto.app;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class OrderAppDTO {
+public class WHOrderAppItemDTO {
 
   @JsonProperty("order_id")
   private String orderId;
 
-  @JsonProperty("order_date")
-  private Date orderDate;
-
-  @JsonProperty("order_due_date")
-  private Date orderDueDate;
-
-  @JsonProperty("branch_id")
-  private String branchId;
-
-  @JsonProperty("branch_name")
-  private String branchName;
+  @JsonProperty("order_item_id")
+  private int orderItemId;
 
   @JsonProperty("part_id")
   private String partId;
@@ -32,6 +24,9 @@ public class OrderAppDTO {
   @JsonProperty("part_cate")
   private String partCate;
 
+  @JsonProperty("part_img")
+  private String partImg;
+
   @JsonProperty("order_item_quantity")
   private int orderItemQuantity;
 
@@ -41,9 +36,21 @@ public class OrderAppDTO {
   @JsonProperty("order_item_status")
   private String orderItemStatus;
 
-  @JsonProperty("total_quantity")
-  private int totalQuantity;  // 총 품목 수량
+  @JsonProperty("order_date")
+  private Date orderDate;
+
+  @JsonProperty("order_due_date")
+  private Date orderDueDate;
 
   @JsonProperty("order_status")
-  private String orderStatus; // 주문 상태
+  private String orderStatus;
+
+  @JsonProperty("order_price")
+  private BigDecimal orderPrice;
+
+  @JsonProperty("branch_name")
+  private String branchName;
+
+  @JsonProperty("warehouse_stock")
+  private Integer warehouseStock;
 }

@@ -5,6 +5,7 @@ import HQMainPanel from "./HQMainPanel.jsx";
 import HQPaymentCheck from "./HQPaymentCheck.jsx";
 import Title from "../layout/Title.jsx";
 import React from "react";
+import HQClientRanking from "./HQClientRanking.jsx";
 
 
 

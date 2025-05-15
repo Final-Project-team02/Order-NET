@@ -2,21 +2,19 @@ package bitc.fullstack.app.Warehouse
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
+import android.view.MotionEvent
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import bitc.fullstack.app.R
 import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityWarehouseMainBinding
 import bitc.fullstack.app.dto.OrderAppDTO
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
 import java.util.*
 
 class WHMainActivity : AppCompatActivity() {
@@ -25,11 +23,16 @@ class WHMainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var spinnerOrderList: Spinner
     private lateinit var apiService: AppServerInterface
+    private lateinit var binding: ActivityWarehouseMainBinding
+
     private var fullOrders: List<OrderAppDTO> = emptyList()
+    private var selectedStatus: String = "전체"
+    private var startDate: String? = null
+    private var endDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityWarehouseMainBinding.inflate(layoutInflater)
+        binding = ActivityWarehouseMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Retrofit 초기화
@@ -53,40 +56,79 @@ class WHMainActivity : AppCompatActivity() {
             override fun onItemSelected(
                 parent: AdapterView<*>, view: View?, pos: Int, id: Long
             ) {
-                val status = parent.getItemAtPosition(pos).toString()
-                filterByStatus(status)
+                selectedStatus = parent.getItemAtPosition(pos).toString()
+                filterOrders()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
+        // 날짜 버튼 클릭
         binding.btnStartDate.setOnClickListener {
-            showDatePickerDialog(binding.btnStartDate)
+            showDatePickerDialog(binding.btnStartDate) { date ->
+                startDate = date
+                filterOrders()
+            }
         }
+
         binding.btnEndDate.setOnClickListener {
-            showDatePickerDialog(binding.btnEndDate)
+            showDatePickerDialog(binding.btnEndDate) { date ->
+                endDate = date
+                filterOrders()
+            }
         }
+
+
+        binding.etOrderNumber.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.etOrderNumber.compoundDrawables[2]  // 아이콘을 가져옵니다.
+
+                // drawableEnd가 null이 아니면 아이콘 클릭을 감지할 수 있습니다.
+                if (drawableEnd != null) {
+                    val iconLeft = binding.etOrderNumber.width - drawableEnd.bounds.width()  // 아이콘의 왼쪽 위치
+                    val iconRight = binding.etOrderNumber.width  // 아이콘의 오른쪽 위치
+
+                    // 클릭된 좌표가 아이콘 영역 안에 있을 경우
+                    if (event.x >= iconLeft && event.x <= iconRight) {
+                        // 아이콘 클릭 시 필터링 적용
+                        filterOrders()
+                        return@setOnTouchListener true
+                    }
+                }
+            }
+            false  // 다른 터치 이벤트는 기본적으로 처리
+        }
+
+
+
 
         // 데이터 불러오기
         getOrdersByWarehouse("WH_BRK")
     }
 
     private fun setupSpinner() {
-        val options = listOf("전체", "출고 대기", "출고 완료")
+        val options = listOf("전체", "출고대기", "출고완료")
         spinnerOrderList.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item, options
         )
     }
 
-    private fun showDatePickerDialog(target: Button) {
+    private fun showDatePickerDialog(target: Button, onDateSet: (String) -> Unit) {
         val cal = Calendar.getInstance()
+        val listener = DatePickerDialog.OnDateSetListener { _, y, m, d ->
+            val date = String.format("%04d-%02d-%02d", y, m + 1, d)
+            target.text = date
+            onDateSet(date)
+        }
+
         DatePickerDialog(
             this,
-            { _, y, m, d -> target.text = String.format("%04d-%02d-%02d", y, m + 1, d) },
-            cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
+            listener,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
-
 
     private fun getOrdersByWarehouse(warehouseId: String) {
         retrofitResponse(apiService.getOrdersByWarehouse(warehouseId)) { result ->
@@ -95,15 +137,35 @@ class WHMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun filterByStatus(status: String) {
-        val filtered = if (status == "전체") {
+    private fun filterOrders() {
+        val status = spinnerOrderList.selectedItem.toString()
+        var filtered = if (status == "전체") {
             fullOrders
         } else {
             fullOrders.filter { it.orderItemStatus == status }
         }
+
+        // 날짜 필터링 처리
+        if (!startDate.isNullOrEmpty() && !endDate.isNullOrEmpty()) {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val start = sdf.parse(startDate)
+            val end = sdf.parse(endDate)
+
+            if (start != null && end != null) {
+                filtered = filtered.filter {
+                    it.orderDate != null &&
+                            it.orderDate >= start && it.orderDate <= end
+                }
+            }
+        }
+
+        val orderNumber = binding.etOrderNumber.text.toString()
+        if (orderNumber.isNotEmpty()) {
+            filtered = filtered.filter { it.orderId.contains(orderNumber, ignoreCase = true) }
+        }
+
         whOrderAdapter.updateData(filtered)
     }
-
 
     private fun <T> retrofitResponse(call: Call<T>, onSuccess: (T?) -> Unit) {
         call.enqueue(object : Callback<T> {
@@ -115,7 +177,6 @@ class WHMainActivity : AppCompatActivity() {
                     Toast.makeText(this@WHMainActivity, "서버 오류: $error", Toast.LENGTH_SHORT).show()
                     android.util.Log.e("WHMainActivity", "서버 응답 실패: ${response.code()}, ${response.message()}")
                     android.util.Log.e("WHMainActivity", "서버 오류 내용: $error")
-
                 }
             }
 

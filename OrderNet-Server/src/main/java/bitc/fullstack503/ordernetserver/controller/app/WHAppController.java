@@ -1,12 +1,10 @@
 package bitc.fullstack503.ordernetserver.controller.app;
 
 import bitc.fullstack503.ordernetserver.dto.app.OrderAppDTO;
+import bitc.fullstack503.ordernetserver.dto.app.WHOrderAppItemDTO;
 import bitc.fullstack503.ordernetserver.service.app.OrderAppService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,4 +36,20 @@ public class WHAppController {
   public List<OrderAppDTO> getOrdersByWarehouse(@PathVariable("warehouseId") String warehouseId) {
     return orderAppService.getOrdersByWarehouse(warehouseId);
   }
+
+  @GetMapping("/orders/{orderId}/items/{warehouseId}")
+  public List<WHOrderAppItemDTO> getOrderItemsByWarehouseAndOrder(
+          @PathVariable("orderId") String orderId,
+          @PathVariable("warehouseId") String warehouseId) {
+    return orderAppService.getOrderItemsByWarehouseAndOrder(orderId, warehouseId);
+  }
+
+  @PostMapping("/orders/{orderId}/outbound")
+  public String processOutbound(
+          @PathVariable("orderId") String orderId,
+          @RequestParam("warehouseId") String warehouseId) {
+    orderAppService.processOutbound(orderId, warehouseId);
+    return "출고 완료";
+  }
+
 }
