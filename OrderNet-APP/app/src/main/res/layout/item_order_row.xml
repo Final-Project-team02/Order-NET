@@ -13,29 +13,26 @@
         android:weightSum="3">
 
         <TextView
-            android:id="@+id/code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="a1011"
+            android:text="part_id"
             android:textStyle="bold"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/part1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="볼트"
+            android:text="part_name"
             android:textStyle="bold"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/part2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="엔진"
+            android:text="part_price"
             android:textStyle="bold"
             android:textSize="14sp" />
     </LinearLayout>
@@ -57,7 +54,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/price1"
+            android:id="@+id/part_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +62,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/price2"
+            android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

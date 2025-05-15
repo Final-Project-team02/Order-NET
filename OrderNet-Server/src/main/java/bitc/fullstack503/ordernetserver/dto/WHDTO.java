@@ -16,4 +16,16 @@ public class WHDTO {
     private int inboundQuantity; //입고 수량
     private String inboundDate; //입고 날짜
 
+    //-----------------출구 DTO
+
+    private int outboundId;
+    private String warehouseId;
+    private String orderId;
+    private String outboundDate;
+
+    private int totalQuantity;
+
+
+
+
 }

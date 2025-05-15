@@ -16,13 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
         tools:targetApi="31">
-        <activity
-            android:name=".Branch.BranchOrderLIst"
-            android:exported="false" />
 
         <activity
-            android:name=".Warehouse.WHMainActivity"
+            android:name=".Warehouse.OrderDetailActivity"
+            android:exported="false">
+
+
+        </activity>
+        <activity
+            android:name=".Warehouse.WHOrderHistory"
             android:exported="true">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,6 +40,20 @@
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".Branch.BranchOrderLIst"
+            android:exported="false">
+        </activity>
+
+        <activity
+            android:name=".Warehouse.WHMainActivity"
+            android:exported="false">
+
+
+
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="false">

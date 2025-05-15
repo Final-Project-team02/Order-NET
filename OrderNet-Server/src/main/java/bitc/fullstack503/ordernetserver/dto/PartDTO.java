@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PartDTO {
-    private String partsId;
+    private String partId;
     private String partName;
     private String partCate;
     private int quantity;

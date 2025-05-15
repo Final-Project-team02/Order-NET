@@ -6,12 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WHServiceImpl implements WHService {
 
     @Autowired
     private WHMapper whMapper;
+
+    @Override
+    public List<WHDTO> getMonthlyOutboundParts(String warehouseId, int month, int year) {
+        return whMapper.getMonthlyOutboundPartsByWarehouse(warehouseId, month, year);
+    }
 
     //    물류센터 재고조회
     @Override
