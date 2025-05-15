@@ -51,6 +51,12 @@
             </intent-filter>
         </activity>
 
+<!--        물류센터 메인화면 -->
+        <activity
+            android:name=".Warehouse.WarehouseMainActivity"
+            android:exported="false">
+        </activity>
+
     </application>
 
 </manifest>

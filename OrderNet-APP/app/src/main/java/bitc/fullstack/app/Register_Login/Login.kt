@@ -58,7 +58,7 @@ class Login : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
                         loginResponse?.let {
-                            // 토큰 저장 (SharedPreferences 등)
+                            // 토큰 저장 (SharedPreferences)
                             val prefs = getSharedPreferences("auth", MODE_PRIVATE)
                             prefs.edit().putString("token", it.token).apply()
 

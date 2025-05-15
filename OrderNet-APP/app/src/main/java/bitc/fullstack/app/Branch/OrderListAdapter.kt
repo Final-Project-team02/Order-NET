@@ -9,7 +9,8 @@ import bitc.fullstack.app.dto.BranchOrderDTO
 
 class OrderListAdapter(
     private val items: List<BranchOrderDTO>, // 주문 데이터 리스트
-    private val activity: OrderHistoryActivity // 액티비티 참조
+    private val activity: OrderHistoryActivity, // 액티비티 참조
+    private val userRefId: String // userRefId 전달
 ) : RecyclerView.Adapter<OrderListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemOrderBinding) :
@@ -28,6 +29,7 @@ class OrderListAdapter(
             binding.btnOrderDetail.setOnClickListener {
                 val intent = Intent(activity, OrderItemListActivity::class.java)
                 intent.putExtra("orderNumber", item.orderId)
+                intent.putExtra("userRefId", userRefId)
                 activity.startActivity(intent)
             }
         }
