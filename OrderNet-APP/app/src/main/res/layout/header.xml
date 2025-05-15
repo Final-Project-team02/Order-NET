@@ -3,39 +3,61 @@
 <androidx.appcompat.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:id="@+id/header"
     android:background="@color/mainBlue"
     android:elevation="4dp"
     android:theme="@style/Widget.AppCompat.ActionBar"
     app:titleTextColor="#ffffff">
 
-    <!-- 홈 버튼 -->
-    <ImageButton
-        android:id="@+id/home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="홈"
-        android:src="@drawable/home" />
+    <!-- 내부 레이아웃: 버튼들과 중앙 아이콘 정렬 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp">
 
-    <!-- 메뉴 버튼 -->
-    <ImageButton
-        android:id="@+id/menu"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_gravity="end"
-        android:src="@drawable/logout2" />
+        <!-- 홈 버튼 (좌측) -->
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:contentDescription="홈"
+            android:src="@drawable/home" />
 
-    <!-- 중앙 아이콘 -->
-    <ImageView
-        android:id="@+id/order_net"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:contentDescription="로고 아이콘"
-        android:src="@drawable/ordernet" />
+        <!-- 메뉴 버튼 (우측) -->
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="로그아웃"
+            android:scaleType="fitCenter"
+            android:padding="0dp"
+            android:src="@drawable/logout"
+            android:layout_marginEnd="-2dp" /> <!-- 살짝 더 붙게 -->
+
+        <!-- 중앙 로고 -->
+        <ImageView
+            android:id="@+id/order_net"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="로고 아이콘"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ordernet" />
+
+    </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>
