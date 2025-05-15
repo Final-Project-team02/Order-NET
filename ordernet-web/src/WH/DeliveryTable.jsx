@@ -157,7 +157,7 @@ function DeliveryTable({filters, setBranchList}) {
         </div>
 
 
-        {/* 테이블 본문 */}
+        {/* 테이블 본문 비율 고정*/}
         <table className="table table-bordered">
           <thead className="table-primary">
           <tr>
