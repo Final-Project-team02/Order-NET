@@ -79,7 +79,7 @@ function BranchMain() {
   // 페이징 관련 상태
   const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호
   const [showPagination, setShowPagination] = useState(false); // 페이지네이션 표시 여부
-  const itemsPerPage = 10; // 페이지당 항목 수
+  const itemsPerPage = 12; // 페이지당 항목 수
   const pageNumberLimit = 5; // 페이지네이션 최대 번호 수
 
 // 페이징 계산
