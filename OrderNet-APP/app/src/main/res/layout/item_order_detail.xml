@@ -127,8 +127,7 @@
           android:layout_marginTop="5dp"
           android:layout_marginRight="20dp"
           android:text="출고"
-          android:textColor="#FF0000"
-          android:textStyle="bold"/>
+          android:textColor="#FF0000" />
 
     </LinearLayout>
 

@@ -3,11 +3,15 @@ package bitc.fullstack.app.Branch
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -243,8 +247,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-            // month는 0부터 시작하기에 +1
+        val datePickerDialog = DatePickerDialog(this,
+            R.style.CustomDatePickerDialog,
+            { _, selectedYear, selectedMonth, selectedDay ->
             val selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
             onDateSelected(selectedDate)
         }, year, month, day)
@@ -254,8 +259,38 @@ class BranchOrderResiActivity : AppCompatActivity() {
             datePickerDialog.datePicker.minDate = it
         }
 
+        //  커스터마이징 추가
+        datePickerDialog.setOnShowListener {
+            try {
+                // 연도 텍스트 색상
+                val yearId = resources.getIdentifier("date_picker_header_year", "id", "android")
+                val yearText = datePickerDialog.findViewById<TextView>(yearId)
+                yearText?.setTextColor(Color.parseColor("#5CA3E6"))
+
+                // 날짜 텍스트 색상
+                val dateId = resources.getIdentifier("date_picker_header_date", "id", "android")
+                val dateText = datePickerDialog.findViewById<TextView>(dateId)
+                dateText?.setTextColor(Color.parseColor("#6DB8FF"))
+
+                // 헤더 배경색
+                val headerId = resources.getIdentifier("date_picker_header", "id", "android")
+                val header = datePickerDialog.findViewById<View>(headerId)
+                header?.setBackgroundColor(Color.parseColor("#F6FBFF"))
+
+                // 확인/취소 버튼 색상
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(Color.parseColor("#6DB8FF"))
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                    ?.setTextColor(Color.parseColor("#6DB8FF"))
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         datePickerDialog.show()
     }
+
 
 
     private fun retrofitResponse(call: Call<List<BranchDTO>>) {

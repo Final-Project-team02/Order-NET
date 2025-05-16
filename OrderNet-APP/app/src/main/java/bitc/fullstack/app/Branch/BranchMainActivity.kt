@@ -115,6 +115,7 @@ class BranchMainActivity : AppCompatActivity() {
             intent.putExtra("selectedStatus", "승인")
             intent.putExtra("userRefId", branchId) // userRefId 전달
             startActivity(intent)
+
         }
 
         // 출고 버튼

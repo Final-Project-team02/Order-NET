@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -51,6 +53,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation(libs.retrofit)
 
@@ -66,6 +69,18 @@ dependencies {
     // 사진 출력 글라이드 라이브러리
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
+
+// 캘린더 커스텀 라이브러리
+// build.gradle
+// build.gradle.kts (Kotlin DSL)
+
+
+
+
+
+
+
+
 
 //    implementation (libs.glide)
 
