@@ -3,6 +3,7 @@ import BranchTopbar from "./BranchTopbar.jsx";
 import BranchSidebarMenu from "./BranchSidebarMenu.jsx";
 import Title from "../layout/Title.jsx";
 import Axios from "axios";
+import {useParams} from "react-router-dom";
 
 function BranchMain() {
     const menuItems = ["주문 내역"];
@@ -22,8 +23,13 @@ function BranchMain() {
             return total + price * quantity;
         }, 0).toLocaleString(); // 천 단위 쉼표 추가
     };
+
+    const { agencyCode } = useParams();  // 주소에서 :agencyCode 파라미터 추출
+    const branchId = agencyCode;         // 이 값을 실제 branchId로 사용
+
+
     // 나중에 변경해야하는
-    const branchId = "Busan01";
+    // const branchId = "Busan01";
 
     const fetchOrders = async () => {
         if (startDate && endDate && startDate > endDate) {
