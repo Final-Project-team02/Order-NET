@@ -143,6 +143,13 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         spinner2.adapter = adapter2
 
+        val selectedStatus = intent.getStringExtra("selectedStatus")
+        selectedStatus?.let {
+            val index = items2.indexOf(it)
+            if (index >= 0) {
+                spinner2.setSelection(index)
+            }
+        }
 
         selectBranchOrderList()
 
@@ -219,7 +226,7 @@ class OrderHistoryActivity : AppCompatActivity() {
         // 한글 매핑
         val statusMap = mapOf(
             "신청" to "승인 대기",
-            "승인" to "결재",
+            "승인" to "결제",
             "출고" to "출고",
             "반려" to "반려"
         )
