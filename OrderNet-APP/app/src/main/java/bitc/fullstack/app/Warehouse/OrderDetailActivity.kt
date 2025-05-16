@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import bitc.fullstack.app.Branch.BranchMainActivity
+import bitc.fullstack.app.Branch.BranchOrderResiActivity
 import bitc.fullstack.app.R
 import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.Warehouse.WHOrderHistory
@@ -215,7 +216,9 @@ class OrderDetailActivity : AppCompatActivity() {
                     val result = response.body() ?: "출고 완료"
                     showToast(result)
                     Log.d("출고 성공", "서버 응답: $result")
+                    val warehouseId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
                     val intent = Intent(this@OrderDetailActivity, WHMainActivity::class.java)
+                    intent.putExtra("userRefId", warehouseId) // userRefId 전달
                     startActivity(intent)
                 } else {
                     val errorMsg = response.errorBody()?.string() ?: "알 수 없는 오류"
