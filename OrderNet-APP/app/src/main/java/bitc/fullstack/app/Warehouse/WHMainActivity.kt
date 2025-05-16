@@ -1,6 +1,7 @@
 package bitc.fullstack.app.Warehouse
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -9,7 +10,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import bitc.fullstack.app.Branch.BranchMainActivity
+import bitc.fullstack.app.Branch.BranchOrderResiActivity
+import bitc.fullstack.app.Branch.OrderHistoryActivity
 import bitc.fullstack.app.R
+import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityWarehouseMainBinding
@@ -27,6 +32,8 @@ class WHMainActivity : AppCompatActivity() {
     private lateinit var spinnerOrderList: Spinner
     private lateinit var apiService: AppServerInterface
     private lateinit var binding: ActivityWarehouseMainBinding
+    private lateinit var userRefId: String
+    private lateinit var warehouseName: String
 
     private var fullOrders: List<OrderAppDTO> = emptyList()
     private var selectedStatus: String = "전체"
@@ -38,10 +45,52 @@ class WHMainActivity : AppCompatActivity() {
         binding = ActivityWarehouseMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userRefId = intent.getStringExtra("userRefId") ?: ""
+
+        val menuButton: ImageButton = findViewById(R.id.menu)
+
+        menuButton.setOnClickListener { view ->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.menuInflater.inflate(R.menu.wh_header_menu, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+
+                when (menuItem.itemId) {
+                    R.id.menu_stock -> {
+                        Toast.makeText(this, "재고현황", Toast.LENGTH_SHORT).show()
+                        val warehouseId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
+                        val intent = Intent(this, WHOrderHistory::class.java)
+                        intent.putExtra("userRefId", warehouseId) // userRefId 전달
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.btn_logout -> {
+                        // 1. 저장된 값 삭제
+                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
+                        prefs.edit().clear().apply()
+
+                        // 2. 로그인 화면으로 이동
+                        val intent = Intent(this@WHMainActivity, Login::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                        // 3. 현재 액티비티 종료
+                        finish()
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+        }
+
+
         // RecyclerView 설정
         recyclerView = binding.recyclerViewOrder
         recyclerView.layoutManager = LinearLayoutManager(this)
-        whOrderAdapter = WHOrderAdapter(emptyList())
+        whOrderAdapter = WHOrderAdapter(emptyList(), userRefId)
         recyclerView.adapter = whOrderAdapter
 
         // 스피너 설정
@@ -94,9 +143,16 @@ class WHMainActivity : AppCompatActivity() {
             false  // 다른 터치 이벤트는 기본적으로 처리
         }
 
+
+        userRefId = intent.getStringExtra("userRefId") ?: ""
+        warehouseName = intent.getStringExtra("warehouseName") ?: ""
+
         // 데이터 불러오기
-        getOrdersByWarehouse("WH_BRK")
+//        getOrdersByWarehouse("WH_BRK")
+        getOrdersByWarehouse(userRefId)
     }
+
+
 
     private fun setupSpinner() {
         val options = listOf("전체", "출고대기", "출고완료")

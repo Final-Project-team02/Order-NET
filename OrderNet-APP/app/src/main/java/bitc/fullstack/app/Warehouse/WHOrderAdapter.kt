@@ -15,7 +15,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class WHOrderAdapter(
-    private var orderList: List<OrderAppDTO>
+    private var orderList: List<OrderAppDTO>,
+    private val userRefId: String // userRefId 전달
 ) : RecyclerView.Adapter<WHOrderAdapter.WHOrderViewHolder>() {
 
     class WHOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,6 +60,7 @@ class WHOrderAdapter(
             val context = it.context
             val intent = Intent(context, OrderDetailActivity::class.java).apply {
                 putExtra("order_id", order.orderId)
+                putExtra("userRefId", userRefId)
             }
             context.startActivity(intent)
         }
