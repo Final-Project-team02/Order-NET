@@ -100,7 +100,17 @@ function HQInsertPopUp({ isOpen, onClose }) {
 
   return (
       <>
-        <div className="modal-backdrop fade show" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }} />
+        <style>
+          {`
+        input::placeholder,
+        textarea::placeholder {
+          color: #6c757d !important;
+          opacity: 1;
+        }
+      `}
+        </style>
+        <div
+            className="modal-backdrop fade show" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }} />
 
         <div className="modal fade show"
              tabIndex="-1"

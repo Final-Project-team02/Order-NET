@@ -374,6 +374,15 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
                 </tbody>
               </table>
               <div className="form-group">
+                <style>
+                  {`
+                    input::placeholder,
+                    textarea::placeholder {
+                      color: #6c757d !important;
+                      opacity: 1;
+                    }
+                  `}
+                </style>
                 <label className="form-label fw-bold">반려 이유</label>
                 <input type="text" className="form-control" placeholder="무슨무슨이유로 인해 반려합니다." value={denyReason}
                        onChange={(e) => setDenyReason(e.target.value)}/>
