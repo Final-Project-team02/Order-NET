@@ -12,6 +12,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import bitc.fullstack.app.Branch.BranchMainActivity
 import bitc.fullstack.app.R
@@ -43,6 +44,9 @@ class ProjectSelectActivity : AppCompatActivity() {
         // 어댑터 RecyclerView 연결
         binding.recyclerProducts.adapter = adapter
 
+        binding.spinnerCategory.setDropDownHeightCompat(resources.getDimensionPixelSize(R.dimen.spinner_max_height))
+
+
         //        홈 버튼
         val homeButton: ImageButton = findViewById(R.id.home)
         homeButton.setOnClickListener {
@@ -69,6 +73,7 @@ class ProjectSelectActivity : AppCompatActivity() {
                         startActivity(intent)
                         true
                     }
+
                     R.id.menu_stock -> {
                         Toast.makeText(this, "주문 현황", Toast.LENGTH_SHORT).show()
                         val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
@@ -77,6 +82,7 @@ class ProjectSelectActivity : AppCompatActivity() {
                         startActivity(intent)
                         true
                     }
+
                     R.id.btn_logout -> {
                         // 1. 저장된 값 삭제
                         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
@@ -84,7 +90,8 @@ class ProjectSelectActivity : AppCompatActivity() {
 
                         // 2. 로그인 화면으로 이동
                         val intent = Intent(this@ProjectSelectActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
 
                         // 3. 현재 액티비티 종료
@@ -92,6 +99,7 @@ class ProjectSelectActivity : AppCompatActivity() {
 
                         true
                     }
+
                     else -> false
                 }
             }
@@ -154,20 +162,30 @@ class ProjectSelectActivity : AppCompatActivity() {
         }
 
         // Spinner 카테고리 선택 리스너 설정
-        binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCategory = parentView?.getItemAtPosition(position).toString()
-                applyFilters(selectedCategory) // 카테고리로 필터링
+        binding.spinnerCategory.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedCategory = parentView?.getItemAtPosition(position).toString()
+                    applyFilters(selectedCategory) // 카테고리로 필터링
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                    // 아무 것도 선택되지 않았을 때 (보통 사용되지 않지만 기본 구현)
+                }
             }
 
-            override fun onNothingSelected(parentView: AdapterView<*>?) {
-                // 아무 것도 선택되지 않았을 때 (보통 사용되지 않지만 기본 구현)
-            }
-        }
+
+
+
     }
 
     // 서버에서 부품 정보 가져오기
-    private fun selectPartsInfo(){
+    private fun selectPartsInfo() {
         val api = AppServerClass.instance
         val call = api.ProductChoose(null)
         retrofitResponse(call)
@@ -228,15 +246,32 @@ class ProjectSelectActivity : AppCompatActivity() {
                             R.layout.project_select_spinner_selected_item,
                             categories
                         ) {
-                            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                                val view = layoutInflater.inflate(R.layout.project_select_spinner_selected_item, parent, false)
-                                val textView = view.findViewById<TextView>(R.id.spinner_selected_text)
+                            override fun getView(
+                                position: Int,
+                                convertView: View?,
+                                parent: ViewGroup
+                            ): View {
+                                val view = layoutInflater.inflate(
+                                    R.layout.project_select_spinner_selected_item,
+                                    parent,
+                                    false
+                                )
+                                val textView =
+                                    view.findViewById<TextView>(R.id.spinner_selected_text)
                                 textView.text = getItem(position)
                                 return view
                             }
 
-                            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                                val view = layoutInflater.inflate(R.layout.project_select_spinner_dropdown_item, parent, false)
+                            override fun getDropDownView(
+                                position: Int,
+                                convertView: View?,
+                                parent: ViewGroup
+                            ): View {
+                                val view = layoutInflater.inflate(
+                                    R.layout.project_select_spinner_dropdown_item,
+                                    parent,
+                                    false
+                                )
                                 val textView = view.findViewById<TextView>(R.id.spinner_item_text)
                                 textView.text = getItem(position)
                                 return view
@@ -254,8 +289,7 @@ class ProjectSelectActivity : AppCompatActivity() {
                         adapter.notifyDataSetChanged()
                     }
 
-                }
-                else {
+                } else {
                     Log.d("csy", "송신 실패, 상태 코드: ${res.code()}, 메시지: ${res.message()}")
                     res.errorBody()?.let { errorBody ->
                         val error = errorBody.string()
@@ -269,6 +303,22 @@ class ProjectSelectActivity : AppCompatActivity() {
             }
         })
     }
+
+    fun AppCompatSpinner.setDropDownHeightCompat(heightPx: Int) {
+        try {
+            val popupField = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+            popupField.isAccessible = true
+            val popupWindow = popupField.get(this)
+            val listPopupWindowClass = Class.forName("androidx.appcompat.widget.ListPopupWindow")
+            if (listPopupWindowClass.isInstance(popupWindow)) {
+                val setHeightMethod = listPopupWindowClass.getDeclaredMethod("setHeight", Int::class.javaPrimitiveType)
+                setHeightMethod.invoke(popupWindow, heightPx)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
 
 }

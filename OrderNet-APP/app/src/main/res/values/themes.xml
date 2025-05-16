@@ -7,4 +7,33 @@
     </style>
 
     <style name="Theme.App" parent="Base.Theme.App" />
+
+
+    <!-- 밝은 테마 기준 -->
+    <style name="MyDatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">#000000</item> <!-- 상단 바 및 확인 버튼 색 -->
+        <item name="colorOnPrimary">#000000</item>
+        <item name="android:background">#FFFFFF</item> <!-- 배경색 (일부 기기만 적용) -->
+
+        <!-- 텍스트 색 모두 검정으로 -->
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="android:textColorHint">#000000</item>
+        <item name="android:textColorHighlight">#000000</item>
+    </style>
+
+    <style name="CustomDatePickerDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">#000000</item> <!-- 상단 바 및 확인 버튼 색 -->
+        <item name="colorOnPrimary">#000000</item>
+        <item name="android:background">#FFFFFF</item> <!-- 배경색 (일부 기기만 적용) -->
+
+        <!-- 텍스트 색 모두 검정으로 -->
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="android:textColorHint">#000000</item>
+        <item name="android:textColorHighlight">#000000</item>
+    </style>
+
+
+
 </resources>

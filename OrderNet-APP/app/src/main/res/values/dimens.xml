@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spinner_max_height">200dp</dimen> <!-- 원하는 높이로 조정 가능 -->
+</resources>

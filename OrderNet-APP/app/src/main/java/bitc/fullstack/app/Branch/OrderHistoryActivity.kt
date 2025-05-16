@@ -2,6 +2,7 @@ package bitc.fullstack.app.Branch
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -116,7 +117,7 @@ class OrderHistoryActivity : AppCompatActivity() {
             items2
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                // ✅ 선택된 항목 표시용 TextView만 반환해야 Spinner가 정상 출력함
+                //  선택된 항목 표시용 TextView만 반환해야 Spinner가 정상 출력함
                 val textView = layoutInflater.inflate(R.layout.spinner_selected_item, parent, false)
                     .findViewById<TextView>(R.id.spinner_selected_text)
                 textView.text = getItem(position)
@@ -130,7 +131,7 @@ class OrderHistoryActivity : AppCompatActivity() {
 
                 textView.text = getItem(position)
 
-                // ✅ 마지막 항목은 divider 숨기기
+                //  마지막 항목은 divider 숨기기
                 if (position == count - 1) {
                     divider.visibility = View.GONE
                 } else {
@@ -143,6 +144,15 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         spinner2.adapter = adapter2
 
+        val selectedStatus = intent.getStringExtra("selectedStatus")
+        selectedStatus?.let {
+            val index = items2.indexOf(it)
+            if (index >= 0) {
+                spinner2.setSelection(index)
+
+
+            }
+        }
 
         selectBranchOrderList()
 
@@ -189,11 +199,39 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this,
+            R.style.MyDatePickerDialogTheme, // 커스텀 스타일
             listener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+
+        datePickerDialog.setOnShowListener {
+            // 연도 색상 (더 진한 하늘색)
+            val yearId = resources.getIdentifier("date_picker_header_year", "id", "android")
+            val yearText = datePickerDialog.findViewById<TextView>(yearId)
+            yearText?.setTextColor(Color.parseColor("#5CA3E6"))
+
+            // 날짜 텍스트 색상
+            val dateId = resources.getIdentifier("date_picker_header_date", "id", "android")
+            val dateText = datePickerDialog.findViewById<TextView>(dateId)
+            dateText?.setTextColor(Color.parseColor("#6DB8FF"))
+
+            // 헤더 배경 부드럽게 (연한 파란색 계열)
+            val headerId = resources.getIdentifier("date_picker_header", "id", "android")
+            val header = datePickerDialog.findViewById<View>(headerId)
+            header?.setBackgroundColor(Color.parseColor("#F6FBFF"))
+
+            // 버튼 색상 (확인/취소 등)
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#6DB8FF"))
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#6DB8FF"))
+        }
+
+
+        datePickerDialog.show()
+
+
+
 
         if (!isStartDate) {
             if (startDate != null) {
@@ -219,7 +257,7 @@ class OrderHistoryActivity : AppCompatActivity() {
         // 한글 매핑
         val statusMap = mapOf(
             "신청" to "승인 대기",
-            "승인" to "결재",
+            "승인" to "결제",
             "출고" to "출고",
             "반려" to "반려"
         )
