@@ -211,7 +211,7 @@ function PartInsertPopUp({ isOpen, onClose }) {
                 </div>
 
                 <div className="mb-3">
-                  <input type="text" className="form-control" placeholder="부품명" name="partName" value={formData.partName} readOnly onChange={handleChange} />
+                  <input type="text" className="form-control" placeholder="부품명" name="partName" value={formData.partName} onChange={handleChange} />
                 </div>
 
                 <div className="mb-3">
