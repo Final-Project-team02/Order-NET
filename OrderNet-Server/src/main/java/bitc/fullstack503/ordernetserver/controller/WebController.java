@@ -123,7 +123,7 @@ public class WebController {
   @GetMapping("/productranking")
   public Object selectProtuctRanking() throws Exception {
     List<OrderItemDTO> selectproductranking = clientService.selectProtuctRanking();
-    System.out.println("정상");
+    System.out.println("잘됨");
     return selectproductranking;
   }
 
