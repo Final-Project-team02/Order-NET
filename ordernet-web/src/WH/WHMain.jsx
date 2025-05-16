@@ -13,8 +13,9 @@ function WHMain() {
   const MaagencyCode = agencyCode;
 
   const menuItems = [
-    { text: "물류 현황", link: `/WHMain/${MaagencyCode}` },
-    { text: "출고관리", link: `/WHManage/${MaagencyCode}` },
+    { text: "물류 현황", link: `/WHMain/${encodeURIComponent(MaagencyCode)}` },
+      { text: "출고관리", link: `/WHManage/${encodeURIComponent(MaagencyCode)}` },
+
   ];
 
 
