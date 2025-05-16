@@ -108,7 +108,7 @@ function HQStockStatus() {
       <div className="flex-grow-1 d-flex flex-column overflow-hidden">
         <HQTopbar title="재고 현황" />
         <div className="p-3 overflow-auto" style={{ height: "calc(100vh - 120px)" }}>
-          <Title breadcrumb="☆ 물류 관리 > 재고 현황" panelTitle="재고 현황" />
+          <Title breadcrumb="☆ 본사 > 물류 관리" panelTitle="재고 현황" />
 
           {/* 필터 */}
           <div className="mt-4 p-3 bg-secondary bg-opacity-10 d-flex" style={{flexWrap: 'nowrap', overflowX: 'auto'}}>
@@ -193,17 +193,18 @@ function HQStockStatus() {
             </label>
           </div>
 
+          <hr/>
           {/* 테이블 */}
           <div className="p-4 mt-2 bg-light w-100 overflow-auto">
             <table className="table table-bordered" style={{tableLayout: "fixed"}}>
               <thead>
               <tr>
-                <th className="text-center" style={{width: "15%", backgroundColor: "#CFE2FF"}}>부품 고유 ID</th>
-                <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FF"}}>물류 센터</th>
-                <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FF"}}>부품 명</th>
-                <th className="text-center" style={{width: "15%", backgroundColor: "#CFE2FF"}}>부품 카테고리</th>
+                <th className="text-center " style={{width: "15%", backgroundColor: "#CFE2FFFF"}}>부품 고유 ID</th>
+                <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FFFF"}}>물류 센터</th>
+                <th className="text-center" style={{width: "30%", backgroundColor: "#CFE2FFFF"}}>부품 명</th>
+                <th className="text-center" style={{width: "15%", backgroundColor: "#CFE2FFFF"}}>부품 카테고리</th>
                 <th className="text-center" style={{width: "15%",
-                    backgroundColor: "#CFE2FF",cursor: "pointer",  userSelect: 'none' }}
+                    backgroundColor: "#CFE2FFFF",cursor: "pointer",  userSelect: 'none' }}
                   onClick={SortByQuantity}>
                   <div style={{display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "4px",position: "relative"}}><span>수량</span>
                     {sortOrder === "asc" && (

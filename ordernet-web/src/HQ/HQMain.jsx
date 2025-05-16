@@ -34,7 +34,7 @@ function HQMain() {
             <div className="flex-grow-1 d-flex flex-column overflow-hidden">
                 <HQTopbar title="주문 확정"/>
                 <div className="p-3 overflow-auto" style={{height: "calc(100vh - 120px)"}}>
-                    <Title breadcrumb= "☆ 주문 확정 > 주문 내역" panelTitle="주문내역"/>
+                    <Title breadcrumb= "☆ 본사 > 주문확정" panelTitle="주문내역"/>
                     <br/>
                     <HQSelectPanel onSearch={handleSearch}  />
                     {!["결제", "반려"].includes(selectedOrderStatus) && <HQMainPanel filteredRows={filteredRows} isFiltered={isFiltered}  />}

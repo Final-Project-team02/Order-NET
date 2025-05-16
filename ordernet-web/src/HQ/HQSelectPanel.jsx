@@ -4,7 +4,7 @@ import { useState } from 'react';
 function HQSelectPanel({ onSearch }) {
 
 
-  const [branchId, setBranchId] = useState('');
+  // const [branchId, setBranchId] = useState('');
   const [branchName, setBranchName] = useState('');
   const [orderStatus, setOrderStatus] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -14,7 +14,7 @@ function HQSelectPanel({ onSearch }) {
 
 
     axios.post('http://localhost:8080/HQMain/search', {
-      branchId,
+      // branchId,
       branchName,
       orderStatus,
       startDate,
@@ -37,21 +37,21 @@ function HQSelectPanel({ onSearch }) {
             className="p-3 bg-light d-flex align-items-center gap-3"
             style={{flexWrap: 'nowrap', overflowX: 'auto'}}>
 
-          <label className="d-flex align-items-center flex-nowrap">
-            <span className="fw-bold me-2" style={{whiteSpace: 'nowrap'}}>● 대리점 ID</span>
-            <select className="form-select flex-shrink-1" style={{minWidth: '120px'}} onChange={e => setBranchId(e.target.value)}>
-              <option value="">Code</option>
-              <option value="Busan01">Busan01</option>
-              <option value="Daegu01">Daegu01</option>
-              <option value="Daejeon01">Daejeon01</option>
-              <option value="Gwangju01">Gwangju01</option>
-              <option value="Incheon01">Incheon01</option>
-              <option value="Jeju01">Jeju01</option>
-              <option value="Sejong01">Sejong01</option>
-              <option value="Seoul01">Seoul01</option>
-              <option value="Ulsan01">Ulsan01</option>
-            </select>
-          </label>
+          {/*<label className="d-flex align-items-center flex-nowrap">*/}
+          {/*  <span className="fw-bold me-2" style={{whiteSpace: 'nowrap'}}>● 대리점 ID</span>*/}
+          {/*  <select className="form-select flex-shrink-1" style={{minWidth: '120px'}} onChange={e => setBranchId(e.target.value)}>*/}
+          {/*    <option value="">Code</option>*/}
+          {/*    <option value="Busan01">Busan01</option>*/}
+          {/*    <option value="Daegu01">Daegu01</option>*/}
+          {/*    <option value="Daejeon01">Daejeon01</option>  */}
+          {/*    <option value="Gwangju01">Gwangju01</option>*/}
+          {/*    <option value="Incheon01">Incheon01</option>*/}
+          {/*    <option value="Jeju01">Jeju01</option>*/}
+          {/*    <option value="Sejong01">Sejong01</option>*/}
+          {/*    <option value="Seoul01">Seoul01</option>*/}
+          {/*    <option value="Ulsan01">Ulsan01</option>*/}
+          {/*  </select>*/}
+          {/*</label>*/}
 
           <label className="d-flex align-items-center flex-nowrap">
             <span className="fw-bold me-2" style={{whiteSpace: 'nowrap'}}>● 지점명</span>

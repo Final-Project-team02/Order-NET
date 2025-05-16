@@ -1,22 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function HQPaymentCheck({ filteredRows, isFiltered }) {
-
-
+    const tableRef = useRef(null);
     const [rows, setRows] = useState([]);
-
     const [rows2, setRows2] = useState([]);
 
-    const [selectedOrderId, setSelectedOrderId] = useState(null);  // 행 클릭
-    const [showOrderDetails, setShowOrderDetails] = useState(false); // 상세 내역 숨기기
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [showOrderDetails, setShowOrderDetails] = useState(false);
 
-    //  페이징 상태
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
     useEffect(() => {
-
         if (!isFiltered) {
             axios.get("http://localhost:8080/HQMain/payment")
                 .then(res => {
@@ -35,10 +31,8 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                 .catch(err => {
                     console.error("데이터 불러오기 실패:", err);
                 });
-
         }
     }, [isFiltered]);
-
 
     useEffect(() => {
         if (isFiltered) {
@@ -47,7 +41,6 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
         }
     }, [filteredRows, isFiltered]);
 
-    // 주문번호 기준으로 그룹핑하여 대표 부품명 가공
     const groupedRows = Object.values(
         rows.reduce((acc, row) => {
             if (!acc[row.orderId]) {
@@ -74,6 +67,9 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
     const handleRowClick = (orderId) => {
         setSelectedOrderId(orderId);
         setShowOrderDetails(true);
+        if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     };
 
     const closeModal = () => {
@@ -83,7 +79,6 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
 
     const filteredDetailRows = rows2.filter(row => row.orderId === selectedOrderId);
 
-    //  페이징 처리
     const totalPages = Math.ceil(filteredDetailRows.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -91,40 +86,40 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
 
     return (
         <div>
-        <div className="p-4 mt-3 bg-light w-100 overflow-auto">
-            <h2 className="h5 fw-bold mb-3">가맹점 주문 내역</h2>
-            <table className="table table-bordered">
-                <thead className="table-info">
-                <tr>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문번호</th>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>주문일자</th>
-                    <th className="text-center align-middle" style={{backgroundColor: "#E3F0FF"}}>부품명</th>
-                    <th className="text-center align-middle" style={{ backgroundColor: "#E3F0FF" }}>주문현황</th>
-                </tr>
-                </thead>
-                <tbody>
-                {displayRows.length === 0 ? (
+            <div className="p-4 mt-3 bg-light w-100 overflow-auto">
+                <h2 className="h5 fw-bold mb-3">대리점 주문 내역</h2>
+                <table className="table table-bordered" ref={tableRef}>
+                    <thead className="table-info">
                     <tr>
-                        <td colSpan="4" className="text-center">처리된 것이 없습니다.</td>
+                        <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FFFF" }}>주문번호</th>
+                        <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FFFF" }}>주문일자</th>
+                        <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FFFF" }}>부품명</th>
+                        <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FFFF" }}>주문현황</th>
                     </tr>
-                ) : (
-                    displayRows.map((row, i) => (
-                        <tr key={i} onClick={() => handleRowClick(row.orderId)} style={{ cursor: 'pointer' }}>
-                            <td className="text-center align-middle">{row.orderId}</td>
-                            <td className="text-center align-middle">{row.orderDate}</td>
-                            <td className="text-center align-middle">{row.displayPartName}</td>
-                            <td className="text-center align-middle">{row.orderStatus}</td>
+                    </thead>
+                    <tbody>
+                    {displayRows.length === 0 ? (
+                        <tr>
+                            <td colSpan="4" className="text-center">처리된 것이 없습니다.</td>
                         </tr>
-                    ))
-                )}
-                </tbody>
-            </table>
-        </div>
+                    ) : (
+                        displayRows.map((row, i) => (
+                            <tr key={i} onClick={() => handleRowClick(row.orderId)} style={{ cursor: 'pointer' }}>
+                                <td className="text-center align-middle">{row.orderId}</td>
+                                <td className="text-center align-middle">{row.orderDate}</td>
+                                <td className="text-center align-middle">{row.displayPartName}</td>
+                                <td className="text-center align-middle" style={{ color: row.orderStatus === '반려' ? 'red' : 'black' }}>{row.orderStatus}</td>
+                            </tr>
+                        ))
+                    )}
+                    </tbody>
+                </table>
+            </div>
             {showOrderDetails && (
                 <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <div className="modal-dialog modal-xl" role="document">
                         <div className="modal-content">
-                            <div className="modal-header" style={{ backgroundColor: '#cfe2ff' }}>
+                            <div className="modal-header" style={{ backgroundColor: '#CFE2FFFF' }}>
                                 <h5 className="modal-title">상세 내역</h5>
                                 <button type="button" className="btn-close" onClick={closeModal}></button>
                             </div>
@@ -132,32 +127,16 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                                 <table className="table table-bordered">
                                     <thead className="table-info">
                                     <tr>
-                                        <th className="text-center align-middle" rowSpan="2"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>대리점 ID
-                                        </th>
-                                        <th className="text-center align-middle" colSpan="2"
-                                            style={{backgroundColor: "#E3F0FF"}}>부품
-                                        </th>
-                                        <th className="text-center align-middle" colSpan="2"
-                                            style={{backgroundColor: "#E3F0FF"}}>가격
-                                        </th>
-                                        <th className="text-center align-middle" rowSpan="2"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>주문일자
-                                        </th>
+                                        <th className="text-center align-middle" rowSpan="2" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>대리점 ID</th>
+                                        <th className="text-center align-middle" colSpan="2" style={{ backgroundColor: "#CFE2FFFF" }}>부품</th>
+                                        <th className="text-center align-middle" colSpan="2" style={{ backgroundColor: "#CFE2FFFF" }}>가격</th>
+                                        <th className="text-center align-middle" rowSpan="2" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>주문일자</th>
                                     </tr>
                                     <tr>
-                                        <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품 Code
-                                        </th>
-                                        <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>부품명
-                                        </th>
-                                        <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>수량
-                                        </th>
-                                        <th className="text-center align-middle"
-                                            style={{width: '130px', backgroundColor: "#E3F0FF"}}>비용
-                                        </th>
+                                        <th className="text-center align-middle" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>부품 Code</th>
+                                        <th className="text-center align-middle" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>부품명</th>
+                                        <th className="text-center align-middle" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>수량</th>
+                                        <th className="text-center align-middle" style={{ width: '130px', backgroundColor: "#CFE2FFFF" }}>비용</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -172,14 +151,13 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                                                 <td className="text-center">{row.partId}</td>
                                                 <td className="text-center">{row.partName}</td>
                                                 <td className="text-center">{row.orderItemQuantity}</td>
-                                                <td className="text-center">{row.orderItemPrice.toLocaleString()}원</td>
+                                                <td className="text-center">{row.orderItemPrice.toLocaleString()} (원)</td>
                                                 <td className="text-center">{row.orderDate}</td>
                                             </tr>
                                         ))
                                     )}
                                     </tbody>
                                 </table>
-                                {/*  페이지네이션 컨트롤 */}
                                 {totalPages > 1 && (
                                     <div className="d-flex justify-content-center align-items-center mt-3 gap-3">
                                         <button
@@ -200,17 +178,15 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                                     </div>
                                 )}
                             </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-primary" onClick={closeModal}>닫기</button>
-                                </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={closeModal}>닫기</button>
                             </div>
                         </div>
                     </div>
-                    )}
-                 </div>
-            );
-        }
+                </div>
+            )}
+        </div>
+    );
+}
 
-
-        export default HQPaymentCheck;
-
+export default HQPaymentCheck;

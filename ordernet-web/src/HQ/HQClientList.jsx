@@ -107,7 +107,7 @@ function HQClientList() {
                 <HQTopbar title="대리점 관리" />
                 <div className="p-3 overflow-auto" style={{ height: "calc(100vh - 120px)" }}>
                     <div>
-                        <Title breadcrumb= "☆ 대리점 관리 > 대리점 리스트" panelTitle="대리점 리스트"/>
+                        <Title breadcrumb= "☆ 본사 > 대리점 관리" panelTitle="대리점 리스트"/>
                         <div
                             style={{
                                 height: '80vh',
