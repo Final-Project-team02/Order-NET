@@ -174,7 +174,7 @@ function HQStockStatus() {
           {/* 표시 개수 선택 */}
           <div className="mt-3 mb-2 me-4 d-flex justify-content-end">
             <label className="d-flex align-items-center">
-              <span className="me-2">표시 개수:</span>
+              <span className="me-2">항목 수 :</span>
               <select
                 className="form-select"
                 style={{width: "80px"}}
