@@ -244,16 +244,27 @@ function HQStockStatus() {
             {totalPages > 1 && (
               <nav>
                 <ul className="pagination justify-content-center mt-4">
-                  <li className={`page-item ${startPage === 1 ? "disabled" : ""}`}>
-                    <button className="page-link" onClick={() => setCurrentPage(startPage - 1)}>&lt;</button>
+                  <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                    <button
+                      className="page-link"
+                      onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+                    >
+                      &lt;
+                    </button>
                   </li>
                   {renderPageNumbers()}
-                  <li className={`page-item ${endPage === totalPages ? "disabled" : ""}`}>
-                    <button className="page-link" onClick={() => setCurrentPage(endPage + 1)}>&gt;</button>
+                  <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                    <button
+                      className="page-link"
+                      onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
+                    >
+                      &gt;
+                    </button>
                   </li>
                 </ul>
               </nav>
             )}
+
           </div>
         </div>
       </div>
