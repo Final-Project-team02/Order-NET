@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitc.fullstack503.ordernetserver.mapper.HQDashBoardMapper">
+
+    <select id="selectOrderStatusStats" resultType="bitc.fullstack503.ordernetserver.dto.OrderStatusStatsDTO">
+        SELECT
+        COUNT(*) AS totalOrders,
+        SUM(CASE WHEN order_status = '출고' THEN 1 ELSE 0 END) AS shippedOrders,
+        SUM(CASE WHEN order_status = '반려' THEN 1 ELSE 0 END) AS deniedOrders,
+        SUM(CASE WHEN order_status = '승인 대기' THEN 1 ELSE 0 END) AS pendingOrders
+        FROM orders
+    </select>
+</mapper>
