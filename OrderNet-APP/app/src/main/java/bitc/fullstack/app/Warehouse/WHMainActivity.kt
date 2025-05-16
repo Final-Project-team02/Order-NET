@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -154,11 +155,38 @@ class WHMainActivity : AppCompatActivity() {
 
 
 
+//    private fun setupSpinner() {
+//        val options = listOf("전체", "출고대기", "출고완료")
+//        spinnerOrderList.adapter = ArrayAdapter(
+//            this, android.R.layout.simple_spinner_dropdown_item, options
+//        )
+//    }
+
+    // ✅ Spinner에 커스텀 레이아웃 적용
     private fun setupSpinner() {
         val options = listOf("전체", "출고대기", "출고완료")
-        spinnerOrderList.adapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_dropdown_item, options
-        )
+
+        val adapter = object : ArrayAdapter<String>(
+            this,
+            R.layout.warehouse_main_select_spinner_selected_item, // 선택된 항목 레이아웃
+            options
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = layoutInflater.inflate(R.layout.warehouse_main_select_spinner_selected_item, parent, false)
+                val textView = view.findViewById<TextView>(R.id.spinner_selected_text)
+                textView.text = getItem(position)
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = layoutInflater.inflate(R.layout.warehouse_main_select_spinner_dropdown_item, parent, false)
+                val textView = view.findViewById<TextView>(R.id.spinner_item_text)
+                textView.text = getItem(position)
+                return view
+            }
+        }
+
+        spinnerOrderList.adapter = adapter
     }
 
     private fun showDatePickerDialog(target: Button, onDateSet: (String) -> Unit) {

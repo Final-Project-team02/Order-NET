@@ -8,7 +8,7 @@ object AppServerClass {
 
 //  private val BASE_URL = "http://172.27.48.1:8080/app/"
 
-  private val BASE_URL = "http://10.100.203.15:8080/app/"
+  private val BASE_URL = "http://10.100.203.67:8080/app/"
 
 
   val instance: AppServerInterface by lazy {

@@ -12,12 +12,12 @@
 
     <!-- 드롭다운 아이콘 -->
     <item
-        android:width="20dp"
-        android:height="20dp"
-        android:bottom="8dp"
+        android:width="4dp"
+        android:height="6dp"
+        android:bottom="4dp"
         android:gravity="center_vertical|right"
-        android:right="8dp"
-        android:top="8dp">
+        android:right="1dp"
+        android:top="4dp">
         <bitmap
             android:antialias="true"
             android:gravity="center_vertical|right"
