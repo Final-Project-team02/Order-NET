@@ -181,7 +181,15 @@ class WHMainActivity : AppCompatActivity() {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = layoutInflater.inflate(R.layout.warehouse_main_select_spinner_dropdown_item, parent, false)
                 val textView = view.findViewById<TextView>(R.id.spinner_item_text)
+                val divider = view.findViewById<View>(R.id.divider)
                 textView.text = getItem(position)
+
+                //  마지막 항목은 divider 숨기기
+                if (position == count - 1) {
+                    divider.visibility = View.GONE
+                } else {
+                    divider.visibility = View.VISIBLE
+                }
                 return view
             }
         }
@@ -190,21 +198,45 @@ class WHMainActivity : AppCompatActivity() {
     }
 
     private fun showDatePickerDialog(target: Button, onDateSet: (String) -> Unit) {
-        val cal = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         val listener = DatePickerDialog.OnDateSetListener { _, y, m, d ->
             val date = String.format("%04d-%02d-%02d", y, m + 1, d)
             target.text = date
             onDateSet(date)
         }
 
-        DatePickerDialog(
+        val datePickerDialog = DatePickerDialog(
             this,
+            R.style.MyDatePickerDialogTheme, // ▶️ styles.xml에서 정의한 테마 필요
             listener,
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePickerDialog.setOnShowListener {
+            val yearId = resources.getIdentifier("date_picker_header_year", "id", "android")
+            val yearText = datePickerDialog.findViewById<TextView>(yearId)
+            yearText?.setTextColor(android.graphics.Color.parseColor("#5CA3E6"))
+
+            val dateId = resources.getIdentifier("date_picker_header_date", "id", "android")
+            val dateText = datePickerDialog.findViewById<TextView>(dateId)
+            dateText?.setTextColor(android.graphics.Color.parseColor("#6DB8FF"))
+
+            val headerId = resources.getIdentifier("date_picker_header", "id", "android")
+            val header = datePickerDialog.findViewById<View>(headerId)
+            header?.setBackgroundColor(android.graphics.Color.parseColor("#F6FBFF"))
+
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                ?.setTextColor(android.graphics.Color.parseColor("#6DB8FF"))
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                ?.setTextColor(android.graphics.Color.parseColor("#6DB8FF"))
+        }
+
+        datePickerDialog.show()
     }
+
+
 
     private fun getOrdersByWarehouse(warehouseId: String) {
         val api = AppServerClass.instance
