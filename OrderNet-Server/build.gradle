@@ -40,6 +40,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'  // 추가
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // 네이버 지오코딩 CORS 우회
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {

@@ -42,7 +42,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login", "/HQMain/**", "/branch/**", "/webWh/**",
+                    .requestMatchers("/login", "/HQMain/**", "/branch/**", "/webWh/**","/proxy/**",
                         "/HQstatus/**","/app/branch/**", "/app/wh/**","/app/login","/HQDashBoard/**").permitAll()
                     .requestMatchers("/HQMain/**").authenticated()
                     .anyRequest().authenticated()
