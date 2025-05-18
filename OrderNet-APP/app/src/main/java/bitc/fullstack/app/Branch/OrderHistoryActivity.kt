@@ -108,7 +108,7 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         val spinner2 = binding.mySpinner2
 
-        val items2 = listOf("신청", "승인", "출고", "반려")
+        val items2 = listOf("신청", "결재", "출고", "반려")
 
         val adapter2 = object : ArrayAdapter<String>(
             this,
@@ -142,6 +142,13 @@ class OrderHistoryActivity : AppCompatActivity() {
         }
 
         spinner2.adapter = adapter2
+
+        // 선택된 상태를 Intent에서 받아서 Spinner에 반영
+        val selectedStatus = intent.getStringExtra("selectedStatus") ?: "신청"
+        val selectedIndex = items2.indexOf(selectedStatus)
+        if (selectedIndex != -1) {
+            spinner2.setSelection(selectedIndex)
+        }
 
 
         selectBranchOrderList()
@@ -219,7 +226,7 @@ class OrderHistoryActivity : AppCompatActivity() {
         // 한글 매핑
         val statusMap = mapOf(
             "신청" to "승인 대기",
-            "승인" to "결재",
+            "결재" to "결재",
             "출고" to "출고",
             "반려" to "반려"
         )

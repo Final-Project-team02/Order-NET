@@ -1,6 +1,7 @@
 package bitc.fullstack503.ordernetserver.service;
 
 import bitc.fullstack503.ordernetserver.dto.ClientDTO;
+import bitc.fullstack503.ordernetserver.dto.NoticeDTO;
 import bitc.fullstack503.ordernetserver.mapper.HQDashBoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,23 @@ public class HQDashBoardServiceImpl implements HQDashBoardService {
   @Override
   public List<ClientDTO> selectBranchInfo() {
     return hqDashBoardMapper.selectBranchInfo();
+  }
+
+  // 공지 조회
+  @Override
+  public List<NoticeDTO> selectNoticeList() {
+    return hqDashBoardMapper.selectNoticeList();
+  }
+
+  // 공지 작성
+  @Override
+  public void insertNotice(NoticeDTO noticeDTO) {
+    hqDashBoardMapper.insertNotice(noticeDTO);
+  }
+
+  // 공지 삭제
+  @Override
+  public void deleteNotice(String noticeId) {
+    hqDashBoardMapper.deleteNotice(noticeId);
   }
 }

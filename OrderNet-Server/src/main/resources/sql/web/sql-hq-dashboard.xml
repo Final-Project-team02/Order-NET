@@ -9,4 +9,24 @@
         select branch_name, branch_supervisor, branch_phone, branch_zip_code, branch_road_addr
         from branch
     </select>
+
+    <!--  공지 조회  -->
+    <select id="selectNoticeList" resultType="bitc.fullstack503.ordernetserver.dto.NoticeDTO">
+        select notice_id, notice_title, notice_content, notice_write_date, user_id
+        from notice
+        order by notice_write_date desc
+    </select>
+
+    <!--  공지 작성  -->
+    <insert id="insertNotice" parameterType="bitc.fullstack503.ordernetserver.dto.NoticeDTO">
+        insert into notice (notice_title, notice_content, notice_write_date, user_id)
+        values (#{noticeTitle}, #{noticeContent}, CURRENT_DATE, #{userId})
+    </insert>
+
+    <!--  공지 수정  -->
+    <delete id="deleteNotice" parameterType="String">
+        DELETE FROM notice
+        where notice_id = #{noticeId}
+    </delete>
+
 </mapper>

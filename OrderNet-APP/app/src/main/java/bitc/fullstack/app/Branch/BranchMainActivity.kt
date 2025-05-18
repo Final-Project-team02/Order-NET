@@ -112,7 +112,7 @@ class BranchMainActivity : AppCompatActivity() {
         binding.orderAcceptBtn.setOnClickListener {
             val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
             val intent = Intent(this, OrderHistoryActivity::class.java)
-            intent.putExtra("selectedStatus", "승인")
+            intent.putExtra("selectedStatus", "결재")
             intent.putExtra("userRefId", branchId) // userRefId 전달
             startActivity(intent)
         }

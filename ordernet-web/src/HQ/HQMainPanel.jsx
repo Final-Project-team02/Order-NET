@@ -102,7 +102,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
 
         <div className="p-4 mt-3 bg-light w-100">
-          <h2 className="h5 fw-bold mb-3">미결제 리스트</h2>
+          <h2 className="h5 fw-bold mb-3">미결재 리스트</h2>
 
           <div style={{ width: '100%', overflow: 'hidden'}}>
             {/* 헤더 테이블 */}
@@ -148,7 +148,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                 <tbody>
                 {rows.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="text-center">미결제 리스트가 없습니다.</td>
+                      <td colSpan="6" className="text-center">미결재 리스트가 없습니다.</td>
                     </tr>
                 ) : (
                     Array.from(new Map(rows.map(row => [row.orderId, row])).values()).map((row, i) => (
@@ -292,8 +292,8 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
   const orderDate = uniqueByField('orderDate');
 
   const handleApproval = (type) => {
-    const status = type === '결제' ? '결제' : '반려';
-    const finalDenyReason = type === '결제' ? '결제되었습니다.' : denyReason;
+    const status = type === '결재' ? '결재' : '반려';
+    const finalDenyReason = type === '결재' ? '결재되었습니다.' : denyReason;
 
 
     if (rows2.length === 0) {
@@ -347,7 +347,7 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header" style={{ backgroundColor: '#CFE2FF' }}>
-              <h5 className="modal-title">결제</h5>
+              <h5 className="modal-title">결재</h5>
               <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -380,7 +380,7 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary" onClick={() => handleApproval('결제')}>결제</button>
+              <button type="button" className="btn btn-primary" onClick={() => handleApproval('결재')}>결재</button>
               <button type="button" className="btn btn-danger" onClick={() => handleApproval('반려')}>반려</button>
             </div>
           </div>

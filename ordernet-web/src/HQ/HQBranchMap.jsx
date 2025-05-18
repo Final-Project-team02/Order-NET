@@ -83,9 +83,9 @@ function HQBranchMap() {
             <MapContainer
                 // 중심 좌표
                 center={[36, 127.5]}
-                zoom={7}
+                zoom={6}
                 // 지도 크기
-                style={{ height: "600px", width: "600px" }}
+                style={{ width: "480px", height: "400px", borderRadius: "8px" }}
             >
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

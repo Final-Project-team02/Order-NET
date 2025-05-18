@@ -1,0 +1,183 @@
+/* 전체 오버레이 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+/* 모달 컨텐츠 박스 */
+.modal-content {
+    width: 600px;
+    max-width: 90vw;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+}
+
+/* 상단 헤더 영역 */
+.modal-header {
+    background-color: #1976D2;
+    color: #ffffff;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* 제목 텍스트 */
+.modal-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* 삭제 버튼 */
+.modal-delete-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* 닫기 버튼 */
+.modal-x-button {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    margin-left: 8px;
+}
+
+/* 상세 내용 영역 */
+.detail-body {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 각 항목 묶음 */
+.detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* 라벨 스타일 */
+.detail-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* 값 스타일 */
+.detail-value {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 공지 작성 입력 필드 전체 영역 */
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 10px;
+}
+
+/* label 스타일 */
+.modal-field label {
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* input / textarea 통일된 디자인 */
+.modal-field input,
+.modal-field textarea {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.9rem;
+    resize: vertical;
+    width: 100%;
+}
+
+/* focus 효과 */
+.modal-field input:focus,
+.modal-field textarea:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 4px rgba(25, 118, 210, 0.3);
+}
+
+/* 버튼 묶음 정렬 */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+/* 저장 버튼 */
+.btn-save {
+    background-color: #1976D2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-save:hover {
+    background-color: #155a9b;
+}
+
+.btn-close {
+    all: unset;
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-close:hover {
+    background-color: #e0e0e0;
+}
+
