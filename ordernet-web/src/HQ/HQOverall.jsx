@@ -28,21 +28,22 @@ function HQOverall() {
                     {/* 본사 주문 현황 */}
                     <StatusOverView/>
                     <br/>
-                    <div className="row d-flex" style={{ height: "300px" }}>
-                        <div className="col-md-6 mb-3 d-flex flex-column" style={{ height: '100%' }}>
-                            <UncheckedList style={{ flex: 1 }} />
+                    <div className="row d-flex" style={{height: "300px"}}>
+                        <div className="col-md-6 mb-3 d-flex flex-column" style={{height: '100%'}}>
+                            <UncheckedList style={{flex: 1}}/>
                         </div>
-                        <div className="col-md-6 mb-3 d-flex flex-column justify-content-center" style={{ height: '200%' }}>
-                            <MonthlySalesGraph style={{ flex: 1 }} />
+                        <div className="col-md-6 mb-3 d-flex flex-column justify-content-center"
+                             style={{height: '200%'}}>
+                            <MonthlySalesGraph style={{flex: 1}}/>
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                        <div style={{ width: '600px' }}>
-                            <HQNoticeList />
+                    <div style={{display: 'flex', gap: '8px', alignItems: 'flex-start'}}>
+                        <div style={{width: '600px'}}>
+                            <HQNoticeList/>
                         </div>
-                        <div style={{ width: '480px' }}>
-                            <HQBranchMap />
+                        <div style={{width: '480px'}}>
+                            <HQBranchMap/>
                         </div>
                     </div>
 

@@ -1,6 +1,8 @@
 package bitc.fullstack503.ordernetserver.mapper;
 
 
+import bitc.fullstack503.ordernetserver.dto.ClientDTO;
+import bitc.fullstack503.ordernetserver.dto.NoticeDTO;
 import bitc.fullstack503.ordernetserver.dto.OrderMonthlySalesDTO;
 import bitc.fullstack503.ordernetserver.dto.OrderStatusStatsDTO;
 import org.apache.ibatis.annotations.Mapper;
