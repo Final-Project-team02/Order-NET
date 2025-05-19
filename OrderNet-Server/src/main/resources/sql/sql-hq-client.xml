@@ -100,20 +100,18 @@
 
     <select id="selectProtuctRanking" resultType="bitc.fullstack503.ordernetserver.dto.OrderItemDTO">
         SELECT
-        oi.part_id AS name,
-        SUM(oi.order_item_quantity) AS quantity
+        oi.part_id AS partId,
+        SUM(oi.order_item_quantity) AS orderItemQuantity
         FROM
         order_item oi
-        JOIN
-        orders o ON oi.order_id = o.order_id
+        JOIN orders o ON oi.order_id = o.order_id
         WHERE
-        DATE_FORMAT(o.order_date, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
-        AND o.branch_id = #{branchId}
+        DATE_FORMAT(o.order_date, '%Y-%m') = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m')
         GROUP BY
         oi.part_id
         ORDER BY
-        quantity DESC
-        LIMIT 5;
+        orderItemQuantity DESC
+        LIMIT 5
     </select>
 
 

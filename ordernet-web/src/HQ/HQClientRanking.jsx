@@ -72,39 +72,42 @@ function HQClientRanking() {
 
                     <div className={'container mt-5 border border-2 p-3'}>
                         <div className={'row'}>
-                            <div className={'col-6'}>
-                                <div className={'my-5'} style={{height: 500, width: 550}}>
+                            <div className={'col-6 text-center'}>
+                                <div className={'my-5'} style={{ height: 500, width: 550 }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
                                             data={rankingData}
                                             layout="vertical"
-                                            margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-                                            <CartesianGrid strokeDasharray="3 3"/>
-                                            <XAxis type="number"/>
-                                            <YAxis dataKey="branchId" type="category"/>
-                                            <Tooltip/>
-                                            <Legend/>
-                                            <Bar dataKey="orderPrice" fill="#413ea0"/>
+                                            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <XAxis type="number" />
+                                            <YAxis dataKey="branchId" type="category" />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="orderPrice" fill="#413ea0" />
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
+                                <p style={{ fontWeight: "bold" }}>지점별 매출 순위 Top7</p>
                             </div>
-                            <div className={'col-6'}>
-                                <div className={'my-5'} style={{height: 500, width: 550}}>
+
+                            <div className={'col-6 text-center'}>
+                                <div className={'my-5'} style={{ height: 500, width: 550 }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <ComposedChart
                                             data={productData}
-                                            margin={{top: 20, right: 20, bottom: 20, left: 20}}>
-                                            <CartesianGrid stroke="#f5f5f5"/>
-                                            <XAxis dataKey="name" scale="band"/>
-                                            <YAxis/>
-                                            <Tooltip/>
-                                            <Legend/>
-                                            <Bar dataKey="pv" barSize={20} fill="#413ea0"/>
+                                            margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                                        >
+                                            <CartesianGrid stroke="#f5f5f5" />
+                                            <XAxis dataKey="partId" scale="band" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Bar dataKey="orderItemQuantity" barSize={20} fill="#413ea0" />
                                         </ComposedChart>
-
                                     </ResponsiveContainer>
                                 </div>
+                                <p style={{ fontWeight: "bold" }}>제품 발주 Top5</p>
                             </div>
                         </div>
                     </div>
