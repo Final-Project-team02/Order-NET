@@ -8,8 +8,6 @@ import WHMain from "./WH/WHMain.jsx";
 import LoginForm from "./layout/LoginForm.jsx";
 import PrivateRoute from "./layout/PrivateRoute.jsx";
 import HQClientRanking from "./HQ/HQClientRanking.jsx";
-import HQBranchMap from "./HQ/HQBranchMap.jsx";
-import HQOverall from "./HQ/HQOverall.jsx";
 
 function WebMain() {
     return (
@@ -56,10 +54,6 @@ function WebMain() {
                 <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
                 <Route path={"/WHMain"} element={<WHMain/>}/>
                 <Route path={"/WHManage"} element={<WHManage/>}/>
-
-                {/* 본사 대시보드 페이지 */}
-                <Route path={"/HQDashBoard"} element={<HQOverall/>}/>
-
             </Routes>
         </BrowserRouter>
     );
