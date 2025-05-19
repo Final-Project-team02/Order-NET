@@ -8,6 +8,7 @@ import WHMain from "./WH/WHMain.jsx";
 import LoginForm from "./layout/LoginForm.jsx";
 import PrivateRoute from "./layout/PrivateRoute.jsx";
 import HQClientRanking from "./HQ/HQClientRanking.jsx";
+import HQOverall from "./HQ/HQOverall.jsx";
 
 function WebMain() {
     return (
@@ -48,12 +49,13 @@ function WebMain() {
                     />
                 </Route>
 
-                <Route path="/WHManage/:agencyCode" element={<WHManage/>}/>
+                <Route path="/WHManage/:agencyCode" element={<PrivateRoute><WHManage/></PrivateRoute>}/>
                 <Route path="/login" element={<LoginForm />} />
                 <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
                 <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
                 <Route path={"/WHMain"} element={<WHMain/>}/>
                 <Route path={"/WHManage"} element={<WHManage/>}/>
+                <Route path={"/HQOverall"} element={<HQOverall/>}/>
             </Routes>
         </BrowserRouter>
     );

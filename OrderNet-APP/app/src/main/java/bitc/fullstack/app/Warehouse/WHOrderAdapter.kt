@@ -49,7 +49,7 @@ class WHOrderAdapter(
         holder.tvOrderCount.text = "${order.totalQuantity}건"
 
         // 가격 및 상태 표시
-        holder.tvOrderPrice.text = order.orderPrice?.let {
+        holder.tvOrderPrice.text = order.warehouseOrderPrice?.let {
             "금액 ${NumberFormat.getNumberInstance(Locale.KOREA).format(it)} 원"
         } ?: "금액 정보 없음"
 

@@ -166,35 +166,35 @@
 
         <!-- 왼쪽 정렬 -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginEnd="10dp"
-            android:text="합계"
+            android:layout_weight="1"
+            android:text="합계 : "
             android:textSize="14sp" />
 
         <!-- 가운데 정렬 -->
         <TextView
             android:id="@+id/textTotalCount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="190dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="40 건"
             android:textSize="14sp" />
 
         <!-- 오른쪽 정렬 -->
         <TextView
             android:id="@+id/textTotalAmount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="금액 358,00000000"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="금액 358,000"
             android:textColor="#4F6493"
-            android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_marginRight="10dp"/>
+            android:textSize="14sp" />
     </LinearLayout>
+
 
     <!-- 출고 버튼 -->
 

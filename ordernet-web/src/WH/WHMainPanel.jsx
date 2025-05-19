@@ -21,11 +21,11 @@ function WHMainPanel() {
 
     const  selectWHMain= () => {
         axios.get("http://localhost:8080/webWh/WHMain", {
-            headers: {
-                userId: userId  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
+                headers: {
+                    userId: userId  // 여기에 전달할 userId 값을 지정 (예: 로그인한 사용자 ID)
+                }
             }
-        }
-    )
+        )
             .then(res => {
                 console.log('물류센터 재고현황 페이지 조회 성공');
                 console.log(res.data);
@@ -72,33 +72,33 @@ function WHMainPanel() {
                     </div>
                 ) : (
                     <div className="mt-4">
-                    <table className="table table-bordered">
-                        <thead className="table-primary">
-                        <tr>
-                            <th className="text-center align-middle">부품 코드번호</th>
-                            <th className="text-center align-middle">부품 명</th>
-                            <th className="text-center align-middle">부품 가격</th>
-                            <th className="text-center align-middle">부품 카테고리</th>
-                            <th className="text-center align-middle">입고량</th>
-                            <th className="text-center align-middle">입고날짜 </th>
+                        <table className="table table-bordered">
+                            <thead className="table-primary">
+                            <tr>
+                                <th className="text-center align-middle">부품 코드번호</th>
+                                <th className="text-center align-middle">부품 명</th>
+                                <th className="text-center align-middle">부품 가격</th>
+                                <th className="text-center align-middle">부품 카테고리</th>
+                                <th className="text-center align-middle">입고량</th>
+                                <th className="text-center align-middle">입고날짜 </th>
 
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        {whData.comeInList.map((row, i) => (
-                            <tr key={row.partId + '-' + i}>
-                                <td className="text-center align-middle">{row.partId}</td>
-                                <td className="text-center align-middle">{row.partName}</td>
-                                <td className="text-center align-middle">  {Number(row.partPrice).toLocaleString()} (원)</td>
-                                <td className="text-center align-middle">{row.partCate}</td>
-                                <td className="text-center align-middle">{row.inboundQuantity}</td>
-                                <td className="text-center align-middle">{row.inboundDate}</td>
                             </tr>
-                        ))}
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                            {whData.comeInList.map((row, i) => (
+                                <tr key={row.partId + '-' + i}>
+                                    <td className="text-center align-middle">{row.partId}</td>
+                                    <td className="text-center align-middle">{row.partName}</td>
+                                    <td className="text-center align-middle">  {Number(row.partPrice).toLocaleString()} (원)</td>
+                                    <td className="text-center align-middle">{row.partCate}</td>
+                                    <td className="text-center align-middle">{row.inboundQuantity}</td>
+                                    <td className="text-center align-middle">{row.inboundDate}</td>
+                                </tr>
+                            ))}
+
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </div>
@@ -114,33 +114,33 @@ function WHMainPanel() {
                         <h5 className="fw-bold mb-0">재고</h5>
                     </div>
                 </div>
-                
+
                 <hr></hr>
 
                 <div className="mt-4">
-                <table className="table table-bordered">
-                    <thead className="table-primary">
-                    <tr>
-                        <th className="text-center align-middle">부품 코드번호</th>
-                        <th className="text-center align-middle">부품명</th>
-                        <th className="text-center align-middle">부품 카테고리</th>
-                        <th className="text-center align-middle">재고량</th>
-                        <th className="text-center align-middle">부품가격</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {whData.stockList.map((row, i) => (
-                        <tr key={i}>
-                            <td className="text-center align-middle">{row.partId}</td>
-                            <td className="text-center align-middle">{row.partName}</td>
-                            <td className="text-center align-middle">{row.partCate}</td>
-                            <td className="text-center align-middle">{row.stockQuantity}</td>
-                            <td className="text-center align-middle">{Number(row.partPrice).toLocaleString()} (원)</td>
+                    <table className="table table-bordered">
+                        <thead className="table-primary">
+                        <tr>
+                            <th className="text-center align-middle">부품 코드번호</th>
+                            <th className="text-center align-middle">부품명</th>
+                            <th className="text-center align-middle">부품 카테고리</th>
+                            <th className="text-center align-middle">재고량</th>
+                            <th className="text-center align-middle">부품가격</th>
                         </tr>
-                    ))}
+                        </thead>
+                        <tbody>
+                        {whData.stockList.map((row, i) => (
+                            <tr key={i}>
+                                <td className="text-center align-middle">{row.partId}</td>
+                                <td className="text-center align-middle">{row.partName}</td>
+                                <td className="text-center align-middle">{row.partCate}</td>
+                                <td className="text-center align-middle">{row.stockQuantity}</td>
+                                <td className="text-center align-middle">{Number(row.partPrice).toLocaleString()} (원)</td>
+                            </tr>
+                        ))}
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -150,4 +150,3 @@ function WHMainPanel() {
 }
 
 export default WHMainPanel
-

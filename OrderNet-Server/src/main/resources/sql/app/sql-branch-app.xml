@@ -8,7 +8,7 @@
     <select id="getBranchInfo" parameterType="String" resultType="bitc.fullstack503.ordernetserver.dto.app.BranchCountDTO">
         SELECT
             COUNT(CASE WHEN order_status = '승인 대기' THEN 1 END) AS orderCount,
-            COUNT(CASE WHEN order_status = '접수' THEN 1 END) AS acceptCount,
+            COUNT(CASE WHEN order_status = '결재' THEN 1 END) AS acceptCount,
             COUNT(CASE WHEN order_status = '출고' THEN 1 END) AS deliveryCount,
             COUNT(CASE WHEN order_status = '반려' THEN 1 END) AS holdCount,
             branch.branch_name AS branchName
