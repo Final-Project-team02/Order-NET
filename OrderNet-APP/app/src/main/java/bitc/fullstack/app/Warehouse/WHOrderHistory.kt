@@ -121,11 +121,15 @@ class WHOrderHistory : AppCompatActivity() {
     private fun setupSpinner() {
         val options = listOf("1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월")
 
+        binding.spinner.visibility = View.GONE
+
         binding.spinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
             options
         )
+        val defaultMonth = "5월" // 기본값으로 5월을 선택
+        filterByMonth(defaultMonth)
 
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(

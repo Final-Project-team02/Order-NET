@@ -34,23 +34,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
   const pendingRows = rows.filter(row => row.orderStatus === "승인 대기");
 
-  // 1. 페이지 데이터 계산
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = rows.slice(indexOfFirstItem, indexOfLastItem);
 
-// 2. 전체 페이지 수 계산
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-// 3. 페이지네이션 표시 범위 계산
-  const maxPageNumbers = 5;
-  const pageGroup = Math.floor((currentPage - 1) / maxPageNumbers);
-  let startPage = pageGroup * maxPageNumbers + 1;
-  let endPage = Math.min(startPage + maxPageNumbers - 1, totalPages);
-  if (totalPages <= maxPageNumbers) {
-    startPage = 1;
-    endPage = totalPages;
-  }
 
 
   useEffect(() => {
@@ -113,20 +97,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
     setIsNotificationVisible(false); // 알림 닫기
   };
 
-  // 페이지 번호 렌더링 함수
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(
-          <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
-            <button className="page-link" onClick={() => setCurrentPage(i)}>
-              {i}
-            </button>
-          </li>
-      );
-    }
-    return pageNumbers;
-  };
+
 
 
   return (
@@ -209,22 +180,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
               </table>
             </div>
 
-            {/*  페이지네이션: 테이블 바깥, 항상 아래에 위치 */}
-            {totalPages > 1 && (
-                <div className="mt-4">
-                  <nav>
-                    <ul className="pagination justify-content-center">
-                      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                        <button className="page-link" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}>&lt;</button>
-                      </li>
-                      {renderPageNumbers()}
-                      <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-                        <button className="page-link" onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}>&gt;</button>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-            )}
+
           </div>
 
         </div>

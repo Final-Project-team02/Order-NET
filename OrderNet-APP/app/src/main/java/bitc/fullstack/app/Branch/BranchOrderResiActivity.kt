@@ -353,6 +353,7 @@ class BranchOrderResiActivity : AppCompatActivity() {
                     val intent = Intent(this@BranchOrderResiActivity, BranchMainActivity::class.java)
                     intent.putExtra("userRefId", branchId)
                     intent.putExtra("branchName", branchName)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                 } else {
                     // 주문 실패

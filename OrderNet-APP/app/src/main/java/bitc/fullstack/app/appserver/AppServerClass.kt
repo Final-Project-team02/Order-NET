@@ -10,7 +10,7 @@ object AppServerClass {
 
 //  private val BASE_URL = "http://10.100.203.15:8080/app/"
 
-  private val BASE_URL = "http://10.100.203.15:8080/app/"
+  private val BASE_URL = "http://10.100.203.79:8080/app/"
 
 
   val instance: AppServerInterface by lazy {

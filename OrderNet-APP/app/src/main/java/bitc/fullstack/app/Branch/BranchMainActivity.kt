@@ -144,6 +144,7 @@ class BranchMainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
         branchName = prefs.getString("branchName", "") ?: ""
         binding.branchName.text = branchName
+        selectbranch()
     }
 
     // 대리점 로그인 첫 페이지

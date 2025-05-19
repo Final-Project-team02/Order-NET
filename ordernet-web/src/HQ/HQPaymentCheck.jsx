@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function HQPaymentCheck({ filteredRows, isFiltered }) {
@@ -11,6 +11,11 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+
+    const [mainCurrentPage, setMainCurrentPage] = useState(1);
+    const mainItemsPerPage = 5; // 한 페이지당 항목 수
+
+
 
     useEffect(() => {
         if (!isFiltered) {
@@ -85,8 +90,17 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
         setSelectedOrderId(null);
     };
 
+
     const filteredDetailRows = rows2.filter(row => row.orderId === selectedOrderId);
 
+
+    // 대리점 주문 내역 페이징
+    const mainTotalPages = Math.ceil(displayRows.length / mainItemsPerPage);
+    const mainIndexOfLastItem = mainCurrentPage * mainItemsPerPage;
+    const mainIndexOfFirstItem = mainIndexOfLastItem - mainItemsPerPage;
+    const mainCurrentItems = displayRows.slice(mainIndexOfFirstItem, mainIndexOfLastItem);
+
+    // 모달 페이징
     const totalPages = Math.ceil(filteredDetailRows.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -106,12 +120,12 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                     </tr>
                     </thead>
                     <tbody>
-                    {displayRows.length === 0 ? (
+                    {mainCurrentItems.length === 0 ? (
                         <tr>
                             <td colSpan="4" className="text-center">처리된 것이 없습니다.</td>
                         </tr>
                     ) : (
-                        displayRows.map((row, i) => (
+                      mainCurrentItems.map((row, i) => (
                             <tr key={i} onClick={() => handleRowClick(row.orderId)} style={{ cursor: 'pointer' }}>
                                 <td className="text-center align-middle">{row.orderId}</td>
                                 <td className="text-center align-middle">{row.orderDate}</td>
@@ -122,6 +136,39 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                     )}
                     </tbody>
                 </table>
+
+
+                {mainTotalPages > 1 && (
+                  <div className="mt-4">
+                      <nav>
+                          <ul className="pagination justify-content-center">
+                              <li className={`page-item ${mainCurrentPage === 1 ? "disabled" : ""}`}>
+                                  <button className="page-link" onClick={() => mainCurrentPage > 1 && setMainCurrentPage(mainCurrentPage - 1)}>
+                                      &lt;
+                                  </button>
+                              </li>
+
+                              {Array.from({ length: mainTotalPages }, (_, i) => (
+                                <li key={i + 1} className={`page-item ${mainCurrentPage === i + 1 ? "active" : ""}`}>
+                                    <button className="page-link" onClick={() => setMainCurrentPage(i + 1)}>
+                                        {i + 1}
+                                    </button>
+                                </li>
+                              ))}
+
+                              <li className={`page-item ${mainCurrentPage === mainTotalPages ? "disabled" : ""}`}>
+                                  <button className="page-link" onClick={() => mainCurrentPage < mainTotalPages && setMainCurrentPage(mainCurrentPage + 1)}>
+                                      &gt;
+                                  </button>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+                )}
+
+
+
+
             </div>
             {showOrderDetails && (
                 <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
