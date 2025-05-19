@@ -49,7 +49,7 @@ function WebMain() {
                     />
                 </Route>
 
-                <Route path="/WHManage/:agencyCode" element={<WHManage/>}/>
+                <Route path="/WHManage/:agencyCode" element={<PrivateRoute><WHManage/></PrivateRoute>}/>
                 <Route path="/login" element={<LoginForm />} />
                 <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
                 <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />

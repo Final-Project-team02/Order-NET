@@ -50,4 +50,6 @@ data class OrderAppDTO(
     @SerializedName("order_status")
     var orderStatus: String,
 
+    @SerializedName("warehouse_order_price")
+    var warehouseOrderPrice: BigDecimal
 )
