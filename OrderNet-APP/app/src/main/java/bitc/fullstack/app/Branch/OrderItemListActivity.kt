@@ -132,6 +132,17 @@ class OrderItemListActivity : AppCompatActivity() {
                         binding.deliveryDateText.text = it.orderDueDate
                         binding.statusText.text = it.orderStatus
 
+
+
+                        // 주문 상태가 "반려"일 때 텍스트 색을 빨간색으로 변경
+                        if (it.orderStatus == "반려") {
+                            binding.statusText.setTextColor(android.graphics.Color.RED)
+                        } else {
+                            // 그 외 상태일 때 기본 검정색 (또는 원하는 색)
+                            binding.statusText.setTextColor(android.graphics.Color.BLACK)
+                        }
+
+
                         // RecyclerView 어댑터에 데이터 전달
                         val adapter = OrderItemAdapter(it.partsList.values.toList())
                         binding.productListRecycler.layoutManager = LinearLayoutManager(this@OrderItemListActivity)

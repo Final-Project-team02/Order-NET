@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
 
     <!--    toolbar-->
@@ -14,18 +15,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
+        android:paddingLeft="10dp"
         android:layout_marginVertical="10dp"
         android:text="재고 현황"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#5B78AA"/>
 
 <!--<hr/>-->
     <View
         android:layout_width="wrap_content"
         android:layout_height="0.9dp"
         android:layout_marginHorizontal="10dp"
-        android:background="#00000F"/>
+        android:background="#B3B3B3"/>
 
     <Spinner
         android:id="@+id/spinner"
@@ -54,8 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="재고"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
         android:textSize="25dp"
         android:textStyle="bold"
         android:textColor="#5B78AA"/>
@@ -65,7 +68,8 @@
         android:layout_width="wrap_content"
         android:layout_height="0.9dp"
         android:layout_marginHorizontal="10dp"
-        android:background="#00000F"/>
+        android:background="#B3B3B3"
+        android:layout_marginBottom="6dp"/>
 
 
     <!--recycle view-->

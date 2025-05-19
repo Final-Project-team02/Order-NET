@@ -179,7 +179,7 @@ class OrderDetailActivity : AppCompatActivity() {
         val itemCount = orderItems.sumOf { it.orderItemQuantity }
 
         binding.textTotalAmount.text = "총 금액: ${totalAmount}원"
-        binding.textTotalCount.text = "건수: ${itemCount}개"
+        binding.textTotalCount.text = "${itemCount}개"
     }
 
     private fun formatDate(date: Date?): String {
