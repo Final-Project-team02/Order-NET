@@ -23,10 +23,10 @@ function HQMain() {
     };
 
     const menuItems = [
-        { text: "대쉬 보드", link: "/HQOverall" },
+        { text: "본사 대시보드 ", link: "/" },
         { text: "주문 확정", link: "/HQMain" },
         { text: "대리점 관리", link: "/HQClientList" },
-        { text: "재고현황", link: "/HQStockStatus" }
+        { text: "재고현황", link: "/HQStockStatus" },
     ];
 
     return (

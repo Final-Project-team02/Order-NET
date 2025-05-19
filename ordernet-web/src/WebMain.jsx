@@ -15,7 +15,7 @@ function WebMain() {
         <BrowserRouter>
             <Routes>
                 {/* 처음 '/'로 들어오면 '/HQMain'으로 리디렉션 */}
-                <Route path="/" element={<Navigate to="/HQMain" replace/>}/>
+                <Route path="/" element={<Navigate to="/HQOverall" place/>}/>
                 <Route path={"/HQMain"}>
                     <Route index element={
                         <PrivateRoute>
@@ -26,9 +26,6 @@ function WebMain() {
                 </Route>
                 <Route path={"/HQClientList"} element={<HQClientList/>}></Route>
                 <Route path={"/HQStockStatus"} element={<HQStockStatus/>}></Route>
-                {/*<Route path={"/BranchMain"} element={<BranchMain/>}/>*/}
-
-                {/*<Route path="/BranchMain/:agencyCode" element={<BranchMain />} />*/}
 
                 <Route path={"/BranchMain/:agencyCode"}>
                     <Route index element={

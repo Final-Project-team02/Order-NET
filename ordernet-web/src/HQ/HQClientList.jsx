@@ -11,7 +11,8 @@ import axios from "axios";
 function HQClientList() {
 
     const menuItems = [
-        { text: "주문 확정", link: "/" },
+        { text: "본사 대시보드 ", link: "/" },
+        { text: "주문 확정", link: "/HQMain" },
         { text: "대리점 관리", link: "/HQClientList" },
         { text: "재고현황", link: "/HQStockStatus" },
     ];

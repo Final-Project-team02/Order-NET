@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import bellIcon from '../assets/bellIcon.png';
 import './AlertBox.css';
@@ -11,6 +11,11 @@ function HQMainPanel( { filteredRows, isFiltered }) {
   const [selectedOrderId, setSelectedOrderId] = useState(null);  // 행 클릭
 
   const [showOrderDetails, setShowOrderDetails] = useState(false); // 발주 내역 숨기기
+
+  // 페이지네이션 상태
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // itemsPerPage는 고정값이라 useState 안 해도 됨
+
 
   const handleOpenModal = () => {
     const selectedRows = rows2.filter(row => row.orderId === selectedOrderId);
@@ -26,6 +31,25 @@ function HQMainPanel( { filteredRows, isFiltered }) {
   const [rows, setRows] = useState([]);
 
   const [rows2, setRows2] = useState([]);
+
+  // 1. 페이지 데이터 계산
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = rows.slice(indexOfFirstItem, indexOfLastItem);
+
+// 2. 전체 페이지 수 계산
+  const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+// 3. 페이지네이션 표시 범위 계산
+  const maxPageNumbers = 5;
+  const pageGroup = Math.floor((currentPage - 1) / maxPageNumbers);
+  let startPage = pageGroup * maxPageNumbers + 1;
+  let endPage = Math.min(startPage + maxPageNumbers - 1, totalPages);
+  if (totalPages <= maxPageNumbers) {
+    startPage = 1;
+    endPage = totalPages;
+  }
+
 
   useEffect(() => {
 
@@ -87,6 +111,22 @@ function HQMainPanel( { filteredRows, isFiltered }) {
     setIsNotificationVisible(false); // 알림 닫기
   };
 
+  // 페이지 번호 렌더링 함수
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+          <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
+            <button className="page-link" onClick={() => setCurrentPage(i)}>
+              {i}
+            </button>
+          </li>
+      );
+    }
+    return pageNumbers;
+  };
+
+
   return (
       <div>
         <div>
@@ -101,14 +141,13 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
 
 
-        <div className="p-4 mt-3 bg-light w-100">
+        <div className="p-4 mt-3 bg-light w-100" >
           <h2 className="h5 fw-bold mb-3">미결재 리스트</h2>
 
-          <div style={{ width: '100%', overflow: 'hidden' }}>
-            {/* 헤더 테이블 */}
-            <div style={{ overflowY: 'scroll', overflowX: 'hidden', scrollbarWidth: 'none', width:'99%' }}>
-              <table className="table table-bordered"
-                     style={{ tableLayout: 'fixed', width: '100%', marginBottom: 0 }}>
+          <div style={{ width: '100%' }}>
+            {/* 반응형 테이블 래퍼 */}
+            <div className="table-responsive">
+              <table className="table table-bordered" style={{ tableLayout: 'fixed', width: '100%', marginBottom: 0 }}>
                 <colgroup>
                   <col style={{ width: '130px' }} />
                   <col style={{ width: '130px' }} />
@@ -130,99 +169,62 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                   <th className="text-center align-middle" style={{ backgroundColor: "#CFE2FF" }}>도착일자</th>
                 </tr>
                 </thead>
-              </table>
-            </div>
-
-            {/* 바디 테이블 */}
-            <div style={{ maxHeight: '400px', overflowY: 'scroll', width: '100%' }}>
-              <table className="table table-bordered"
-                     style={{ tableLayout: 'fixed', width: 'calc(100% - 1px)' }}>
-                <colgroup>
-                  <col style={{ width: '130px' }} />
-                  <col style={{ width: '130px' }} />
-                  <col style={{ width: '130px' }} />
-                  <col style={{ width: '130px' }} />
-                  <col style={{ width: '130px' }} />
-                  <col style={{ width: '130px' }} />
-                </colgroup>
                 <tbody>
-                {rows.length === 0 ? (
+                {currentData.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="text-center">미결재 리스트가 없습니다.</td>
                     </tr>
                 ) : (
-                    Array.from(new Map(rows.map(row => [row.orderId, row])).values()).map((row, i) => (
+                    Array.from(new Map(currentData.map(row => [row.orderId, row])).values()).map((row, i) => (
                         <tr
                             key={i}
                             onClick={() => {
                               if (selectedOrderId === row.orderId) {
                                 setSelectedOrderId(null);
                                 setShowOrderDetails(false);
-                                console.log("선택 해제:", null);
                               } else {
                                 setSelectedOrderId(row.orderId);
                                 setShowOrderDetails(true);
-                                console.log("선택한 orderId:", row.orderId);
                               }
                             }}
                             className="cursor-pointer"
                         >
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                              }}
-                          >
-                            {row.orderId}
-                          </td>
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                              }}
-                          >
-                            {row.branchId}
-                          </td>
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                              }}
-                          >
-                            {row.orderDate}
-                          </td>
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                              }}
-                          >
-                            {row.orderDueDate}
-                          </td>
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                              }}
-                          >
+                          <td className="text-center align-middle" style={{ backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent" }}>{row.orderId}</td>
+                          <td className="text-center align-middle" style={{ backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent" }}>{row.branchId}</td>
+                          <td className="text-center align-middle" style={{ backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent" }}>{row.orderDate}</td>
+                          <td className="text-center align-middle" style={{ backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent" }}>{row.orderDueDate}</td>
+                          <td className="text-center align-middle" style={{ backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent" }}>
                             {row.orderPrice.toLocaleString()} (원)
                           </td>
-                          <td
-                              className="text-center align-middle"
-                              style={{
-                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
-                                color: row.orderStatus === '반려' ? 'red' : 'black',
-                              }}
-                          >
-                            {row.orderStatus}
-                          </td>
+                          <td className="text-center align-middle" style={{
+                            backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                            color: row.orderStatus === '반려' ? 'red' : 'black',
+                          }}>{row.orderStatus}</td>
                         </tr>
                     ))
                 )}
                 </tbody>
               </table>
             </div>
+
+            {/*  페이지네이션: 테이블 바깥, 항상 아래에 위치 */}
+            {totalPages > 1 && (
+                <div className="mt-4">
+                  <nav>
+                    <ul className="pagination justify-content-center">
+                      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}>&lt;</button>
+                      </li>
+                      {renderPageNumbers()}
+                      <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}>&gt;</button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+            )}
           </div>
+
         </div>
 
 
@@ -381,24 +383,25 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
 
 
   return (
-      <div className="modal show d-block" tabIndex={-1} role="dialog">
+      <div className="approval-modal modal show d-block" tabIndex={-1} role="dialog">
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header" style={{ backgroundColor: '#CFE2FF' }}>
               <h5 className="modal-title">결재</h5>
-              <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
+              {/*<button className="custom-x-button" onClick={onClose}>×</button>*/}
+              <button type="button" className="btn-close" onClick={onClose} aria-label="Close">X</button>
             </div>
             <div className="modal-body">
               <table className="table table-bordered">
                 <tbody>
                 <tr>
-                  <th style={{whiteSpace: "nowrap"}}>대리점 ID</th>
-                  <td style={{whiteSpace: "nowrap"}}>{branchId}</td>
-                  <th style={{whiteSpace: "nowrap"}}>부품 Code</th>
+                  <th style={{ whiteSpace: "nowrap" }}>대리점 ID</th>
+                  <td style={{ whiteSpace: "nowrap" }}>{branchId}</td>
+                  <th style={{ whiteSpace: "nowrap" }}>부품 Code</th>
                   <td>{partId}</td>
                 </tr>
                 <tr>
-                  <th style={{whiteSpace: "nowrap"}}>지점명</th>
+                  <th style={{ whiteSpace: "nowrap" }}>지점명</th>
                   <td colSpan={3}>{branchName}</td>
                 </tr>
                 <tr>
@@ -412,18 +415,9 @@ function ApprovalModal({onClose, rows, rows2, denyReason, setDenyReason}) {
                 </tbody>
               </table>
               <div className="form-group">
-                <style>
-                  {`
-                    input::placeholder,
-                    textarea::placeholder {
-                      color: #6c757d !important;
-                      opacity: 1;
-                    }
-                  `}
-                </style>
                 <label className="form-label fw-bold">반려 이유</label>
                 <input type="text" className="form-control" placeholder="무슨무슨이유로 인해 반려합니다." value={denyReason}
-                       onChange={(e) => setDenyReason(e.target.value)}/>
+                       onChange={(e) => setDenyReason(e.target.value)} />
               </div>
             </div>
             <div className="modal-footer">

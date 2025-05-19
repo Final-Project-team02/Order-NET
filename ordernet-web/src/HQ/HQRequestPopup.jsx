@@ -130,7 +130,7 @@ function HQRequestPopup({isOpen, onClose}) {
           display: 'block',
           position: 'fixed',
           top: '60%',
-          left: '50%',
+          left: '55%',
           transform: 'translate(-50%, -50%)',
           zIndex: 1050,
         }}

@@ -72,7 +72,7 @@ function HQBranchMap() {
     }
 
     return (
-        <div>
+        <div className="p-4 mt-3 w-100">
             <style>{`
                 .leaflet-interactive:focus {
                   outline: none;
@@ -85,7 +85,7 @@ function HQBranchMap() {
                 center={[36, 127.5]}
                 zoom={6}
                 // 지도 크기
-                style={{ width: "480px", height: "400px", borderRadius: "8px" }}
+                style={{ width: "100%", height: "400px", borderRadius: "8px" }}
             >
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

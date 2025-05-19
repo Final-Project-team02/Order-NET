@@ -100,18 +100,18 @@ const UncheckedList = () => {
                             <col style={{ width: '130px' }} />
                             <col style={{ width: '130px' }} />
                         </colgroup>
-                        <thead className="table-info">
+                        <thead className="table-info" >
                         <tr>
-                            <th className="text-center" rowSpan="2">
+                            <th className="text-center" rowSpan="2" style={{ backgroundColor: "#CFE2FF" }}>
                                 주문번호
                             </th>
-                            <th className="text-center" rowSpan="2">
+                            <th className="text-center" rowSpan="2" style={{ backgroundColor: "#CFE2FF" }}>
                                 대리점 ID
                             </th>
-                            <th className="text-center" rowSpan="2">
+                            <th className="text-center" rowSpan="2" style={{ backgroundColor: "#CFE2FF" }}>
                                 주문일자
                             </th>
-                            <th className="text-center" rowSpan="2">
+                            <th className="text-center" rowSpan="2" style={{ backgroundColor: "#CFE2FF" }}>
                                 주문현황
                             </th>
                         </tr>
@@ -181,7 +181,7 @@ const UncheckedList = () => {
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 style={{ cursor: currentPage === 1 ? 'default' : 'pointer' }}
                             >
-                                <span className="page-link">이전</span>
+                                <span className="page-link">&lt;</span>
                             </li>
 
                             {getPaginationNumbers().map((num, idx) =>
@@ -206,7 +206,7 @@ const UncheckedList = () => {
                                 onClick={() => handlePageChange(currentPage + 1)}
                                 style={{ cursor: currentPage === totalPages ? 'default' : 'pointer' }}
                             >
-                                <span className="page-link">다음</span>
+                                <span className="page-link">&gt;</span>
                             </li>
                         </ul>
                     </nav>

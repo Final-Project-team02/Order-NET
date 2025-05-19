@@ -1,0 +1,20 @@
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<resources>\r\n    <color name=\"black\">#FF000000</color>\r\n    <color name=\"white\">#FFFFFFFF</color>\r\n    <color name=\"mainBlue\">#CFE2FF</color>\r\n    <color name=\"textColor\">#2C5087</color>\r\n    <color name=\"blue\">#3F82EA</color>\r\n    <color name=\"lightBlue\">#EBF2FC</color>\r\n    <color name=\"blue\">#3F82EA</color>\r\n    <color name=\"gray200\">#EEEEEE</color>\r\n    <color name=\"blue2\">#5574A4</color>\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/colors.xml b/app/src/main/res/values/colors.xml
+--- a/app/src/main/res/values/colors.xml	(revision 2559bfebcb3931ca3953999506d7b4fa8f7fe975)
++++ b/app/src/main/res/values/colors.xml	(date 1747102779315)
+@@ -6,7 +6,7 @@
+     <color name="textColor">#2C5087</color>
+     <color name="blue">#3F82EA</color>
+     <color name="lightBlue">#EBF2FC</color>
+-    <color name="blue">#3F82EA</color>
++<!--    <color name="blue">#3F82EA</color>-->
+     <color name="gray200">#EEEEEE</color>
+     <color name="blue2">#5574A4</color>
+ </resources>
+\ No newline at end of file

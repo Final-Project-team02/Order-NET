@@ -65,7 +65,7 @@ const MonthlySalesChart = () => {
     }, []);
 
     return (
-        <div style={{
+        <div className="p-4 mt-3 w-100" style={{
             padding: '1.5rem',
             background: '#fff',
             borderRadius: '12px',
@@ -74,6 +74,7 @@ const MonthlySalesChart = () => {
         }}>
             <h3 style={{
                 textAlign: 'center',
+                marginTop: '28px',
                 marginBottom: '1rem',
                 fontWeight: '600',
                 fontSize: '1.2rem',
@@ -81,7 +82,7 @@ const MonthlySalesChart = () => {
             }}>
                 지점별 월간 매출 추이
             </h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={348}>
                 <AreaChart data={data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis

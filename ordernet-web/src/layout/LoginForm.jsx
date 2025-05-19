@@ -46,7 +46,7 @@ function LoginForm() {
             // if (userType === "본사") navigate("/HQMain");
             // else if (userType === "대리점") navigate("/BranchMain");
             // else if (userType === "물류센터") navigate("/WHMain");
-            if (resUserType === "본사") navigate("/HQMain");
+            if (resUserType === "본사") navigate("/HQOverall");
             else if (resUserType === "대리점") navigate(`/BranchMain/${userRefId}`);
             else if (resUserType === "물류센터")  navigate(`/WHMain/${encodeURIComponent(userRefId)}`); /*navigate(`/WHMain/${userRefId}`); */
         } catch (error) {

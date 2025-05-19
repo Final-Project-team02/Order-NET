@@ -121,7 +121,7 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                         <div className="modal-content">
                             <div className="modal-header" style={{ backgroundColor: '#CFE2FFFF' }}>
                                 <h5 className="modal-title">상세 내역</h5>
-                                <button type="button" className="btn-close" onClick={closeModal}></button>
+                                {/*<button type="button" className="btn-close" onClick={closeModal}></button>*/}
                             </div>
                             <div className="modal-body">
                                 <table className="table table-bordered">
@@ -184,6 +184,7 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
                         </div>
                     </div>
                 </div>
+
             )}
         </div>
     );

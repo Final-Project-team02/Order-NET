@@ -5,15 +5,15 @@ function NoticeDetailModal({ notice, onClose, onDelete }) {
     if (!notice) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
+        <div className="custom-overlay">
+            <div className="custom-content">
 
-                <div className="modal-header">
-                    <h3 className="modal-title">공지 상세</h3>
+                <div className="custom-header">
+                    <h3 className="custom-title">공지 상세</h3>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         {/* 삭제 아이콘 버튼 */}
-                        <button className="modal-delete-button" onClick={onDelete} title="삭제">
+                        <button className="custom-delete-button" onClick={onDelete} title="삭제">
                             <img
                                 src="/recycle-bin.png"
                                 alt="삭제"
@@ -22,10 +22,9 @@ function NoticeDetailModal({ notice, onClose, onDelete }) {
                         </button>
 
                         {/* 닫기(X) 버튼 */}
-                        <button className="modal-x-button" onClick={onClose}>×</button>
+                        <button className="custom-x-button" onClick={onClose}>×</button>
                     </div>
                 </div>
-
 
                 <div className="detail-body">
                     <div className="detail-row">
@@ -50,6 +49,7 @@ function NoticeDetailModal({ notice, onClose, onDelete }) {
 
             </div>
         </div>
+
     );
 }
 

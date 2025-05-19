@@ -11,10 +11,10 @@ import HQNoticeList from "./DashBoard/HQNoticeList.jsx";
 
 function HQOverall() {
     const menuItems = [
-        {text: "대쉬 보드", link: "/HQOverall"},
-        {text: "주문 확정", link: "/HQMain"},
-        {text: "대리점 관리", link: "/HQClientList"},
-        {text: "재고현황", link: "/HQStockStatus"}
+        { text: "본사 대시보드 ", link: "/" },
+        { text: "주문 확정", link: "/HQMain" },
+        { text: "대리점 관리", link: "/HQClientList" },
+        { text: "재고현황", link: "/HQStockStatus" },
     ];
 
     return (
@@ -28,22 +28,32 @@ function HQOverall() {
                     {/* 본사 주문 현황 */}
                     <StatusOverView/>
                     <br/>
-                    <div className="row d-flex" style={{height: "300px"}}>
-                        <div className="col-md-6 mb-3 d-flex flex-column" style={{height: '100%'}}>
-                            <UncheckedList style={{flex: 1}}/>
+                    <div className="row mb-3">
+                        <div className="col-md-6 d-flex">
+                            <div className="card flex-fill">
+                                <UncheckedList/>
+                            </div>
                         </div>
-                        <div className="col-md-6 mb-3 d-flex flex-column justify-content-center"
-                             style={{height: '200%'}}>
-                            <MonthlySalesGraph style={{flex: 1}}/>
+                        <div className="col-md-6 d-flex">
+                            <div className="card flex-fill">
+                                <MonthlySalesGraph/>
+                            </div>
                         </div>
                     </div>
 
-                    <div style={{display: 'flex', gap: '8px', alignItems: 'flex-start'}}>
-                        <div style={{width: '600px'}}>
-                            <HQNoticeList/>
+                    {/* 세 번째 줄 */}
+
+
+                    <div className="row mb-3" >
+                        <div className="col-md-6 d-flex">
+                            <div className="card flex-fill" >
+                                <HQNoticeList/>
+                            </div>
                         </div>
-                        <div style={{width: '480px'}}>
-                            <HQBranchMap/>
+                        <div className="col-md-6 d-flex">
+                            <div className="card flex-fill">
+                                <HQBranchMap/>
+                            </div>
                         </div>
                     </div>
 

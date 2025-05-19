@@ -67,7 +67,7 @@ function HQNoticeList() {
     }, []);
 
     return (
-        <div className="notice-widget" style={{ width: '600px' }}>
+        <div className="p-4 mt-3 w-100" style={{ width: '600px' }}>
             <div className="notice-header">
                 <h3>공지사항</h3>
                 <div className="notice-buttons">
