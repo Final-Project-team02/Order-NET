@@ -41,23 +41,31 @@ function HQPaymentCheck({ filteredRows, isFiltered }) {
         }
     }, [filteredRows, isFiltered]);
 
+    // 1. 결재 or 반려인 항목 필터링
+    const approvedOrRejectedRows = rows.filter(
+        row => ["결재", "반려"].includes(row.orderStatus)
+    );
+
     const groupedRows = Object.values(
-        rows.reduce((acc, row) => {
+        approvedOrRejectedRows.reduce((acc, row) => {
             if (!acc[row.orderId]) {
                 acc[row.orderId] = {
-                    ...row,
-                    partNames: [row.partName],
+                    orderId: row.orderId,
+                    orderDate: row.orderDate,
+                    orderStatus: row.orderStatus,
+                    partNames: [],
                 };
-            } else {
-                acc[row.orderId].partNames.push(row.partName);
             }
+            acc[row.orderId].partNames.push(row.partName);
             return acc;
         }, {})
     );
 
+
     const displayRows = groupedRows.map(group => {
         const firstPartName = group.partNames[0];
         const total = group.partNames.length;
+
         return {
             ...group,
             displayPartName: total > 1 ? `${firstPartName} 외 ${total - 1}종` : firstPartName,

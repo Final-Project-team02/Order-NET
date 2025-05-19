@@ -32,6 +32,8 @@ function HQMainPanel( { filteredRows, isFiltered }) {
 
   const [rows2, setRows2] = useState([]);
 
+  const pendingRows = rows.filter(row => row.orderStatus === "승인 대기");
+
   // 1. 페이지 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -170,12 +172,12 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                 </tr>
                 </thead>
                 <tbody>
-                {currentData.length === 0 ? (
+                {pendingRows.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="text-center">미결재 리스트가 없습니다.</td>
                     </tr>
                 ) : (
-                    Array.from(new Map(currentData.map(row => [row.orderId, row])).values()).map((row, i) => (
+                    Array.from(new Map(pendingRows.map(row => [row.orderId, row])).values()).map((row, i) => (
                         <tr
                             key={i}
                             onClick={() => {
