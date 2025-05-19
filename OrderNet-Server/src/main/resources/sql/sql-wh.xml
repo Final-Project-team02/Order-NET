@@ -119,9 +119,9 @@
 
 <!--   특정 order_id가 어떤 warehouse_id에서 출고되었는지 추정하여 반환하는 쿼리-->
     <select id="selectWarehouseIdByOrderId" resultType="String" parameterType="String">
-        SELECT w.warehouse_id
-        FROM warehouse w
-        JOIN order_item oi ON SUBSTRING_INDEX(oi.part_id, '-', 1) = SUBSTRING(w.warehouse_id, 4)
+        SELECT ws.warehouse_id
+        FROM order_item oi
+        JOIN warehouse_stock ws ON oi.part_id = ws.part_id
         WHERE oi.order_id = #{orderId}
         LIMIT 1
     </select>
