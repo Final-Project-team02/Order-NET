@@ -23,7 +23,7 @@ function WebMain() {
                     }
                     />
                 </Route>
-                <Route path={"/HQClientList"} element={<HQClientList/>}></Route>
+                <Route path={"/HQClientList"} element={ <HQClientList/> }></Route>
                 <Route path={"/HQStockStatus"} element={<HQStockStatus/>}></Route>
                 {/*<Route path={"/BranchMain"} element={<BranchMain/>}/>*/}
 
@@ -52,8 +52,8 @@ function WebMain() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
                 <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
-                <Route path={"/WHMain"} element={<WHMain/>}/>
-                <Route path={"/WHManage"} element={<WHManage/>}/>
+                {/*<Route path={"/WHMain"} element={ <WHMain/> }/>*/}
+                {/*<Route path={"/WHManage"} element={<WHManage/>}/>*/}
             </Routes>
         </BrowserRouter>
     );
