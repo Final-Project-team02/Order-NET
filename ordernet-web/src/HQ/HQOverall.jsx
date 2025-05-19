@@ -6,8 +6,8 @@ import UncheckedList from "./DashBoard/UncheckedList.jsx";
 import MonthlySalesGraph from "./DashBoard/MonthlySalesGraph.jsx";
 
 
-import HQBranchMap from "./HQBranchMap.jsx";
-import HQNoticeList from "./HQNoticeList.jsx";
+import HQBranchMap from "./DashBoard/HQBranchMap.jsx";
+import HQNoticeList from "./DashBoard/HQNoticeList.jsx";
 
 function HQOverall() {
     const menuItems = [
