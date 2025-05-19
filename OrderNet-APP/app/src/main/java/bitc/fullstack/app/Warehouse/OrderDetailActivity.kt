@@ -14,9 +14,8 @@ import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityOrderDetailBinding
 import bitc.fullstack.app.dto.WHOrderAppItemDTO
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.math.BigDecimal
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +25,7 @@ class OrderDetailActivity : AppCompatActivity() {
         ActivityOrderDetailBinding.inflate(layoutInflater)
     }
 
-    private lateinit var apiService: AppServerInterface
+
     private lateinit var adapter: WHOrderAppItemAdapter
     private var warehouseId = "WH_BRK" // 로그인한 물류센터
 
@@ -119,9 +118,9 @@ class OrderDetailActivity : AppCompatActivity() {
             (it.orderItemPrice ?: BigDecimal.ZERO).multiply(BigDecimal(it.orderItemQuantity))
         }
         val itemCount = orderItems.sumOf { it.orderItemQuantity }
-
-        binding.textTotalAmount.text = "총 금액: ${totalAmount}원"
-        binding.textTotalCount.text = "건수: ${itemCount}개"
+        val formattedAmount = NumberFormat.getNumberInstance(Locale.KOREA).format(totalAmount.toBigInteger())
+        binding.textTotalAmount.text = "총 금액: ${formattedAmount}원"
+        binding.textTotalCount.text = "${itemCount}개"
     }
 
     private fun formatDate(date: Date?): String {

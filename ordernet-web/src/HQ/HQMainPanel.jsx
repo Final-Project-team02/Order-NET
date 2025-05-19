@@ -104,7 +104,7 @@ function HQMainPanel( { filteredRows, isFiltered }) {
         <div className="p-4 mt-3 bg-light w-100">
           <h2 className="h5 fw-bold mb-3">미결재 리스트</h2>
 
-          <div style={{ width: '100%', overflow: 'hidden'}}>
+          <div style={{ width: '100%', overflow: 'hidden' }}>
             {/* 헤더 테이블 */}
             <div style={{ overflowY: 'scroll', overflowX: 'hidden', scrollbarWidth: 'none', width:'99%' }}>
               <table className="table table-bordered"
@@ -165,16 +165,54 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                                 console.log("선택한 orderId:", row.orderId);
                               }
                             }}
-                            className={`cursor-pointer ${selectedOrderId === row.orderId ? "selected-row" : ""}`}
+                            className="cursor-pointer"
                         >
-                          <td className="text-center align-middle">{row.orderId}</td>
-                          <td className="text-center align-middle">{row.branchId}</td>
-                          <td className="text-center align-middle">{row.orderDate}</td>
-                          <td className="text-center align-middle">{row.orderDueDate}</td>
-                          <td className="text-center align-middle">{row.orderPrice.toLocaleString()} (원)</td>
                           <td
                               className="text-center align-middle"
-                              style={{ color: row.orderStatus === '반려' ? 'red' : 'black' }}
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                              }}
+                          >
+                            {row.orderId}
+                          </td>
+                          <td
+                              className="text-center align-middle"
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                              }}
+                          >
+                            {row.branchId}
+                          </td>
+                          <td
+                              className="text-center align-middle"
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                              }}
+                          >
+                            {row.orderDate}
+                          </td>
+                          <td
+                              className="text-center align-middle"
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                              }}
+                          >
+                            {row.orderDueDate}
+                          </td>
+                          <td
+                              className="text-center align-middle"
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                              }}
+                          >
+                            {row.orderPrice.toLocaleString()} (원)
+                          </td>
+                          <td
+                              className="text-center align-middle"
+                              style={{
+                                backgroundColor: selectedOrderId === row.orderId ? "#E0F7FA" : "transparent",
+                                color: row.orderStatus === '반려' ? 'red' : 'black',
+                              }}
                           >
                             {row.orderStatus}
                           </td>
@@ -182,11 +220,11 @@ function HQMainPanel( { filteredRows, isFiltered }) {
                     ))
                 )}
                 </tbody>
-
               </table>
             </div>
           </div>
         </div>
+
 
         <hr></hr>
 

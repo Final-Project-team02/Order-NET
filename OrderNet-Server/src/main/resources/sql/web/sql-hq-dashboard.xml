@@ -29,4 +29,26 @@
         where notice_id = #{noticeId}
     </delete>
 
+    <!--    주문 현황 -->
+    <select id="selectOrderStatusStats" resultType="bitc.fullstack503.ordernetserver.dto.OrderStatusStatsDTO">
+        SELECT
+        COUNT(*) AS totalOrders,
+        SUM(CASE WHEN order_status = '출고' THEN 1 ELSE 0 END) AS shippedOrders,
+        SUM(CASE WHEN order_status = '반려' THEN 1 ELSE 0 END) AS deniedOrders,
+        SUM(CASE WHEN order_status = '승인 대기' THEN 1 ELSE 0 END) AS pendingOrders
+        FROM orders
+    </select>
+
+    <!--    대리점별 월간 매출 추이 그래프-->
+    <select id="getMonthlySalesByBranch" resultType="bitc.fullstack503.ordernetserver.dto.OrderMonthlySalesDTO">
+        SELECT
+        branch_id,
+        DATE_FORMAT(order_date, '%Y-%m') AS order_month,
+        SUM(order_price) AS total_sales
+        FROM orders
+        WHERE order_status != '반려'
+        GROUP BY branch_id, order_month
+        ORDER BY order_month, branch_id
+    </select>
+
 </mapper>

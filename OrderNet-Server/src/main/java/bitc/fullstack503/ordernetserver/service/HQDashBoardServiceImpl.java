@@ -1,5 +1,8 @@
 package bitc.fullstack503.ordernetserver.service;
 
+
+import bitc.fullstack503.ordernetserver.dto.OrderMonthlySalesDTO;
+import bitc.fullstack503.ordernetserver.dto.OrderStatusStatsDTO;
 import bitc.fullstack503.ordernetserver.dto.ClientDTO;
 import bitc.fullstack503.ordernetserver.dto.NoticeDTO;
 import bitc.fullstack503.ordernetserver.mapper.HQDashBoardMapper;
@@ -37,4 +40,17 @@ public class HQDashBoardServiceImpl implements HQDashBoardService {
   public void deleteNotice(String noticeId) {
     hqDashBoardMapper.deleteNotice(noticeId);
   }
+
+    // 주문현황
+    @Override
+    public OrderStatusStatsDTO getOrderStatusStats() {
+        return hqDashBoardMapper.selectOrderStatusStats();
+    }
+
+    //  대리점별 월간 매출 추이 그래프
+    @Override
+    public List<OrderMonthlySalesDTO> getMonthlySalesByBranch() {
+        return hqDashBoardMapper.getMonthlySalesByBranch();
+    }
+
 }

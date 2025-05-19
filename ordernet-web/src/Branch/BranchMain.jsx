@@ -228,7 +228,7 @@ function BranchMain() {
 
                                     <div style={totalPriceBoxStyle}>
                                         <span>총 주문 금액</span>
-                                        <span>{calculateTotalPrice()} (원)</span>
+                                        <span className="fw-bold">{calculateTotalPrice()} 원</span>
                                     </div>
                                 </>
                             ) : (
