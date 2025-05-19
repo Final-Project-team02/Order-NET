@@ -244,11 +244,11 @@ class WHOrderHistory : AppCompatActivity() {
         }
         val dataSet = PieDataSet(entries, "").apply {
             colors = listOf(
-                0xFFEF5350.toInt(), // 빨강
-                0xFF42A5F5.toInt(), // 파랑
-                0xFF66BB6A.toInt(), // 초록
-                0xFFFFA726.toInt(), // 주황
-                0xFFAB47BC.toInt(), // 보라
+                0xFF1565C0.toInt(), // 선명한 딥 블루
+                0xFF00897B.toInt(), // 청록 계열
+                0xFFF57C00.toInt(), // 다크 오렌지
+                0xFFD32F2F.toInt(), // 딥 핑크
+                0xFF2E7D32.toInt(), // 진한 그린
             )
             valueTextSize = 16f
         }

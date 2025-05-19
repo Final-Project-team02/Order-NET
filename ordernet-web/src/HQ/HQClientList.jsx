@@ -110,7 +110,7 @@ function HQClientList() {
                         <Title breadcrumb= "☆ 본사 > 대리점 관리" panelTitle="대리점 리스트"/>
                         <div
                             style={{
-                                height: '80vh',
+                                height: '55vh',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 flexDirection: 'column',
