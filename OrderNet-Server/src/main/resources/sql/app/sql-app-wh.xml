@@ -13,20 +13,40 @@
             o.order_due_date,
             o.branch_id,
             b.branch_name,
-            o.order_price,
-            oi.order_item_status,
-            SUM(oi.order_item_quantity) AS total_quantity,
+
+            -- 물류센터 기준 주문 금액 계산
+            SUM(
+                    CASE
+                        WHEN ws.warehouse_id IS NOT NULL THEN oi.order_item_price * oi.order_item_quantity
+                        ELSE 0
+                        END
+            ) AS warehouse_order_price,
+
+            SUM(
+                    CASE
+                        WHEN ws.warehouse_id IS NOT NULL THEN oi.order_item_quantity
+                        ELSE 0
+                        END
+            ) AS total_quantity,
+
             CASE
-                WHEN COUNT(oi.order_item_status) = COUNT(CASE WHEN oi.order_item_status = '출고대기' THEN 1 END) THEN '승인 대기'
+                WHEN COUNT(oi.order_item_status) = COUNT(CASE WHEN oi.order_item_status = '출고대기' THEN 1 END)
+                    THEN '승인 대기'
                 ELSE '출고완료'
-                END AS order_status
+                END AS order_status,
+
+            oi.order_item_status
+
         FROM orders o
                  LEFT JOIN order_item oi ON o.order_id = oi.order_id
                  LEFT JOIN branch b ON o.branch_id = b.branch_id
                  LEFT JOIN warehouse_stock ws ON oi.part_id = ws.part_id AND ws.warehouse_id = #{warehouseId}
+
         WHERE ws.warehouse_id IS NOT NULL
+
         GROUP BY o.order_id
         ORDER BY o.order_due_date ASC;
+
     </select>
 
     <select id="getOrderItemsByWarehouseAndOrder"

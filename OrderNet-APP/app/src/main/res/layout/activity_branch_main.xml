@@ -228,7 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="승인"
+                            android:text="결재"
                             android:textColor="@color/textColor"
                             android:textSize="15sp" />
 

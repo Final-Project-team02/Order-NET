@@ -14,10 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import bitc.fullstack.app.Branch.BranchMainActivity
 import bitc.fullstack.app.R
 import bitc.fullstack.app.Register_Login.Login
-import bitc.fullstack.app.Warehouse.WHMainActivity
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityWhorderHistoryBinding
@@ -29,16 +27,19 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class WHOrderHistory : AppCompatActivity() {
+class WHOrderHistory : WHBaseActivity() {
 
     private val binding: ActivityWhorderHistoryBinding by lazy {
         ActivityWhorderHistoryBinding.inflate(layoutInflater)
     }
     private lateinit var apiService: AppServerInterface
     private lateinit var userRefId: String
+
+
+    override fun onPreparePopupMenu(popupMenu: PopupMenu) {
+        popupMenu.menu.removeItem(R.id.menu_stock)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,56 +64,18 @@ class WHOrderHistory : AppCompatActivity() {
 
 
         //        홈 버튼
-        val homeButton: ImageButton = findViewById(R.id.home)
-        homeButton.setOnClickListener {
-            val intent = Intent(this, WHMainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
+//        val homeButton: ImageButton = findViewById(R.id.home)
+//        homeButton.setOnClickListener {
+//            val intent = Intent(this, WHMainActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+//            startActivity(intent)
+//            finish()
+//        }
 
-        val menuButton: ImageButton = findViewById(R.id.menu)
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.wh_header_menu, popupMenu.menu)
-
-            // 현재 액티비티가 WHOrderHistory이므로 "재고현황" 메뉴 제거
-            popupMenu.menu.removeItem(R.id.menu_stock)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-
-                when (menuItem.itemId) {
-                    R.id.menu_stock -> {
-                        Toast.makeText(this, "재고현황", Toast.LENGTH_SHORT).show()
-                        val warehouseId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, WHOrderHistory::class.java)
-                        intent.putExtra("userRefId", warehouseId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@WHOrderHistory, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
-
+        setupToolbar(menuButton, homeButton)
 
         setupSpinner()
         // setupPieChart()

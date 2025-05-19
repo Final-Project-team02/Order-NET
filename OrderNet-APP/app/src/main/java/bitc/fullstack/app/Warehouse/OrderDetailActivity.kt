@@ -11,29 +11,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import bitc.fullstack.app.Branch.BranchMainActivity
-import bitc.fullstack.app.Branch.BranchOrderResiActivity
 import bitc.fullstack.app.R
 import bitc.fullstack.app.Register_Login.Login
-import bitc.fullstack.app.Warehouse.WHOrderHistory
 import bitc.fullstack.app.appserver.AppServerClass
-import bitc.fullstack.app.appserver.AppServerInterface
 import bitc.fullstack.app.databinding.ActivityOrderDetailBinding
 import bitc.fullstack.app.dto.WHOrderAppItemDTO
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.math.BigDecimal
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OrderDetailActivity : AppCompatActivity() {
+class OrderDetailActivity : WHBaseActivity() {
 
     private val binding: ActivityOrderDetailBinding by lazy {
         ActivityOrderDetailBinding.inflate(layoutInflater)
     }
 
-    private lateinit var apiService: AppServerInterface
+
     private lateinit var adapter: WHOrderAppItemAdapter
 //    private var warehouseId = "WH_BRK" // 로그인한 물류센터
     private lateinit var warehouseId: String
@@ -55,53 +50,10 @@ class OrderDetailActivity : AppCompatActivity() {
         binding.recyclerViewItems.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewItems.adapter = adapter
 
-        //        홈 버튼
-        val homeButton: ImageButton = findViewById(R.id.home)
-        homeButton.setOnClickListener {
-            val intent = Intent(this, WHMainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-        val menuButton: ImageButton = findViewById(R.id.menu)
-
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.wh_header_menu, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-
-                when (menuItem.itemId) {
-                    R.id.menu_stock -> {
-                        Toast.makeText(this, "재고현황", Toast.LENGTH_SHORT).show()
-                        val warehouseId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, WHOrderHistory::class.java)
-                        intent.putExtra("userRefId", warehouseId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@OrderDetailActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
+        setupToolbar(menuButton, homeButton)
 
         // 주문 상세 목록
         selectWhOrder()
@@ -177,9 +129,9 @@ class OrderDetailActivity : AppCompatActivity() {
             (it.orderItemPrice ?: BigDecimal.ZERO).multiply(BigDecimal(it.orderItemQuantity))
         }
         val itemCount = orderItems.sumOf { it.orderItemQuantity }
-
-        binding.textTotalAmount.text = "총 금액: ${totalAmount}원"
-        binding.textTotalCount.text = "건수: ${itemCount}개"
+        val formattedAmount = NumberFormat.getNumberInstance(Locale.KOREA).format(totalAmount.toBigInteger())
+        binding.textTotalAmount.text = "총 금액: ${formattedAmount}원"
+        binding.textTotalCount.text = "${itemCount}개"
     }
 
     private fun formatDate(date: Date?): String {

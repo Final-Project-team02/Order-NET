@@ -10,9 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import bitc.fullstack.app.Branch.BranchMainActivity
-import bitc.fullstack.app.Branch.BranchOrderResiActivity
-import bitc.fullstack.app.Branch.OrderHistoryActivity
 import bitc.fullstack.app.R
 import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
@@ -21,11 +18,10 @@ import bitc.fullstack.app.databinding.ActivityWarehouseMainBinding
 import bitc.fullstack.app.dto.OrderAppDTO
 import com.google.gson.Gson
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WHMainActivity : AppCompatActivity() {
+class WHMainActivity : WHBaseActivity() {
 
     private lateinit var whOrderAdapter: WHOrderAdapter
     private lateinit var recyclerView: RecyclerView
@@ -47,44 +43,10 @@ class WHMainActivity : AppCompatActivity() {
 
         userRefId = intent.getStringExtra("userRefId") ?: ""
 
-        val menuButton: ImageButton = findViewById(R.id.menu)
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.wh_header_menu, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-
-                when (menuItem.itemId) {
-                    R.id.menu_stock -> {
-                        Toast.makeText(this, "재고현황", Toast.LENGTH_SHORT).show()
-                        val warehouseId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, WHOrderHistory::class.java)
-                        intent.putExtra("userRefId", warehouseId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@WHMainActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
+        setupToolbar(menuButton, homeButton)
 
 
         // RecyclerView 설정

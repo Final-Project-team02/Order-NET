@@ -1,11 +1,9 @@
 package bitc.fullstack.app.Branch
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import bitc.fullstack.app.databinding.ItemProductBinding
 import bitc.fullstack.app.dto.PartsDTO

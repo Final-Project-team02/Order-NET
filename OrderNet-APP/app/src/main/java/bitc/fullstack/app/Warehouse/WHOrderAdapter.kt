@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class WHOrderAdapter(
+    
     private var orderList: List<OrderAppDTO>,
     private val userRefId: String // userRefId 전달
 ) : RecyclerView.Adapter<WHOrderAdapter.WHOrderViewHolder>() {
@@ -27,6 +28,7 @@ class WHOrderAdapter(
         val tvOrderPrice: TextView = itemView.findViewById(R.id.tv_order_item_price)
         val tvOrderStatus: TextView = itemView.findViewById(R.id.tv_order_item_status)
         val btnOrderDetail: Button = itemView.findViewById(R.id.btn_order_detail)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WHOrderViewHolder {
@@ -49,7 +51,7 @@ class WHOrderAdapter(
         holder.tvOrderCount.text = "${order.totalQuantity}건"
 
         // 가격 및 상태 표시
-        holder.tvOrderPrice.text = order.orderPrice?.let {
+        holder.tvOrderPrice.text = order.warehouseOrderPrice?.let {
             "금액 ${NumberFormat.getNumberInstance(Locale.KOREA).format(it)} 원"
         } ?: "금액 정보 없음"
 

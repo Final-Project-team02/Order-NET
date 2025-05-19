@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import bitc.fullstack.app.appserver.AppServerClass
@@ -17,9 +14,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import bitc.fullstack.app.R
-import bitc.fullstack.app.Register_Login.Login
 
-class BranchMainActivity : AppCompatActivity() {
+class BranchMainActivity : BranchBaseActivity() {
 
     private lateinit var userRefId: String
     private lateinit var branchName: String
@@ -39,57 +35,13 @@ class BranchMainActivity : AppCompatActivity() {
 
         }
 
-//        import bitc.fullstack.app.R
+        // 공통 툴바 메뉴 설정
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-        val menuButton: ImageButton = findViewById(R.id.menu)
-
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.branch_header_menu, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_order -> {
-                        Toast.makeText(this, "주문 하기", Toast.LENGTH_SHORT).show()
-                        val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, BranchOrderResiActivity::class.java)
-                        intent.putExtra("userRefId", branchId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.menu_stock -> {
-                        Toast.makeText(this, "주문 현황", Toast.LENGTH_SHORT).show()
-                        val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, OrderHistoryActivity::class.java)
-                        intent.putExtra("userRefId", branchId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@BranchMainActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
+        setupToolbar(menuButton, homeButton)
 
         selectbranch()
-
-//        selectbranch()
         
         // 주문하기 버튼
         binding.orderButton.setOnClickListener {
@@ -112,7 +64,7 @@ class BranchMainActivity : AppCompatActivity() {
         binding.orderAcceptBtn.setOnClickListener {
             val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
             val intent = Intent(this, OrderHistoryActivity::class.java)
-            intent.putExtra("selectedStatus", "승인")
+            intent.putExtra("selectedStatus", "결재")
             intent.putExtra("userRefId", branchId) // userRefId 전달
             startActivity(intent)
 

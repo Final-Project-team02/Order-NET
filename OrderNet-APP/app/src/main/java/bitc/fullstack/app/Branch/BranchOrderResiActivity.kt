@@ -7,8 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -16,13 +14,10 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import bitc.fullstack.app.Branch.BranchMainActivity
 import bitc.fullstack.app.R
-import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityBranchOrderRegiBinding
 import bitc.fullstack.app.databinding.OrderPopupBinding
@@ -38,7 +33,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class BranchOrderResiActivity : AppCompatActivity() {
+class BranchOrderResiActivity : BranchBaseActivity() {
 
     private val binding: ActivityBranchOrderRegiBinding by lazy {
         ActivityBranchOrderRegiBinding.inflate(layoutInflater)
@@ -52,6 +47,9 @@ class BranchOrderResiActivity : AppCompatActivity() {
 
     internal  lateinit var selectProductLauncher: ActivityResultLauncher<Intent>
 
+    override fun onPreparePopupMenu(popupMenu: PopupMenu) {
+        popupMenu.menu.removeItem(R.id.menu_order)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,57 +65,11 @@ class BranchOrderResiActivity : AppCompatActivity() {
             insets
         }
 
-        //        홈 버튼
-        val homeButton: ImageButton = findViewById(R.id.home)
-        homeButton.setOnClickListener {
-            val intent = Intent(this, BranchMainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
+        // 공통 툴바 메뉴 설정
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-//        메뉴 버튼
-        val menuButton: ImageButton = findViewById(R.id.menu)
-
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.branch_header_menu, popupMenu.menu)
-
-            // 현재 액티비티가 BranchOrderResiActivity이므로 "주문하기" 메뉴 제거
-            popupMenu.menu.removeItem(R.id.menu_order)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-
-                    R.id.menu_stock -> {
-                        Toast.makeText(this, "주문 현황", Toast.LENGTH_SHORT).show()
-                        val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, OrderHistoryActivity::class.java)
-                        intent.putExtra("userRefId", branchId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@BranchOrderResiActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
+        setupToolbar(menuButton, homeButton)
 
         firstConnection(userRefId)
 

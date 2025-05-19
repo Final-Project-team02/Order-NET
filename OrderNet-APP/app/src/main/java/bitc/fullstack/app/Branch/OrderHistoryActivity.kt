@@ -2,7 +2,6 @@ package bitc.fullstack.app.Branch
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,13 +13,10 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import bitc.fullstack.app.Branch.BranchMainActivity
 import bitc.fullstack.app.R
-import bitc.fullstack.app.Register_Login.Login
 import bitc.fullstack.app.appserver.AppServerClass
 import bitc.fullstack.app.databinding.ActivityOrderHistoryBinding
 import bitc.fullstack.app.dto.BranchOrderDTO
@@ -31,7 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class OrderHistoryActivity : AppCompatActivity() {
+class OrderHistoryActivity : BranchBaseActivity() {
 
     private val binding: ActivityOrderHistoryBinding by lazy {
         ActivityOrderHistoryBinding.inflate(layoutInflater)
@@ -43,6 +39,10 @@ class OrderHistoryActivity : AppCompatActivity() {
 
     private lateinit var userRefId: String
 
+    override fun onPreparePopupMenu(popupMenu: PopupMenu) {
+        popupMenu.menu.removeItem(R.id.menu_stock) // 또는 .isVisible = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -53,63 +53,17 @@ class OrderHistoryActivity : AppCompatActivity() {
             insets
         }
 
-//        홈 버튼
-        val homeButton: ImageButton = findViewById(R.id.home)
-        homeButton.setOnClickListener {
-            val intent = Intent(this, BranchMainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
-        }
+        // 공통 툴바 메뉴 설정
+        val menuButton = findViewById<ImageButton>(R.id.menu)
+        val homeButton = findViewById<ImageButton>(R.id.home)
 
-//        메뉴 버튼
-        val menuButton: ImageButton = findViewById(R.id.menu)
-
-        menuButton.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.branch_header_menu, popupMenu.menu)
-
-            // 현재 액티비티가 OrderHistoryActivity이므로 "주문 현황" 메뉴 제거
-            popupMenu.menu.removeItem(R.id.menu_stock)
-
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_order -> {
-                        Toast.makeText(this, "주문 하기", Toast.LENGTH_SHORT).show()
-                        val branchId = intent.getStringExtra("userRefId") ?: "" //  userRefId 재사용
-                        val intent = Intent(this, BranchOrderResiActivity::class.java)
-                        intent.putExtra("userRefId", branchId) // userRefId 전달
-                        startActivity(intent)
-                        true
-                    }
-                    R.id.btn_logout -> {
-                        // 1. 저장된 값 삭제
-                        val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-
-                        // 2. 로그인 화면으로 이동
-                        val intent = Intent(this@OrderHistoryActivity, Login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-
-                        // 3. 현재 액티비티 종료
-                        finish()
-
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            popupMenu.show()
-        }
+        setupToolbar(menuButton, homeButton)
 
         userRefId = intent.getStringExtra("userRefId") ?: ""
 
         val spinner2 = binding.mySpinner2
 
-        val items2 = listOf("신청", "승인", "출고", "반려")
+        val items2 = listOf("신청", "결재", "출고", "반려")
 
         val adapter2 = object : ArrayAdapter<String>(
             this,
@@ -117,7 +71,7 @@ class OrderHistoryActivity : AppCompatActivity() {
             items2
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                //  선택된 항목 표시용 TextView만 반환해야 Spinner가 정상 출력함
+                // ✅ 선택된 항목 표시용 TextView만 반환해야 Spinner가 정상 출력함
                 val textView = layoutInflater.inflate(R.layout.spinner_selected_item, parent, false)
                     .findViewById<TextView>(R.id.spinner_selected_text)
                 textView.text = getItem(position)
@@ -131,7 +85,7 @@ class OrderHistoryActivity : AppCompatActivity() {
 
                 textView.text = getItem(position)
 
-                //  마지막 항목은 divider 숨기기
+                // ✅ 마지막 항목은 divider 숨기기
                 if (position == count - 1) {
                     divider.visibility = View.GONE
                 } else {
@@ -144,15 +98,13 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         spinner2.adapter = adapter2
 
-        val selectedStatus = intent.getStringExtra("selectedStatus")
-        selectedStatus?.let {
-            val index = items2.indexOf(it)
-            if (index >= 0) {
-                spinner2.setSelection(index)
-
-
-            }
+        // 선택된 상태를 Intent에서 받아서 Spinner에 반영
+        val selectedStatus = intent.getStringExtra("selectedStatus") ?: "신청"
+        val selectedIndex = items2.indexOf(selectedStatus)
+        if (selectedIndex != -1) {
+            spinner2.setSelection(selectedIndex)
         }
+
 
         selectBranchOrderList()
 
@@ -199,39 +151,11 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this,
-            R.style.MyDatePickerDialogTheme, // 커스텀 스타일
             listener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-
-        datePickerDialog.setOnShowListener {
-            // 연도 색상 (더 진한 하늘색)
-            val yearId = resources.getIdentifier("date_picker_header_year", "id", "android")
-            val yearText = datePickerDialog.findViewById<TextView>(yearId)
-            yearText?.setTextColor(Color.parseColor("#5CA3E6"))
-
-            // 날짜 텍스트 색상
-            val dateId = resources.getIdentifier("date_picker_header_date", "id", "android")
-            val dateText = datePickerDialog.findViewById<TextView>(dateId)
-            dateText?.setTextColor(Color.parseColor("#6DB8FF"))
-
-            // 헤더 배경 부드럽게 (연한 파란색 계열)
-            val headerId = resources.getIdentifier("date_picker_header", "id", "android")
-            val header = datePickerDialog.findViewById<View>(headerId)
-            header?.setBackgroundColor(Color.parseColor("#F6FBFF"))
-
-            // 버튼 색상 (확인/취소 등)
-            datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#6DB8FF"))
-            datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#6DB8FF"))
-        }
-
-
-        datePickerDialog.show()
-
-
-
 
         if (!isStartDate) {
             if (startDate != null) {
@@ -257,7 +181,7 @@ class OrderHistoryActivity : AppCompatActivity() {
         // 한글 매핑
         val statusMap = mapOf(
             "신청" to "승인 대기",
-            "승인" to "결제",
+            "결재" to "결재",
             "출고" to "출고",
             "반려" to "반려"
         )

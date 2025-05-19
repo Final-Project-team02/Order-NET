@@ -8,6 +8,7 @@ import WHMain from "./WH/WHMain.jsx";
 import LoginForm from "./layout/LoginForm.jsx";
 import PrivateRoute from "./layout/PrivateRoute.jsx";
 import HQClientRanking from "./HQ/HQClientRanking.jsx";
+import HQOverall from "./HQ/HQOverall.jsx";
 
 function WebMain() {
     return (
@@ -23,8 +24,8 @@ function WebMain() {
                     }
                     />
                 </Route>
-                <Route path={"/HQClientList"} element={ <HQClientList/> }></Route>
-                <Route path={"/HQStockStatus"} element={<HQStockStatus/>}></Route>
+                <Route path={"/HQClientList"} element={ <PrivateRoute> <HQClientList/>  </PrivateRoute>}></Route>
+                <Route path={"/HQStockStatus"} element={ <PrivateRoute> <HQStockStatus/>  </PrivateRoute>}></Route>
                 {/*<Route path={"/BranchMain"} element={<BranchMain/>}/>*/}
 
                 {/*<Route path="/BranchMain/:agencyCode" element={<BranchMain />} />*/}
@@ -48,12 +49,13 @@ function WebMain() {
                     />
                 </Route>
 
-                <Route path="/WHManage/:agencyCode" element={<WHManage/>}/>
+                <Route path="/WHManage/:agencyCode" element={<PrivateRoute><WHManage/></PrivateRoute>}/>
                 <Route path="/login" element={<LoginForm />} />
-                <Route path={"/HQClientRanking"} element={<HQClientRanking/>}></Route>
-                <Route path="/BranchMain/:agencyCode" element={<BranchMain />} />
-                {/*<Route path={"/WHMain"} element={ <WHMain/> }/>*/}
-                {/*<Route path={"/WHManage"} element={<WHManage/>}/>*/}
+                <Route path={"/HQClientRanking"} element={ <PrivateRoute> <HQClientRanking/>  </PrivateRoute>}></Route>
+                <Route path="/BranchMain/:agencyCode" element={ <PrivateRoute> <BranchMain />  </PrivateRoute>} />
+                <Route path={"/WHMain"} element={ <PrivateRoute> <WHMain/>  </PrivateRoute>}/>
+                <Route path={"/WHManage"} element={ <PrivateRoute> <WHManage/>  </PrivateRoute>}/>
+                <Route path={"/HQOverall"} element={<PrivateRoute><HQOverall/>  </PrivateRoute>}/>
             </Routes>
         </BrowserRouter>
     );
